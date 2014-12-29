@@ -1,0 +1,34 @@
+{
+  "name": "spreadsheet",
+  "version": "0.2.388-SNAPSHOT",
+  "authors": [
+    "Hyeong-jin <gilseonappa@gmail.com>"
+  ],
+  "description": "data sheet like as spread sheet",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "spread",
+    "sheet"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.11.2",
+    "modernizr": "~2.8.3",
+    "font-awesome": "~4.2.0",
+    "normalize.css": "~3.0.2",
+    "jquery-mousewheel": "~3.1.12"
+  },
+  "devDependencies": {
+    "qunit": "~1.15.0"
+  }
+}
