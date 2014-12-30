@@ -17,17 +17,17 @@
     val,
     options = {
       'themes': 'redmond',
-      'showTitle': true,
-      'showColumnGroup': true,
-      'showColumnHeader': true,
-      'showRowHeader': true,
+      'showTitle': false,
+      'showColumnGroup': false,
+      'showColumnHeader': false,
+      'showRowHeader': false,
       'numberOfColumns': 20,
       'numberOfRows': 100,
       'numberOfFixedRows': 2,
       'numberOfFixedColumns': 3,
       'dataParseUnit': 10,
       'showValueEditor': false,
-      'showDefaultGrid': true,
+      'showDefaultGrid': false,
       'defaultGridLineColor': '#DDD',
     };
 
@@ -35,10 +35,10 @@
     param = urlParams[i].split('=');
     key = param[0];
     val = param[1];
-    options[key] = val === 'on' ? true : false;
+    options[key] = val === 'on' ? true : value;
   }
 
-  options.themes = options.themes ? options.themes : 'base';
+  options.themes = options.themes ? options.themes : 'redmond';
   options.dataParseUnit = Math.max(options.dataParseUnit, 1);
   options.numberOfFixedRows = Math.max(options.numberOfFixedRows, 0);
   options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
