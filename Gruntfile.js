@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     // Task configuration.
     clean: {
       files: ['dist']
-    },
+    }, 
     concat: {
       options: {
         stripBanners: true,
