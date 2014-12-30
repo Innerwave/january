@@ -222,7 +222,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsbeautifier');
 
     // Default task.
-    grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify', 'cssmin', 'shell:svn-commit']);
+    grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify', 'cssmin']);
     grunt.registerTask('minor', ['shell:minor', 'shell:svn-commit']);
     grunt.registerTask('major', ['shell:major', 'shell:svn-commit']);
   
