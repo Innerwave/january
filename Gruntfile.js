@@ -21,10 +21,10 @@ module.exports = function (grunt) {
         separator: ';'
       },
       dist: {
-        src: [
-          'src/js/spreadsheet.js'
-        ],
-        dest: 'dist/js/<%= pkg.name %>.js'
+        files: {
+          'dist/js/innerwave.scroller.min.js': 'src/js/scroller.js',
+          'dist/js/<%= pkg.name %>.js': 'src/js/spreadsheet.js'
+        }
       }
     },
     uglify: {
@@ -35,20 +35,8 @@ module.exports = function (grunt) {
             drop_console: true
           }
         },
-        files: {
-          'dist/js/innerwave.scroller.min.js': 'src/js/scroller.js',
-          'dist/js/<%= pkg.name %>.min.js': '<%= concat.dist.dest %>'
-        }
-        // src: '<%= concat.dist.dest %>',
-        // dest: 'dist/js/<%= pkg.name %>.min.js'
+        files: '<%= concat.dist.files %>'
       }
-      //            ,
-      //            vendor: {
-      //                expand: true,
-      //                cwd: 'dist/lib',
-      //                src: '**/*.js',
-      //                dest: 'dist/lib'
-      //            }
     },
     jshint: {
       gruntfile: {
