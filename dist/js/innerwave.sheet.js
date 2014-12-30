@@ -1,7 +1,7 @@
-/*! Innerwave Spreadsheet - v0.2.389-SNAPSHOT - 2014-12-30
+/*! Innerwave Spreadsheet - v0.2.390-SNAPSHOT - 2014-12-30
 * Copyright (c) 2014 innerwave.co.kr; Licensed  */
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.389-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.390-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -622,7 +622,7 @@
   */
 
   return $.widget('innerwave.spreadsheet', {
-    version: '0.2.389-SNAPSHOT',
+    version: '0.2.390-SNAPSHOT',
     options: {
       // buttons: [],
       // spreadsheetClass: '',

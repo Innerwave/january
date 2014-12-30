@@ -16,12 +16,12 @@ module.exports = function (grunt) {
     },
     concat: {
       options: {
-        stripBanners: true      , 
+        stripBanners: true,
         banner: '<%= banner %>',
         separator: ';'
       },
       dist: {
-        src: [ 
+        src: [
           'src/js/spreadsheet.js'
         ],
         dest: 'dist/js/<%= pkg.name %>.js'
