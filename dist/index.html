@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>IW-Spreadsheet Examples - 0.2.409-SNAPSHOT</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
+  <link rel="stylesheet" href="lib/font-awesome/font-awesome.css" />
+
+  <script>
+  var urlParams = (location.href.split('?')[1] || '').split('&'),
+    param,
+    key,
+    val,
+    options = {
+      'themes': 'redmond',
+      'showTitle': true,
+      'showColumnGroup': true,
+      'showColumnHeader': true,
+      'showRowHeader': true,
+      'numberOfColumns': 20,
+      'numberOfRows': 100,
+      'numberOfFixedRows': 0,
+      'numberOfFixedColumns': 0,
+      'dataParseUnit': 10,
+      'showValueEditor': false,
+      'showDefaultGrid': true,
+      'defaultGridLineColor': '#DDD',
+    };
+
+  for (var i = 0, l = urlParams.length; i < l; i++) {
+    param = urlParams[i].split('=');
+    key = param[0];
+    val = param[1];
+    options[key] = val === 'on' ? true : val;
+  }
+
+  options.themes = options.themes ? options.themes : 'base';
+  options.dataParseUnit = Math.max(options.dataParseUnit, 1);
+  options.numberOfFixedRows = Math.max(options.numberOfFixedRows, 0);
+  options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
+  options.numberOfColumns = Math.max(options.numberOfColumns, 20);
+  options.numberOfRows = Math.max(options.numberOfRows, 20);
+
+  options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
+
+  document.write('<link rel="stylesheet" href="lib/jquery-ui/themes/' + options.themes + '/theme.css" />');
+  if (options.themes !== 'base') {
+    document.write('<link rel="stylesheet" href="lib/jquery-ui/themes/' + options.themes + '/jquery-ui.min.css" />');
+  }
+  document.write('<' + 'link rel="stylesheet" href="css/spreadsheet.min.css"/' + '>');
+  </script>
+
+  <style>
+  .feature-list {
+    position: absolute;
+    right: 0;
+    width: 35%;
+  }
+  #sheet {
+    position: relative;
+    margin-left: 30px;
+  }
+  form {
+    padding: 0 2em;
+    margin: 0.3em;
+    text-align: right;
+  }
+  #samplecode {
+    margin-left: 30px;
+  }
+  </style>
+</head>
+
+<body>
+  <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Innerwave Spreadsheet - 0.2.409-SNAPSHOT</h1>
+
+  <form method="get" action='/' name="f">
+    <div>
+      <lable for="themes">Themes: </lable>
+      <select id="themes" name='themes' onchange="submit()">
+        <option>base</option>
+        <option>black-tie</option>
+        <option>blitzer</option>
+        <option>cupertino</option>
+        <option>dark-hive</option>
+        <option>dot-luv</option>
+        <option>eggplant</option>
+        <option>excite-bike</option>
+        <option>flick</option>
+        <option>hot-sneaks</option>
+        <option>humanity</option>
+        <option>le-frog</option>
+        <option>mint-choc</option>
+        <option>overcast</option>
+        <option>pepper-grinder</option>
+        <option>redmond</option>
+        <option>smoothness</option>
+        <option>south-street</option>
+        <option>start</option>
+        <option>sunny</option>
+        <option>swanky-purse</option>
+        <option>trontastic</option>
+        <option>ui-darkness</option>
+        <option>ui-lightness</option>
+        <option>vader</option>
+      </select>
+    </div>
+    <div>
+      <label for="showTitle">Show Title</label>
+      <input type="checkbox" id="showTitle" name="showTitle" />
+    </div>
+    <div>
+      <label for="showColumnGroup">Show Column Group</label>
+      <input type="checkbox" id="showColumnGroup" name="showColumnGroup" />
+    </div>
+    <div>
+      <label for="showColumnHeader">Show Column Header</label>
+      <input type="checkbox" id="showColumnHeader" name="showColumnHeader" />
+    </div>
+    <div>
+      <label for="showRowHeader">Show Row Header</label>
+      <input type="checkbox" id="showRowHeader" name="showRowHeader" />
+    </div>
+    <div>
+      <label for="showValueWindow">Show Value Editor</label>
+      <input type="checkbox" id="showValueWindow" name="showValueWindow" />
+    </div>
+
+    <div>
+      <label for="numberOfColumns">Number Of Columns(minimum is 20 in this examples)</label>
+      <input type="text" id="numberOfColumns" name="numberOfColumns" />
+    </div>
+    <div>
+      <label for="numberOfRows">Number Of Rows</label>
+      <input type="text" id="numberOfRows" name="numberOfRows" />
+    </div>
+    <div>
+      <label for="dataParseUnit">Parsing Unit of Data</label>
+      <input type="text" id="dataParseUnit" name="dataParseUnit" />
+    </div>
+
+    <div>
+      <label for="showDefaultGrid">Show Default Grid Line</label>
+      <input type="checkbox" id="showDefaultGrid" name="showDefaultGrid" />
+    </div>
+    <div>
+      <label for="defaultGridLineColor">Default Grid Line Color</label>
+      <input type="text" id="defaultGridLineColor" name="defaultGridLineColor" />
+    </div>
+
+    <div>
+      <label for="numberOfFixedRows">Fixed Rows</label>
+      <input type="text" id="numberOfFixedRows" name="numberOfFixedRows" />
+    </div>
+    <div>
+      <label for="numberOfFixedColumns">Fixed Columns</label>
+      <input type="text" id="numberOfFixedColumns" name="numberOfFixedColumns" />
+    </div>
+
+    <div>
+      <input type="submit" value="Show" />
+    </div>
+  </form>
+
+  <div id="sheet" width="786" height="512" title="1. Innerwave Spreadsheet" class="ui-widget ui-corner-all"></div>
+
+  <script>
+  // Avoid `console` errors in browsers that lack a console.
+  (function() {
+    var method;
+    var noop = function() {};
+    var methods = [
+      'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+      'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+      'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+      'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+    ];
+    var length = methods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+      method = methods[length];
+      // Only stub undefined methods.
+      if (!console[method]) {
+        console[method] = noop;
+      }
+    }
+  }());
+
+  // Place any jQuery/helper plugins in here.
+  </script>
+
+  <script src="lib/modernizr/modernizr.js"></script>
+  <script src="lib/jquery/jquery.js"></script>
+  <script src="lib/jquery-ui/jquery-ui.js"></script>
+  <script src="lib/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="js/innerwave.sheet.min.js"></script>
+  <script src="js/innerwave.scroller.min.js"></script>
+
+  <script>
+  function mkColumn(size) {
+    var columns = [];
+    for (var i = 0; i < size; i++) {
+      columns.push({
+        id: 'col' + i,
+        label: i < 5 ? 'Col ' + (i + 1) : undefined,
+        width: 80,
+        className: 'sheet-column-text',
+      });
+    }
+    return columns;
+  }
+
+  function mkData(columns, rows) {
+    var data = [];
+    var row;
+    for (var i = 0; i < rows; i++) {
+      row = {};
+      for (var j = 0, l = columns; j < l; j++) {
+        // TODO 컬럼 값에 데이터 뿐 아니라. 스패닝, 스타일(CSS) 등을 저장할 수 있도록 object 타입으로 수정할 필요가 있다.
+        /**
+         * var cell = {value: '', css: '', colspan:1, rowspan: 1, className:'spreadsheet-cell cell-format-text', formular:formular };
+         */
+        row[ /*columnId*/ 'col' + j] = j + ', ' + i;
+      }
+      data.push(row);
+    }
+    return data;
+  }
+
+  function drawSheet() {
+    $('select[name=themes]').val(options.themes);
+
+    $('input[name="showTitle"]').prop('checked', options.showTitle);
+    $('input[name="showColumnHeader"]').prop('checked', options.showColumnHeader);
+    $('input[name="showColumnGroup"]').prop('checked', options.showColumnGroup);
+    $('input[name="showRowHeader"]').prop('checked', options.showRowHeader);
+
+    $('input[name="showValueWindow"]').prop('checked', options.showValueWindow);
+
+    $('input[name="numberOfRows"]').val(options.numberOfRows);
+    $('input[name="numberOfColumns"]').val(options.numberOfColumns);
+    $('input[name="dataParseUnit"]').val(options.dataParseUnit);
+
+    $('input[name="numberOfFixedRows"]').val(options.numberOfFixedRows);
+    $('input[name="numberOfFixedColumns"]').val(options.numberOfFixedColumns);
+
+    $('input[name="showDefaultGrid"]').prop('checked', options.showDefaultGrid);
+    $('input[name="defaultGridLineColor"]').val(options.defaultGridLineColor);
+
+
+    var columns = mkColumn(options.numberOfColumns);
+
+    columns[6].label = '일곱번째 컬럼명'
+      // 컬럼 그룹핑은 그룹 명을 동일하게 지정합니다.
+      // 그룹으로 묶을 컬럼은 붙어 있어야 합니다.
+    columns[0].group = '그룹 0';
+    columns[1].group = '그룹 1';
+    columns[2].group = '그룹 1';
+    columns[3].group = '그룹 1';
+    // columns[4].group = 'Group 2';
+    columns[5].group = 'Group 2';
+    columns[6].group = 'Group 2';
+    // columns[7].group = 'Group 3';
+    columns[8].group = 'Group 3';
+    columns[9].group = 'Group 3';
+    columns[10].group = 'Group 3';
+    //  columns[20].group = 'Group 4';
+    columns[11].group = 'Group 4';
+    // columns[12].group = 'Group 4';
+    columns[13].group = 'Group 5';
+    columns[14].group = 'Group 5';
+    columns[15].group = 'Group 5';
+
+    var data = mkData(columns.length, options.numberOfRows);
+
+
+    var $uiProgressLabel = $('<div class="spreadsheet-progress-label">').text('Loading......');
+    var $uiProgressBar = $('<div class="spreadsheet-progress">')
+      .progressbar({
+        value: false,
+        change: function() {
+          $uiProgressLabel.text($uiProgressBar.progressbar("value") + "% plugin")
+            .css('left', ($uiProgressBar.width() - $uiProgressLabel.outerWidth()) / 2 + 'px');
+        },
+        complete: function() {
+          $uiProgressLabel.text("100%");
+          $uiProgressLabel.css('left', ($uiProgressBar.width() - $uiProgressLabel.outerWidth()) / 2 + 'px');
+          $uiProgressBar.hide('slow');
+        }
+      })
+      .append($uiProgressLabel);
+
+
+    var $sheet = $('#sheet').spreadsheet({
+      // 태그에 속성으로 설정된 것보다 우선한다.
+      // 'width': 400,
+      // 'height': 300,
+      //'title' : 'test example',
+      'columns': columns,
+      //     'data': data, // 옵션으로 주입하면 모든 데이터를 파싱한 후 디스플레이한다.
+
+      'progressBar': $uiProgressBar,
+
+      // 'numberOfColumns': 100,
+      // 'numberOfRows': 500,
+
+      'dataParseUnit': options.dataParseUnit,
+
+      // 행 고정: 상단에 고정으로 보일 행의 갯수를 지정합니다.
+      // sheet.rows 상의 인덱스에 따릅니다.
+      'numberOfFixedRows': options.numberOfFixedRows,
+
+      // 열 고정 : 좌측에 고정할 열의 갯수를 지정합니다.
+      // sheet.columns의 인덱스 순서에 따릅니다.
+      'numberOfFixedColumns': options.numberOfFixedColumns,
+
+      'showTitle': options.showTitle,
+      'showRowHeaders': options.showRowHeader,
+      'showColumnGroups': options.showColumnGroup,
+      'showColumnHeaders': options.showColumnHeader,
+      'showValueWindow': options.showValueWindow,
+      'showDefaultGrid': options.showDefaultGrid,
+      'defaultGridLineColor': options.defaultGridLineColor,
+      'create': function(event, ui) {
+        // console.log('create complete');
+        //loadData(event, ui);
+        //$(this).spreadsheet('data', data);
+      }
+    });
+
+
+    //    var $dialog = $('<div title="Display in Dialog">').dialog();
+    //    $dialog.append($sheet);
+
+    // 위젯 생성 이후에 메소드를 호출하여 컬럼 생성
+    //  $sheet.spreadsheet('columns', columns);
+
+    // 위젯 생성 이후에 데이터 주입 ..
+    // 실시간으로 주입되는 데이터를 바로 바로 화면에서 볼 수 있다.
+    // 파싱한 데이터는 조작 가능하고 , 중단할 수 있다.
+    $sheet.spreadsheet('data', data);
+
+
+
+  }
+
+  window.onload = function() {
+    drawSheet();
+  }
+  </script>
+
+</body>
+
+</html>
