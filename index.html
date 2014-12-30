@@ -35,7 +35,7 @@
     param = urlParams[i].split('=');
     key = param[0];
     val = param[1];
-    options[key] = val === 'on' ? true : value;
+    options[key] = val === 'on' ? true : val;
   }
 
   options.themes = options.themes ? options.themes : 'redmond';
