@@ -16,12 +16,12 @@ module.exports = function (grunt) {
     },
     concat: {
       options: {
+        stripBanners: true      , 
         banner: '<%= banner %>',
-        stripBanners: true
-          //, separator: ';'
+        separator: ';'
       },
       dist: {
-        src: [
+        src: [ 
           'src/js/spreadsheet.js'
         ],
         dest: 'dist/js/<%= pkg.name %>.js'
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
         },
         files: {
           'dist/js/innerwave.scroller.min.js': 'src/js/scroller.js',
-          'dist/js/innerwave.sheet.min.js': 'src/js/spreadsheet.js'
+          'dist/js/<%= pkg.name %>.min.js': '<%= concat.dist.dest %>'
         }
         // src: '<%= concat.dist.dest %>',
         // dest: 'dist/js/<%= pkg.name %>.min.js'

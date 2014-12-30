@@ -1,7 +1,7 @@
-/*! Innerwave Spreadsheet - v0.2.388-SNAPSHOT - 2014-12-30
+/*! Innerwave Spreadsheet - v0.2.389-SNAPSHOT - 2014-12-30
 * Copyright (c) 2014 innerwave.co.kr; Licensed  */
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.388-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.389-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -19,7 +19,7 @@
       './mouse',
       './slide',
       // './button',
-      // './position',
+      // './position', 
       './resizable'
     ], factory);
   } else {
@@ -622,7 +622,7 @@
   */
 
   return $.widget('innerwave.spreadsheet', {
-    version: '0.2.388-SNAPSHOT',
+    version: '0.2.389-SNAPSHOT',
     options: {
       // buttons: [],
       // spreadsheetClass: '',
@@ -817,7 +817,7 @@
     },
 
     _parseEachData: function (data, row) {
-      // TODO 조회한 셀정보 데이터를 되살린다.
+      // TODO 조회한 셀정보 데이터를 되살린다. 
       // 그래야 컬럼 및 로우 머지를 할 수 있다. cellspan, rowspan...
       var
         column,
@@ -883,7 +883,7 @@
         for (i = 0, l = chunk.length; i < l; i++) {
           data = chunk[i];
           row = this.sheet.addRow(data);
-          // TODO 기존의 셀 정보를 복구하기 위해서는 데이터(VALUE)뿐 아니라
+          // TODO 기존의 셀 정보를 복구하기 위해서는 데이터(VALUE)뿐 아니라 
           // 셀 포맷 정보까지도 복구 되어야 한다.
           this._parseEachData(data, row);
         }
