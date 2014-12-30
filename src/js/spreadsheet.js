@@ -1,5 +1,5 @@
 /*
- * Innerwave's jQuery Spreadsheet plugin v0.2.404-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.405-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -620,7 +620,7 @@
   */
 
   return $.widget('innerwave.spreadsheet', {
-    version: '0.2.404-SNAPSHOT',
+    version: '0.2.405-SNAPSHOT',
     options: {
       // buttons: [],
       // spreadsheetClass: '',
