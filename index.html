@@ -23,8 +23,8 @@
       'showRowHeader': true,
       'numberOfColumns': 20,
       'numberOfRows': 100,
-      'numberOfFixedRows': 0,
-      'numberOfFixedColumns': 0,
+      'numberOfFixedRows': 2,
+      'numberOfFixedColumns': 3,
       'dataParseUnit': 10,
       'showValueEditor': false,
       'showDefaultGrid': true,
@@ -35,7 +35,7 @@
     param = urlParams[i].split('=');
     key = param[0];
     val = param[1];
-    options[key] = val === 'on' ? true : val;
+    options[key] = val === 'on' ? true : false;
   }
 
   options.themes = options.themes ? options.themes : 'base';
@@ -176,7 +176,7 @@
     </div>
   </form>
 
-  <div id="sheet" width="786" height="512" title="1. Innerwave Spreadsheet" class="ui-widget ui-corner-all"></div>
+  <div id="sheet" width="786" height="512" title="January" class="ui-widget ui-corner-all"></div>
 
 
 
