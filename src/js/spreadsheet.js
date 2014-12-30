@@ -1,4 +1,4 @@
-/*!
+/*
  * Innerwave's jQuery Spreadsheet plugin v0.2.388-SNAPSHOT
  * http://www.innerwave.co.kr
  *
