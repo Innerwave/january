@@ -1,10 +1,8 @@
-/*
- * Innerwave's jQuery Scroller plugin v0.2.405-SNAPSHOT
- * http://www.innerwave.co.kr
- *
- * Copyright 2014 Innerwave Co., Ltd.
- *
+/* 
+ * Innerwave Spreadsheet - v0.2.406-SNAPSHOT - 2014-12-30
+ * Copyright (c) 2014 innerwave.co.kr; Licensed
  */
+
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     define([
@@ -21,7 +19,7 @@
   }
 
   return $.widget('innerwave.scroller', $.ui.slider, {
-    version: '0.2.405-SNAPSHOT',
+    version: '0.2.406-SNAPSHOT',
     widgetEventPrefix: 'iwscroll',
 
     options: {
