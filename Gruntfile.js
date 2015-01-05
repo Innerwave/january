@@ -76,7 +76,7 @@ module.exports = function (grunt) {
         tasks: ['timestamp', 'jshint:gruntfile', 'shell:patch', 'shell:git-commit'] // 'shell:svn-versioning']
       },
       styles: {
-        files: ['src/css/**/*.css'],
+        files: ['src/css/**/*.css'], 
         tasks: ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit']
       },
       scripts: {
