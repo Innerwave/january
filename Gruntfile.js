@@ -42,7 +42,7 @@ module.exports = function (grunt) {
       gruntfile: {
         src: ['Gruntfile.js']
       },
-      lib_test: {
+      scripts: {
         options: {
           curly: true,
           eqeqeq: true,
@@ -75,9 +75,19 @@ module.exports = function (grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['timestamp', 'jshint:gruntfile', 'shell:patch', 'shell:git-commit'] // 'shell:svn-versioning']
       },
-      lib_test: {
-        files: ['<%= jshint.lib_test.src %>', 'src/css/**/*.css', 'test/**/*.html', '*.html'],
-        tasks: ['timestamp', 'jsbeautifier', 'jshint:lib_test', 'qunit', 'shell:patch', 'shell:git-commit'] //, 'shell:svn-versioning'] //
+      styles :{
+      files : ['src/css/**/*.css'],
+      tasks : ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit' ]
+      },
+      scripts: {
+        files: ['<%= jshint.scripts.src %>'],
+        tasks: ['timestamp', 'jsbeautifier', 'jshint:scripts', 'qunit', 'shell:patch', 'shell:git-commit'] //, 'shell:svn-versioning'] //
+      },
+      html : {
+        files : {
+          files : ['test/**/*.html', '*.html'],
+          tasks : ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit']
+        }
       }
     },
 
