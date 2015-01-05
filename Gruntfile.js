@@ -75,18 +75,18 @@ module.exports = function (grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['timestamp', 'jshint:gruntfile', 'shell:patch', 'shell:git-commit'] // 'shell:svn-versioning']
       },
-      styles :{
-      files : ['src/css/**/*.css'],
-      tasks : ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit' ]
+      styles: {
+        files: ['src/css/**/*.css'],
+        tasks: ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit']
       },
       scripts: {
         files: ['<%= jshint.scripts.src %>'],
         tasks: ['timestamp', 'jsbeautifier', 'jshint:scripts', 'qunit', 'shell:patch', 'shell:git-commit'] //, 'shell:svn-versioning'] //
       },
-      html : {
-        files : {
-          files : ['test/**/*.html', '*.html'],
-          tasks : ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit']
+      html: {
+        files: {
+          files: ['test/**/*.html', '*.html'],
+          tasks: ['timestamp', 'jsbeautifier', 'shell:patch', 'shell:git-commit']
         }
       }
     },
