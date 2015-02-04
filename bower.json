@@ -1,6 +1,6 @@
 {
   "name": "spreadsheet",
-  "version": "0.2.417-SNAPSHOT",
+  "version": "0.2.418-SNAPSHOT",
   "authors": [
     "Hyeong-jin <gilseonappa@gmail.com>"
   ],
@@ -21,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
+    "jquery": "1.8.x",
     "jquery-ui": "~1.11.2",
     "modernizr": "~2.8.3",
     "font-awesome": "~4.2.0",
