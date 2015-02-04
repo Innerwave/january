@@ -4,91 +4,88 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <<<<<<< HEAD <title>IW-Spreadsheet Examples - 0.2.415-SNAPSHOT</title>
-    =======
-    <title>iui-january Examples - 0.2.415-SNAPSHOT</title>
-    >>>>>>> e363dce93eeba575b5e07586cbe608b7f73ef757
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IW-Spreadsheet Examples - 0.2.416-SNAPSHOT</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-    <style type="text/css">
-    .image {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAARCQAAEQkBwOWiGAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAG8SURBVFiF7de/axVBEAfwz2kgRNDCgIUY/JEqxSsELYSAAcFaEOyTQrCyFfv8A4r/gWgrAcEgiKCdqEW0ULDQyohBTBEjiY7F7XtsQt7dBV9yChkY7nbvOzvfm9md3S0iQpsylDeKouhgdId9LkXEQq8VEVIU5hG7pPM9v8l5Zxedd7UTEfalQOx02LeSUfQItCZ7BP5LAj8xgittERARq1hrjcAgZage0lheYg7fcBaTOFlnNKgI3I6IM7iHd7gREadwrdYyleIpzUvoarK5lNrrOIgL+J3hJpU/+L3POFN5Kf4bWccKlvE563+GXzjUxy4YTAqGMR0RL3BMmf+beF5jV5Q0tp+CH5tS0NVHmMHRbIu/qKwbfVNQR+Bh+jaX9X1JNjMVJF/hcsLdryJQl4KRiHiKB1lf9zQzlp5vMIHZDHMa19P7cqWHmgisKNfyMK7iDsaxH+8TZg3HlZPtVvr7JziHA/hQFYEmc+C1dHpJ2MO4uwnzVpmSExluAo8rxm1MoKuL+GjjWt9KP+Frg/HOR8S2SvGRhrixegjSMmx9M9oj8M8QWGrBd+mz7atZkd+O27icbiDQhvwBRpt2KPfzGu8AAAAASUVORK5CYII61aca5b15dc195f896e509d7d7121624');
-    }
-    </style>
-    <script>
-    var urlParams = (location.href.split('?')[1] || '').split('&'),
-      param,
-      key,
-      val,
-      options = {
-        'themes': 'base',
-        'showTitle': false,
-        'showColumnGroup': false,
-        'showColumnHeader': false,
-        'showRowHeader': false,
-        'numberOfColumns': 20,
-        'numberOfRows': 100,
-        'numberOfFixedRows': 0,
-        'numberOfFixedColumns': 0,
-        'dataParseUnit': 10,
-        'showValueEditor': false,
-        'showDefaultGrid': false,
-        'defaultGridLineColor': '#CCC',
-      };
+  <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+  <style type="text/css">
+  .image {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAARCQAAEQkBwOWiGAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAG8SURBVFiF7de/axVBEAfwz2kgRNDCgIUY/JEqxSsELYSAAcFaEOyTQrCyFfv8A4r/gWgrAcEgiKCdqEW0ULDQyohBTBEjiY7F7XtsQt7dBV9yChkY7nbvOzvfm9md3S0iQpsylDeKouhgdId9LkXEQq8VEVIU5hG7pPM9v8l5Zxedd7UTEfalQOx02LeSUfQItCZ7BP5LAj8xgittERARq1hrjcAgZage0lheYg7fcBaTOFlnNKgI3I6IM7iHd7gREadwrdYyleIpzUvoarK5lNrrOIgL+J3hJpU/+L3POFN5Kf4bWccKlvE563+GXzjUxy4YTAqGMR0RL3BMmf+beF5jV5Q0tp+CH5tS0NVHmMHRbIu/qKwbfVNQR+Bh+jaX9X1JNjMVJF/hcsLdryJQl4KRiHiKB1lf9zQzlp5vMIHZDHMa19P7cqWHmgisKNfyMK7iDsaxH+8TZg3HlZPtVvr7JziHA/hQFYEmc+C1dHpJ2MO4uwnzVpmSExluAo8rxm1MoKuL+GjjWt9KP+Frg/HOR8S2SvGRhrixegjSMmx9M9oj8M8QWGrBd+mz7atZkd+O27icbiDQhvwBRpt2KPfzGu8AAAAASUVORK5CYII61aca5b15dc195f896e509d7d7121624');
+  }
+  </style>
+  <script>
+  var urlParams = (location.href.split('?')[1] || '').split('&'),
+    param,
+    key,
+    val,
+    options = {
+      'themes': 'base',
+      'showTitle': false,
+      'showColumnGroup': false,
+      'showColumnHeader': false,
+      'showRowHeader': false,
+      'numberOfColumns': 20,
+      'numberOfRows': 100,
+      'numberOfFixedRows': 0,
+      'numberOfFixedColumns': 0,
+      'dataParseUnit': 10,
+      'showValueEditor': false,
+      'showDefaultGrid': false,
+      'defaultGridLineColor': '#CCC',
+    };
 
-    for (var i = 0, l = urlParams.length; i < l; i++) {
-      param = urlParams[i].split('=');
-      key = param[0];
-      val = param[1];
-      options[key] = val === 'on' ? true : val;
-    }
+  for (var i = 0, l = urlParams.length; i < l; i++) {
+    param = urlParams[i].split('=');
+    key = param[0];
+    val = param[1];
+    options[key] = val === 'on' ? true : val;
+  }
 
-    options.themes = options.themes ? options.themes : 'base';
-    options.dataParseUnit = Math.max(options.dataParseUnit, 1);
-    options.numberOfFixedRows = Math.max(options.numberOfFixedRows, 0);
-    options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
-    options.numberOfColumns = Math.max(options.numberOfColumns, 20);
-    options.numberOfRows = Math.max(options.numberOfRows, 20);
+  options.themes = options.themes ? options.themes : 'base';
+  options.dataParseUnit = Math.max(options.dataParseUnit, 1);
+  options.numberOfFixedRows = Math.max(options.numberOfFixedRows, 0);
+  options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
+  options.numberOfColumns = Math.max(options.numberOfColumns, 20);
+  options.numberOfRows = Math.max(options.numberOfRows, 20);
 
-    options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
+  options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
 
-    document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/theme.css" />');
-    if (options.themes !== 'base') {
-      document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/jquery-ui.min.css" />');
-    }
-    document.write('<' + 'link rel="stylesheet" href="src/css/iui-january.css"/' + '>');
-    </script>
+  document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/theme.css" />');
+  if (options.themes !== 'base') {
+    document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/jquery-ui.min.css" />');
+  }
+  document.write('<' + 'link rel="stylesheet" href="src/css/iui-january.css"/' + '>');
+  </script>
 
-    <style>
-    .feature-list {
-      position: absolute;
-      right: 0;
-      width: 35%;
-    }
-    #sheet {
-      position: relative;
-      margin-left: 30px;
-    }
-    form {
-      padding: 0 2em;
-      margin: 0.3em;
-      text-align: right;
-    }
-    #samplecode {
-      margin-left: 30px;
-    }
-    </style>
+  <style>
+  .feature-list {
+    position: absolute;
+    right: 0;
+    width: 35%;
+  }
+  #sheet {
+    position: relative;
+    margin-left: 30px;
+  }
+  form {
+    padding: 0 2em;
+    margin: 0.3em;
+    text-align: right;
+  }
+  #samplecode {
+    margin-left: 30px;
+  }
+  </style>
 </head>
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.415-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.416-SNAPSHOT</h1>
 
   <form method="get">
     <div>
