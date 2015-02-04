@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.418-SNAPSHOT - 2015-02-04
+/*! Innerwave Spreadsheet - v0.2.419-SNAPSHOT - 2015-02-04
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( factory ) {
   if ( typeof define === 'function' && define.amd ) {
@@ -16,7 +16,7 @@
   }
 
   return $.widget( 'innerwave.scroller', $.ui.slider, {
-    version: '0.2.418-SNAPSHOT',
+    version: '0.2.419-SNAPSHOT',
     widgetEventPrefix: 'iwscroll',
 
     options: {

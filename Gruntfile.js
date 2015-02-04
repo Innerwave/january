@@ -313,9 +313,9 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'examples', function () {
     var src = 'index.html';
-    var dest = 'dist/index.html';
+    var dest = 'dist\index.html';
 
-    exec( 'cp -f ' + src + ' ' + dest );
+    exec( 'copy /y ' + src + ' ' + dest );
 
     replace( dest, /bower_components/g, 'lib' );
     replace( dest, /src\//g, '' );

@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.419-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.418-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
+  <link rel="stylesheet" href="lib/font-awesome/font-awesome.css" />
   <style type="text/css">
   .image {
     display: inline-block;
@@ -55,11 +55,11 @@
 
   options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
 
-  document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/theme.css" />');
+  document.write('<link rel="stylesheet" href="lib/jquery-ui/themes/' + options.themes + '/theme.css" />');
   if (options.themes !== 'base') {
-    document.write('<link rel="stylesheet" href="bower_components/jquery-ui/themes/' + options.themes + '/jquery-ui.min.css" />');
+    document.write('<link rel="stylesheet" href="lib/jquery-ui/themes/' + options.themes + '/jquery-ui.min.css" />');
   }
-  document.write('<' + 'link rel="stylesheet" href="src/css/iui-january.css"/' + '>');
+  document.write('<' + 'link rel="stylesheet" href="css/iui-january.min.css"/' + '>');
   </script>
 
   <style>
@@ -85,7 +85,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.419-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.418-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -332,12 +332,12 @@
   // Place any jQuery/helper plugins in here.
   </script>
 
-  <script src="bower_components/modernizr/modernizr.js"></script>
-  <script src="bower_components/jquery/jquery.js"></script>
-  <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-  <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
-  <script src="iui-january.js"></script>
-  <script src="iui-scroller.js"></script>
+  <script src="lib/modernizr/modernizr.js"></script>
+  <script src="lib/jquery/jquery.js"></script>
+  <script src="lib/jquery-ui/jquery-ui.js"></script>
+  <script src="lib/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="js/iui-january.min.js"></script>
+  <script src="js/iui-scroller.min.js"></script>
 
   <script>
   function mkColumn(size) {
