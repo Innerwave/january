@@ -112,9 +112,9 @@ module.exports = function (grunt) {
     connect: {
       dist: {
         options: {
-          hostname: 'localhost',
+          hostname: '192.168.0.6',
           protocol: 'http',
-          port: 9000,
+          port: 80,
           base: '.',
           keepalive: true
         }
