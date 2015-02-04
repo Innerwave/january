@@ -1,0 +1,16 @@
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "util": {}
+    }
+  } );
+
+  var startTime = ( new Date() ).getTime();
+
+  iui.util.laptime = function ( message ) {
+    var time = ( new Date() ).getTime() - startTime;
+    console.log( ( message || "Lap Time" ) + " : " + time );
+    return time;
+  };
+
+}( jQuery, window ) );
