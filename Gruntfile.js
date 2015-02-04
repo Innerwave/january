@@ -1,46 +1,75 @@
 /*global module:false*/
-module.exports = function (grunt) {
+module.exports = function ( grunt ) {
 
   // Project configuration.
-  grunt.initConfig({
+  grunt.initConfig( {
     // Metadata.
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON( 'package.json' ),
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+    jsfiles: {
+      january: [
+        'src/js/core/*.js',
+        'src/js/util/*.js',
+        'src/js/model/entity.js',
+        'src/js/model/cell.js',
+        'src/js/model/column.js',
+        'src/js/model/columnGroup.js',
+        'src/js/model/row.js',
+        'src/js/editor/*.js',
+        'src/js/renderer/*.js',
+        'src/js/plugin/*.js',
+        'src/js/january.js'
+      ],
+      scroller: [ 'src/js/scroller.js' ]
+    },
     // Task configuration.
     clean: {
-      files: ['dist']
+      files: [ 'dist' ]
     },
     concat: {
       options: {
-        stripBanners: true,
         banner: '<%= banner %>',
-        separator: ';'
+        stripBanners: true
+          //, separator: ';'
       },
-      dist: {
+      bind: {
         files: {
-          'dist/js/innerwave.scroller.min.js': 'src/js/scroller.js',
-          'dist/js/<%= pkg.name %>.js': 'src/js/spreadsheet.js'
+          '<%= pkg.name %>.js': '<%= jsfiles.january %>',
+          'iui-scroller.js': '<%= jsfiles.scroller %>'
         }
+      },
+      january: {
+        src: '<%= jsfiles.january %>',
+        dest: 'dist/js/<%= pkg.name %>.js'
+      },
+      scroller: {
+        src: '<%= jsfiles.scroller %>',
+        dest: 'dist/js/iui-scroller.js'
       }
     },
     uglify: {
-      dist: {
-        options: {
-          banner: '<%= banner %>',
-          compress: {
-            drop_console: true
-          }
-        },
-        files: '<%= concat.dist.files %>'
+      options: {
+        banner: '<%= banner %>',
+        compress: {
+          drop_console: true
+        }
+      },
+      scroller: {
+        src: [ '<%= concat.scroller.dest %>' ],
+        dest: 'dist/js/iui-scroller.min.js'
+      },
+      january: {
+        src: [ '<%= concat.january.dest %>' ],
+        dest: 'dist/js/<%= pkg.name %>.min.js'
       }
     },
     jshint: {
       gruntfile: {
-        src: ['Gruntfile.js']
+        src: [ 'Gruntfile.js' ]
       },
       lib_test: {
         options: {
@@ -48,7 +77,7 @@ module.exports = function (grunt) {
           eqeqeq: true,
           immed: true,
           latedef: false,
-          newcap: true,
+          newcap: false,
           noarg: true,
           sub: true,
           undef: false,
@@ -62,22 +91,22 @@ module.exports = function (grunt) {
             "require": true
           }
         },
-        src: ['package.json', 'bower.json', 'src/js/**/*.js', 'test/**/*.js']
+        src: [ 'package.json', 'bower.json', 'src/js/**/*.js', 'test/**/*.js' ]
       }
     },
 
     qunit: {
-      files: ['test/**/*.html']
+      files: [ 'test/**/*.html' ]
     },
 
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
-        tasks: ['timestamp', 'jshint:gruntfile', 'shell:patch', 'shell:git-commit'] // 'shell:svn-versioning']
+        tasks: [ 'timestamp', 'jshint:gruntfile' ]
       },
       lib_test: {
-        files: ['<%= jshint.lib_test.src %>', 'src/css/**/*.css', 'test/**/*.html', '*.html'],
-        tasks: ['timestamp', 'jsbeautifier', 'jshint:lib_test', 'qunit', 'shell:patch', 'shell:git-commit'] //, 'shell:svn-versioning'] //
+        files: [ '<%= jshint.lib_test.src %>', 'src/css/**/*.css', 'test/**/*.html', '*.html' ],
+        tasks: [ 'timestamp', 'jsbeautifier', 'jshint:lib_test', 'qunit', 'concat', 'shell:patch', 'shell:git-commit' ] //, 'shell:svn-versioning'] //
       }
     },
 
@@ -99,13 +128,13 @@ module.exports = function (grunt) {
 
     cssmin: {
       dist: {
-        files: [{
+        files: [ {
           expand: true,
           cwd: 'src/css/',
-          src: ['*.css'],
+          src: [ '*.css' ],
           dest: 'dist/css/',
           ext: '.min.css'
-        }]
+        } ]
       }
     },
 
@@ -123,15 +152,15 @@ module.exports = function (grunt) {
         options: {
           port: 8000,
           hostname: '*',
-          onCreateServer: function (server, connect, options) {
-            var io = require('socket.io').listen(server);
-            io.sockets.on('connection', function (socket) {
+          onCreateServer: function ( server, connect, options ) {
+            var io = require( 'socket.io' ).listen( server );
+            io.sockets.on( 'connection', function ( socket ) {
               // do something with socket
-            });
+            } );
           },
           middleware: [
-            function myMiddleware(req, res, next) {
-              res.end('Hello, world!');
+            function myMiddleware( req, res, next ) {
+              res.end( 'Hello, world!' );
             }
           ]
         }
@@ -139,7 +168,7 @@ module.exports = function (grunt) {
     },
 
     jsbeautifier: {
-      files: ['Gruntfile.js', 'package.json', 'bower.json', "src/js/**/*.js", 'src/css/**/*.css', '*.html', "test/**/*.js", 'test/**/*.html'],
+      files: [ 'Gruntfile.js', 'package.json', 'bower.json', "src/js/**/*.js", 'src/css/**/*.css', '*.html', "test/**/*.js", 'test/**/*.html' ],
       options: {
         //config: "path/to/configFile",
         html: {
@@ -149,7 +178,7 @@ module.exports = function (grunt) {
           indentSize: 2,
           maxPreserveNewlines: 10,
           preserveNewlines: true,
-          unformatted: ["a", "sub", "sup", "b", "i", "u"],
+          unformatted: [ "a", "sub", "sup", "b", "i", "u" ],
           wrapLineLength: 0
         },
         css: {
@@ -171,7 +200,7 @@ module.exports = function (grunt) {
           maxPreserveNewlines: 10,
           preserveNewlines: true,
           spaceBeforeConditional: true,
-          spaceInParen: false,
+          spaceInParen: true,
           unescapeStrings: false,
           wrapLineLength: 0
         }
@@ -202,123 +231,126 @@ module.exports = function (grunt) {
         'git commit -m "work history : v%version%"'
       ]
     }
-  });
+  } );
 
   // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks( 'grunt-contrib-clean' );
+  grunt.loadNpmTasks( 'grunt-contrib-concat' );
+  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+  grunt.loadNpmTasks( 'grunt-contrib-qunit' );
+  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+  grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
-  grunt.loadNpmTasks('grunt-bower-task');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks( 'grunt-bower-task' );
+  grunt.loadNpmTasks( 'grunt-contrib-connect' );
+  grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 
-  grunt.loadNpmTasks('grunt-jsbeautifier');
+  grunt.loadNpmTasks( 'grunt-jsbeautifier' );
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'bower', 'concat', 'uglify', 'cssmin']);
-  grunt.registerTask('minor', ['shell:minor']);
-  grunt.registerTask('major', ['shell:major']);
+  grunt.registerTask( 'default', [ 'jshint', 'qunit', 'clean', 'bower', 'concat', 'uglify', 'cssmin', 'examples', 'shell:svn-commit' ] );
+  grunt.registerTask( 'minor', [ 'shell:minor', 'shell:svn-commit' ] );
+  grunt.registerTask( 'major', [ 'shell:major', 'shell:svn-commit' ] );
 
-  function replace(file, search, replacement) {
-    contents = grunt.file.read(file);
-    contents = contents.replace(search, replacement);
-    grunt.file.write(file, contents);
+  function replace( file, search, replacement ) {
+    contents = grunt.file.read( file );
+    contents = contents.replace( search, replacement );
+    grunt.file.write( file, contents );
   }
 
-  function exec(cmd) {
-    var shelljs = require('shelljs');
-    var result = shelljs.exec(cmd, {
+  function exec( cmd ) {
+    var shelljs = require( 'shelljs' );
+    var result = shelljs.exec( cmd, {
       silent: true
-    });
-    grunt.log.ok(cmd);
-    if (result.code !== 0) {
-      grunt.fatal(result.output);
+    } );
+    grunt.log.ok( cmd );
+    if ( result.code !== 0 ) {
+      grunt.fatal( result.output );
     }
     return result;
   }
 
-  function setVersion(type, suffix) {
+  function setVersion( type, suffix ) {
     var file = 'package.json';
-    var contents = grunt.file.read(file);
+    var contents = grunt.file.read( file );
     var VERSION_REGEX = /([\'|\"]version[\'|\"][ ]*:[ ]*[\'|\"])([\d|.]*)(-\w+)*([\'|\"])/;
     var version;
-    contents = contents.replace(VERSION_REGEX, function (match, left, center) {
+    contents = contents.replace( VERSION_REGEX, function ( match, left, center ) {
       version = center;
-      if (type) {
-        version = require('semver').inc(version, type);
+      if ( type ) {
+        version = require( 'semver' ).inc( version, type );
       }
-      if (suffix) {
+      if ( suffix ) {
         version += '-' + suffix;
       }
       return left + version + '"';
-    });
-    grunt.file.write(file, contents);
+    } );
+    grunt.file.write( file, contents );
 
     // bower.json
-    replace('bower.json', VERSION_REGEX, '"version": "' + version + '"');
+    replace( 'bower.json', VERSION_REGEX, '"version": "' + version + '"' );
 
     // SOURCE
-    VERSION_REGEX = new RegExp('(\\d+\\.?){3}-' + suffix, 'gi');
+    VERSION_REGEX = new RegExp( '(\\d+\\.?){3}-' + suffix, 'gi' );
 
     // JS
-    var files = grunt.config.get('uglify.dist.files');
-    for (var dist in files) {
-      replace(files[dist], VERSION_REGEX, version);
-    }
+    //    var jsfile = grunt.config.get('concat.january.dest');
+    //    for (var dist in files) {
+    //      replace(files[dist], VERSION_REGEX, version);
+    //    }
+    replace( grunt.config.get( 'concat.january.dest' ), VERSION_REGEX, version );
+    replace( grunt.config.get( 'concat.scroller.dest' ), VERSION_REGEX, version );
+
     // CSS
-    replace('src/css/spreadsheet.css', VERSION_REGEX, version);
+    replace( 'src/css/iui-january.css', VERSION_REGEX, version );
     // HTML
-    replace('index.html', VERSION_REGEX, version);
-    grunt.log.ok('Version set to ' + version.cyan);
+    replace( 'index.html', VERSION_REGEX, version );
+    grunt.log.ok( 'Version set to ' + version.cyan );
     return version;
   }
 
-  grunt.registerTask('make', ['bower', 'concat', 'uglify', 'cssmin', 'examples']);
+  grunt.registerTask( 'make', [ 'bower', 'concat', 'uglify', 'cssmin', 'examples' ] );
 
-  grunt.registerTask('examples', function () {
+  grunt.registerTask( 'examples', function () {
     var src = 'index.html';
     var dest = 'dist/index.html';
 
-    exec('cp -f ' + src + ' ' + dest);
+    exec( 'cp -f ' + src + ' ' + dest );
 
-    replace(dest, /bower_components/g, 'lib');
-    replace(dest, /src\//g, '');
-    replace(dest, /jquery\/dist/g, 'jquery');
-    replace(dest, /font-awesome\/css/g, 'font-awesome');
-    replace('dist\/lib/font-awesome\/font-awesome.css', /\.\.\/fonts\//g, '');
-    replace(dest, /spreadsheet\.js/g, 'innerwave.sheet.min.js');
-    replace(dest, /scroller\.js/g, 'innerwave.scroller.min.js');
-    replace(dest, /spreadsheet\.css/g, 'spreadsheet.min.css');
-    exec('cp -rf bower_components/jquery-ui/themes dist/lib/jquery-ui/themes');
-  });
+    replace( dest, /bower_components/g, 'lib' );
+    replace( dest, /src\//g, '' );
+    replace( dest, /jquery\/dist/g, 'jquery' );
+    replace( dest, /font-awesome\/css/g, 'font-awesome' );
+    replace( 'dist\/lib/font-awesome\/font-awesome.css', /\.\.\/fonts\//g, '' );
+    replace( dest, /iui-january\.js/g, 'js/iui-january.min.js' );
+    replace( dest, /iui-scroller\.js/g, 'js/iui-scroller.min.js' );
+    replace( dest, /iui-january\.css/g, 'iui-january.min.css' );
+    exec( 'cp -rf bower_components/jquery-ui/themes dist/lib/jquery-ui/themes' );
+  } );
 
   // Print a timestamp (useful for when watching)
-  grunt.registerTask('timestamp', function () {
-    grunt.log.subhead(Date().toString().green);
-  });
+  grunt.registerTask( 'timestamp', function () {
+    grunt.log.subhead( Date().toString().green );
+  } );
 
-  grunt.registerTask('version', 'Set version. If no arguments, it just takes off suffix', function () {
-    var version = setVersion(this.args[0], this.args[1]);
-    grunt.log.ok('version task is invoked : ' + version.cyan);
-  });
+  grunt.registerTask( 'version', 'Set version. If no arguments, it just takes off suffix', function () {
+    var version = setVersion( this.args[ 0 ], this.args[ 1 ] );
+    grunt.log.ok( 'version task is invoked : ' + version.cyan );
+  } );
 
-  grunt.registerMultiTask('shell', 'run shell commands', function () {
-    var shelljs = require('shelljs');
-    this.data.forEach(function (cmd) {
-      cmd = cmd.replace('%version%', grunt.file.readJSON('package.json').version);
-      grunt.log.ok(cmd);
-      var result = shelljs.exec(cmd, {
+  grunt.registerMultiTask( 'shell', 'run shell commands', function () {
+    var shelljs = require( 'shelljs' );
+    this.data.forEach( function ( cmd ) {
+      cmd = cmd.replace( '%version%', grunt.file.readJSON( 'package.json' ).version );
+      grunt.log.ok( cmd );
+      var result = shelljs.exec( cmd, {
         silent: true
-      });
-      if (result.code !== 0) {
-        grunt.fatal(result.output);
+      } );
+      if ( result.code !== 0 ) {
+        grunt.fatal( result.output );
       }
-    });
-  });
+    } );
+  } );
 
   return grunt;
 };
