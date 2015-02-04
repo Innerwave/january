@@ -1,4 +1,4 @@
-/*! Innerwave Web UI Component - Grid - v0.2.1405-SNAPSHOT - 2015-02-04
+/*! Innerwave Web UI Component - Grid - v0.2.413-SNAPSHOT - 2015-02-04
 * Copyright (c) 2015 Innerwave Co., Ltd.; Licensed  */
 ( function ( factory ) {
   if ( typeof define === 'function' && define.amd ) {
@@ -16,7 +16,7 @@
   }
 
   return $.widget( 'iui.scroller', $.ui.slider, {
-    version: '0.2.1405-SNAPSHOT',
+    version: '0.2.413-SNAPSHOT',
     widgetEventPrefix: 'iwscroll',
 
     options: {

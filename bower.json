@@ -1,11 +1,9 @@
 {
   "name": "spreadsheet",
-<<<<<<< HEAD
-  "version": "0.2.412-SNAPSHOT",
-=======
+  << << << < HEAD "version": "0.2.413-SNAPSHOT",
+  === === =
   "version": "0.2.1405-SNAPSHOT",
->>>>>>> e363dce93eeba575b5e07586cbe608b7f73ef757
-  "authors": [
+  >>> >>> > e363dce93eeba575b5e07586cbe608b7f73ef757 "authors": [
     "Hyeong-jin <gilseonappa@gmail.com>"
   ],
   "description": "data sheet like as spread sheet",
@@ -24,23 +22,17 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-<<<<<<< HEAD
+  "dependencies": { << << << < HEAD
 
-=======
-    "jquery": "~1.8.x",
->>>>>>> e363dce93eeba575b5e07586cbe608b7f73ef757
-    "jquery-ui": "~1.11.2",
-    "modernizr": "~2.8.3",
-    "font-awesome": "~4.2.0",
-    "normalize.css": "~3.0.2",
-    "jquery-mousewheel": "~3.x"
+      === === =
+      "jquery": "~1.8.x", >>> >>> > e363dce93eeba575b5e07586cbe608b7f73ef757 "jquery-ui": "~1.11.2",
+      "modernizr": "~2.8.3",
+      "font-awesome": "~4.2.0",
+      "normalize.css": "~3.0.2",
+      "jquery-mousewheel": "~3.x"
   },
-  "devDependencies": {
-<<<<<<< HEAD
-    "qunit": "~1.17.1"
-=======
-    "qunit": "~1.x"
->>>>>>> e363dce93eeba575b5e07586cbe608b7f73ef757
+  "devDependencies": { << << << < HEAD
+      "qunit": "~1.17.1" === === =
+      "qunit": "~1.x" >>> >>> > e363dce93eeba575b5e07586cbe608b7f73ef757
   }
 }
