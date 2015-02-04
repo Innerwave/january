@@ -1,9 +1,10 @@
 /*global module:false*/
 module.exports = function ( grunt ) {
-
+  var separator = '\\';
   // Project configuration.
   grunt.initConfig( {
     // Metadata.
+
     pkg: grunt.file.readJSON( 'package.json' ),
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -106,7 +107,7 @@ module.exports = function ( grunt ) {
       },
       lib_test: {
         files: [ '<%= jshint.lib_test.src %>', 'src/css/**/*.css', 'test/**/*.html', '*.html' ],
-        tasks: [ 'timestamp', 'jsbeautifier', 'jshint:lib_test', 'qunit', 'concat', 'shell:patch', 'shell:git-commit' ] //, 'shell:svn-versioning'] //
+        tasks: [ 'timestamp', 'jsbeautifier', 'jshint:lib_test', 'qunit', 'concat', 'shell:patch', 'shell:git-commit' ]
       }
     },
 
@@ -217,12 +218,6 @@ module.exports = function ( grunt ) {
       'major': [
         'grunt version:major:"RELEASE"'
       ],
-      'svn-commit': [
-        'svn commit -m "chore(release): v%version%"'
-      ],
-      'svn-versioning': [
-        'svn commit -m "chore(versioning): v%version%"'
-      ],
       'copy-example': [
         'cp -f index.html dist/index.html'
       ],
@@ -248,9 +243,9 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks( 'grunt-jsbeautifier' );
 
   // Default task.
-  grunt.registerTask( 'default', [ 'jshint', 'qunit', 'clean', 'bower', 'concat', 'uglify', 'cssmin', 'examples', 'shell:svn-commit' ] );
-  grunt.registerTask( 'minor', [ 'shell:minor', 'shell:svn-commit' ] );
-  grunt.registerTask( 'major', [ 'shell:major', 'shell:svn-commit' ] );
+  grunt.registerTask( 'default', [ 'jshint', 'qunit', 'clean', 'bower', 'concat', 'uglify', 'cssmin', 'examples' ] );
+  grunt.registerTask( 'minor', [ 'shell:minor' ] );
+  grunt.registerTask( 'major', [ 'shell:major' ] );
 
   function replace( file, search, replacement ) {
     contents = grunt.file.read( file );
@@ -313,9 +308,9 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'examples', function () {
     var src = 'index.html';
-    var dest = 'dist\index.html';
+    var dest = 'dist'+separator+'index.html';
 
-    exec( 'copy /y ' + src + ' ' + dest );
+    exec( 'copy /Y ' + src + ' ' + dest );
 
     replace( dest, /bower_components/g, 'lib' );
     replace( dest, /src\//g, '' );
@@ -325,7 +320,7 @@ module.exports = function ( grunt ) {
     replace( dest, /iui-january\.js/g, 'js/iui-january.min.js' );
     replace( dest, /iui-scroller\.js/g, 'js/iui-scroller.min.js' );
     replace( dest, /iui-january\.css/g, 'iui-january.min.css' );
-    exec( 'cp -rf bower_components/jquery-ui/themes dist/lib/jquery-ui/themes' );
+    exec( 'xcopy /Y /C bower_components'+separator+'jquery-ui'+separator+'themes dist'+separator+'lib'+separator+'jquery-ui' );
   } );
 
   // Print a timestamp (useful for when watching)

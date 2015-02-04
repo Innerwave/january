@@ -1167,7 +1167,7 @@
   laptime( "위젯 시작" );
 
   return $.widget( "iui.january", {
-    version: "0.2.419-SNAPSHOT",
+    version: "0.3.929-SNAPSHOT",
     options: {
       height: "auto",
       width: "auto",
