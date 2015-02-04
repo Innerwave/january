@@ -308,7 +308,7 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'examples', function () {
     var src = 'index.html';
-    var dest = 'dist'+separator+'index.html';
+    var dest = 'dist' + separator + 'index.html';
 
     exec( 'copy /Y ' + src + ' ' + dest );
 
@@ -320,7 +320,7 @@ module.exports = function ( grunt ) {
     replace( dest, /iui-january\.js/g, 'js/iui-january.min.js' );
     replace( dest, /iui-scroller\.js/g, 'js/iui-scroller.min.js' );
     replace( dest, /iui-january\.css/g, 'iui-january.min.css' );
-    exec( 'xcopy /Y /C bower_components'+separator+'jquery-ui'+separator+'themes dist'+separator+'lib'+separator+'jquery-ui' );
+    exec( 'xcopy /Y /C bower_components' + separator + 'jquery-ui' + separator + 'themes dist' + separator + 'lib' + separator + 'jquery-ui' );
   } );
 
   // Print a timestamp (useful for when watching)
