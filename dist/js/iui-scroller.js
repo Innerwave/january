@@ -16,7 +16,7 @@
   }
 
   return $.widget( 'innerwave.scroller', $.ui.slider, {
-    version: '0.2.420-SNAPSHOT',
+    version: '0.2.412-SNAPSHOT',
     widgetEventPrefix: 'iwscroll',
 
     options: {
