@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.506-SNAPSHOT - 2015-02-11
+/*! Innerwave Spreadsheet - v0.2.507-SNAPSHOT - 2015-02-11
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1130,7 +1130,7 @@
     }
     var title = cell.title || cell.value;
     var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<a style="text-decoration:underline;">' ).text( title )
+    var span = $( '<a style="text-decoration:underline;color:blue;">' ).text( title )
       .attr( 'title', title )
       .attr( 'href', cell.value )
       .wrap( '<span>' ).parent()
