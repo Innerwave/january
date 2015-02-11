@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.512-SNAPSHOT - 2015-02-11
+/*! Innerwave Spreadsheet - v0.2.513-SNAPSHOT - 2015-02-11
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -685,6 +685,11 @@
     if ( !( this instanceof iui.sheet.model.Column ) ) {
       return new iui.sheet.model.Column( info );
     }
+
+    for ( var key in info ) {
+      this[ key ] = info[ key ];
+    }
+
     this.uid = info.id || "column" + nextId++;
     this.id = info.id || this.uid;
     this.visualId = info.visualId;
