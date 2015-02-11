@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.492-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.493-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -85,7 +85,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.492-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.493-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -385,7 +385,8 @@
   function mkData(columns, rows) {
     var data = [];
     var row;
-    var links
+    var link;
+    var value;
     for (var i = 0; i < rows; i++) {
       row = {};
       row.id = 'row' + i;
@@ -394,9 +395,14 @@
         /**
          * var cell = {value: '', css: '', colspan:1, rowspan: 1, className:'spreadsheet-cell cell-format-text', formular:formular };
          */
+        value = j + ', ' + i;
+        if (i === 1) {
+          link = links[links.length % i];
+          value = link.url;
+        }
         row[ /*columnId*/ 'col' + j] = {
-          value: j === 1 ? links[links.length % i] : j + ', ' + i,
-          //            rows: ['row' + i, 'row' + (i + 1)]
+          value: value,
+          title: link.title
         };
       }
       //      }
