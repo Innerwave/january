@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.511-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.512-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -275,5 +275,5 @@
 
 .spreadsheet-cell a {
     color: blue !important;
-    text-decoration-line: underline !important;
+    text-decoration: underline !important;
 }
