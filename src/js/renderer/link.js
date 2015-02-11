@@ -19,8 +19,8 @@
     }
     var title = cell.title || cell.value;
     var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<a style="text-decoration:underline;color:blue;">' ).text( title )
-      .attr( 'title', title )
+    var span = $( '<a>' ).text( title )
+      .attr( 'title', title ) 
       .attr( 'href', cell.value )
       .wrap( '<span>' ).parent()
       .appendTo( div );
