@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.505-SNAPSHOT - 2015-02-11
+/*! Innerwave Spreadsheet - v0.2.503-SNAPSHOT - 2015-02-11
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1113,6 +1113,39 @@
     }
   } );
 
+  // ------------------------------------
+  // Private
+  // ------------------------------------    
+
+  var Renderer = iui.sheet.renderer.Link = function ( cell ) {
+    cell = cell || {};
+
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( cell );
+    }
+    var title = cell.title || cell.value;
+    var div = $( '<div>' ).attr( 'title', cell.value );
+    var span = $( '<a>' ).text( title )
+      .attr( 'title', title )
+      .attr( 'href', cell.value )
+      .wrap( '<span>' ).parent()
+      .appendTo( div );
+
+    return div;
+  };
+
+
+}( jQuery, window ) );
+
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "sheet": {
+        "renderer": {}
+      }
+    }
+  } );
+
   iui.sheet.renderer.Number = function ( elements ) {
 
   };
@@ -1149,6 +1182,10 @@
     }
   } );
 
+  // ------------------------------------
+  // Private
+  // ------------------------------------    
+
   var Renderer = iui.sheet.renderer.String = function ( cell ) {
     cell = cell || {};
 
@@ -1156,12 +1193,12 @@
       return new Renderer( cell );
     }
 
-    return $( '<span>' )
-      .text( cell.value )
-      .wrap( '<div class="spreadsheet-cell">' ).parent()
-      .attr( 'title', cell.value + '111111' )
-      .addClass( cell.className );
+    var div = $( '<div>' ).attr( 'title', cell.value );
+    var span = $( '<span>' ).text( cell.value ).appendTo( div );
+
+    return div;
   };
+
 
 }( jQuery, window ) );
 
@@ -1263,7 +1300,7 @@
   laptime( "위젯 시작" );
 
   return $.widget( "iui.january", {
-    version: "0.2.505-SNAPSHOT",
+    version: "0.3.929-SNAPSHOT",
     options: {
       height: "auto",
       width: "auto",
