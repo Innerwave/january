@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.421-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.480-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -85,7 +85,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.421-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.480-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -415,10 +415,13 @@
     columns[10].group = 'Group 3';
     //  columns[20].group = 'Group 4';
     columns[11].group = 'Group 4';
-    // columns[12].group = 'Group 4';
+    // columns[12].group = 'Group 4'; 
     columns[13].group = 'Group 5';
     columns[14].group = 'Group 5';
     columns[15].group = 'Group 5';
+
+    columns[0].renderer = iui.sheet.renderer.String;
+    columns[1].renderer = iui.sheet.renderer.Link;
 
     var data = mkData(columns.length, options.numberOfRows);
 

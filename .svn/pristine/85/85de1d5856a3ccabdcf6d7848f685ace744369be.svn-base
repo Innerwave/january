@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  ul li {
+    background-color: #000;
+    height: 500px;
+  }
+  ul li + li {
+    background-color: #00f
+  }
+  ul li + li + li {
+    background-color: #0f0
+  }
+  ul li + li + li + li {
+    background-color: #0ff
+  }
+  ul li + li + li + li + li {
+    background-color: #f00
+  }
+  </style>
+</head>
+
+<body>
+
+
+  <ul>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+
+
+  <script data-require="jquery" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    var $height = 500;
+    var $currentScrollTop;
+    var $currentViewPos;
+
+    var test = (function() {
+      var timer;
+      return function() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          $('html, body').animate({
+              scrollTop: $currentViewPos * $height
+            },
+            200);
+        }, 30);
+      }
+    }());
+
+    $(window).bind({
+      scroll: function() {
+        $currentScrollTop = $(document).scrollTop();
+        $currentViewPos = parseInt($currentScrollTop / $height);
+        test();
+      }
+    });
+
+  });
+  </script>
+</body>
+
+</html>

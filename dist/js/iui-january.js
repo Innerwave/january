@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.421-SNAPSHOT - 2015-02-09
+/*! Innerwave Spreadsheet - v0.2.480-SNAPSHOT - 2015-02-11
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -553,6 +553,13 @@
 
   iui.sheet.model.Entity = {
 
+    parent: function ( parent ) {
+      if ( !parent ) {
+        return this._parent;
+      }
+      this._parent = parent;
+    },
+
     hasClass: function ( classname ) {
       if ( !classname ) {
         return -1;
@@ -627,13 +634,12 @@
     if ( !( this instanceof iui.sheet.model.Cell ) ) {
       return new iui.sheet.model.Cell( info );
     }
-
     this.uid = info.id || "cell" + nextId++;
     this.id = info.id || this.uid;
     this.value = info.value;
     this.formula = info.formula;
     this.className = "spreadsheet-cell " + ( info.classname || "" );
-    this.renderer = info.renderer;
+    this.renderer = info.renderer; // iui.sheet.renderer.String;
     this.editor = info.editor;
 
     //  this.rows = /*info.rows || */ []; 
@@ -642,15 +648,17 @@
     this.columns = ( new iui.util.Collection() ).addAll( info.columns || [] );
 
     // privileged method
+    this.ui = null;
 
   };
 
   // public methods
   $.extend( iui.sheet.model.Cell.prototype, iui.sheet.model.Entity, {
-    edit: function () {},
-    render: function () {},
-    refresh: function () {},
-    commit: function () {}
+    getRenderer: function () {
+      return this.renderer ? this.renderer :
+        this.columns.length > 0 ? this.columns.get( 0 ).renderer :
+        iui.sheet.renderer.String;
+    }
   } );
 
 }( jQuery, window ) );
@@ -672,7 +680,6 @@
     if ( !( this instanceof iui.sheet.model.Column ) ) {
       return new iui.sheet.model.Column( info );
     }
-
     this.uid = info.id || "column" + nextId++;
     this.id = info.id || this.uid;
     this.visualId = info.visualId;
@@ -689,13 +696,24 @@
       innerWidth: 0
     };
     this.cells = new iui.util.Collection();
-    this.renderer = info.renderer;
+
+    // this.type = info.type || "Text"; // Text, Number, Date, Currency, Title, ...
+    this.renderer = info.renderer || iui.sheet.renderer.String;
     this.editor = info.editor;
     this.buttons = null;
 
   };
 
   $.extend( iui.sheet.model.Column.prototype, iui.sheet.model.Entity, {
+
+    setWidth: function ( width ) {
+      this.width = width;
+      if ( this.ui ) {
+        this.ui.width( width );
+      }
+      this._parent._trigger( "columnChanged" );
+    },
+
     render: function () {},
 
     refresh: function () {},
@@ -755,11 +773,9 @@
     if ( !( this instanceof iui.sheet.model.ColumnGroup ) ) {
       return new iui.sheet.model.ColumnGroup( info );
     }
-
     this.uid = info.id || "columngroup" + nextId++;
     this.id = info.id || this.uid;
     this.label = info.label;
-    this.parent = info.parent;
     this.columns = iui.util.Collection();
     this._ui = info.ui || iui.sheet.renderer.ColumnGroupHeader( this );
 
@@ -774,7 +790,7 @@
       var w = 0,
         brw = 0,
         numberOfVisibleColumn = 0,
-        $uiColumns = this.parent ? $.map( this.parent._columns.toArray(), function ( column, index ) {
+        $uiColumns = this._parent ? $.map( this._parent._columns.toArray(), function ( column, index ) {
           if ( !column.ui ) {
             return null;
           }
@@ -816,13 +832,12 @@
   } );
   var nextId = 0;
 
-  iui.sheet.model.Row = function ( info ) {
+  var Row = iui.sheet.model.Row = function ( info ) {
     info = info || {};
 
-    if ( !( this instanceof iui.sheet.model.Row ) ) {
-      return new iui.sheet.model.Row( info );
+    if ( !( this instanceof Row ) ) {
+      return new Row( info );
     }
-
     this.uid = info.id || "row" + nextId++;
     this.id = info.id || this.uid;
     this.height = info.height || 26;
@@ -842,7 +857,14 @@
     this.buttons = null;
   };
 
-  $.extend( iui.sheet.model.Row.prototype, iui.sheet.model.Entity, {
+  $.extend( Row.prototype, iui.sheet.model.Entity, {
+    setHeight: function ( height ) {
+      this.height = height;
+      if ( this.ui ) {
+        this.ui.height( height );
+      }
+      this._parent._trigger( "rowChanged" );
+    },
     offset: function () {
       if ( this.ui ) {
         this._offset = {
@@ -1052,6 +1074,45 @@
     }
   } );
 
+  var Renderer = iui.sheet.renderer.Image = function ( cell ) {
+    cell = cell || {};
+
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( cell );
+    }
+
+    //console.log( "++++++++++++++++++++++++++++++++++++++++" );
+    //console.log( this );
+
+    var div = $( '<div class="spreadsheet-cell">' )
+      .attr( 'title', cell.value )
+      .addClass( cell.className );
+    if ( cell.valie != null ) {
+      var img = $( '<img src="/src/img/' + cell.value + '.jpg" />' )
+        .attr( 'alt', cell.value )
+        .appendTo( div )
+        .on( 'load', function ( event ) {
+          // console.log( 'image loaded....' );
+          // console.log( this );
+          // console.log( cell );
+          cell.rows.get( 0 ).setHeight( this.height );
+          cell.columns.get( 0 ).setWidth( this.width );
+        } );
+    }
+    return div;
+  };
+
+}( jQuery, window ) );
+
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "sheet": {
+        "renderer": {}
+      }
+    }
+  } );
+
   iui.sheet.renderer.Number = function ( elements ) {
 
   };
@@ -1088,11 +1149,46 @@
     }
   } );
 
-  iui.sheet.renderer.String = function ( elements ) {
+  var Renderer = iui.sheet.renderer.String = function ( cell ) {
+    cell = cell || {};
 
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( cell );
+    }
+
+    return $( '<span>' )
+      .text( cell.value )
+      .wrap( '<div class="spreadsheet-cell">' ).parent()
+      .attr( 'title', cell.value + '111111' )
+      .addClass( cell.className );
   };
 
-  $.extend( iui.sheet.renderer.String.prototype, {
+}( jQuery, window ) );
+
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "sheet": {
+        "renderer": {}
+      }
+    }
+  } );
+
+  var Renderer = iui.sheet.renderer.Title = function ( cell ) {
+    cell = cell || {};
+
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( cell );
+    }
+
+    return $( '<div style="text-align:center;color:red;font-weight:bolder">' )
+      .text( cell.value )
+      .wrap( '<div class="spreadsheet-cell">' ).parent()
+      .attr( 'title', cell.value )
+      .addClass( cell.className );
+  };
+
+  $.extend( Renderer.prototype, {
 
   } );
 
@@ -1167,7 +1263,7 @@
   laptime( "위젯 시작" );
 
   return $.widget( "iui.january", {
-    version: "0.2.421-SNAPSHOT",
+    version: "0.2.480-SNAPSHOT",
     options: {
       height: "auto",
       width: "auto",
@@ -1397,6 +1493,7 @@
     addColumn: function ( info ) {
       laptime( "addColumn start" );
       var column = Column( info );
+      column.parent( this );
       this._columns.add( column );
       var group = this._columnGroups.getById( fnv32a( info.group || column.id ) );
       if ( !group ) {
@@ -1404,7 +1501,7 @@
           id: fnv32a( info.group || column.id ),
           label: info.group || ''
         } );
-        group.parent = this;
+        group.parent( this );
         this._columnGroups.add( group );
       }
       group.columns.add( column );
@@ -1424,6 +1521,7 @@
     addRow: function ( info ) {
       laptime( "addRow start" );
       var row = Row( info );
+      row.parent( this );
       this._rows.add( row );
       return row;
     },
@@ -1439,6 +1537,7 @@
 
     addCell: function ( info ) {
       var cell = Cell( info );
+      cell.parent( this );
       this._cells.add( cell );
       return cell;
     },
@@ -1829,7 +1928,7 @@
                 id: groupid,
                 label: column.group
               } );
-              group.parent = this;
+              group.parent( this );
               group.columns.add( column );
               this._columnGroups.add( group );
             }
@@ -2030,19 +2129,15 @@
       };
     },
 
-    _createUiCell: function ( cell ) {
+    _initUiOfCell: function ( cell ) {
       // TODO cell에 지정된 formular가 있을 경우 이를 처리
-      var that = this,
-        ui = $( '<span>' )
-        .text( cell.value )
-        .wrap( '<div class="spreadsheet-cell">' ).parent()
-        .attr( 'title', cell.value )
-        .addClass( cell.className )
+      var that = this;
+      cell.ui = cell.getRenderer()( cell )
         .hover( function () {
           if ( that._scrolling ) {
             return;
           }
-          ui.addClass( 'ui-state-hover' );
+          cell.ui.addClass( 'ui-state-hover' );
           $.each( cell.columns.toArray(), function ( i ) {
             this.addClass( 'ui-state-hover' );
           } );
@@ -2050,7 +2145,7 @@
             this.addClass( 'ui-state-hover' );
           } );
         }, function () {
-          ui.removeClass( 'ui-state-hover' );
+          cell.ui.removeClass( 'ui-state-hover' );
           $.each( cell.columns.toArray(), function ( i ) {
             this.removeClass( 'ui-state-hover' );
           } );
@@ -2082,8 +2177,7 @@
           }
         } )
         .disableSelection();
-      cell.ui = ui;
-      return ui;
+      return cell.ui;
     },
 
     // 데이터 렌더링
@@ -2123,8 +2217,9 @@
           // 새로운 셀 보임
           for ( i = 0, l = cells.length; i < l; i++ ) {
             cell = cells[ i ];
-            ( cell.ui || this._createUiCell( cell ) )
-            .removeClass().addClass( cell.className )
+            ( cell.ui || this._initUiOfCell( cell ) )
+            .removeClass()
+              .addClass( cell.className )
               .css( this._offsetOfCell( cell ) )
               .appendTo( this.$uiViewport );
           }

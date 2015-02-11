@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Innerwave Spreadsheet Test Suite</title>
+
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen" />
+  <link rel="stylesheet" href="../bower_components/jquery-ui/jquery-ui.css" media="screen" />
+
+  <style>
+  #qunit {
+    position: static;
+  }
+  #qunit-fixture {
+    position: static;
+    top: 0
+    /* -10000px */
+    
+    ;
+    left: 0
+    /* -10000px */
+    
+    ;
+    width: 1000px;
+    height: 1000px;
+  }
+  </style>
+
+  <script src="../bower_components/modernizr/modernizr.js"></script>
+
+  <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
+  <script src="../bower_components/jquery/jquery.js"></script>
+  <!-- Load local QUnit. -->
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+
+  <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+  <script src="../bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+
+  <!-- Load local lib and tests. -->
+  <script src="../src/js/spreadsheet.js"></script>
+  <script src="../src/js/scroller.js"></script>
+
+  <script src="spreadsheet_spec.js"></script>
+
+  <!-- Removing access to jQuery and $. But it'll still be available as _$, if
+       you REALLY want to mess around with jQuery in the console. REMEMBER WE
+       ARE TESTING A PLUGIN HERE, THIS HELPS ENSURE BEST PRACTICES. REALLY. -->
+
+  <script>
+  window._$ = jQuery.noConflict(true);
+  </script>
+
+</head>
+
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "sheet": {
+        "plugin": {}
+      }
+    }
+  } );
+
+  iui.sheet.plugin.Pagenation = function () {
+
+  };
+
+  $.extend( iui.sheet.plugin.Pagenation.prototype, {
+
+  } );
+
+}( jQuery, window ) );

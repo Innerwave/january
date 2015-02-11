@@ -1,0 +1,187 @@
+( function ( $, window, undefined ) {
+  $.extend( true, window, {
+    "iui": {
+      "util": {}
+    }
+  } );
+
+  var nextId = 0;
+
+  iui.util.Collection = function ( name ) {
+
+    if ( !( this instanceof iui.util.Collection ) ) {
+      return new iui.util.Collection();
+    }
+
+    this.name = name || "";
+    this.length = 0;
+    this.items = [];
+    this.itemByIds = {};
+    this.eventPrefix = "collection";
+  };
+
+  $.extend( iui.util.Collection.prototype, {
+
+    /**
+     *
+     */
+    find: function ( id ) {
+      return this.indexOf( this.itemByIds[ id ] );
+    },
+
+    has: function ( item ) {
+      return !!this.itemByIds[ item.uid ];
+    },
+
+    get: function ( index ) {
+      return this.items[ index ];
+    },
+
+    getById: function ( id ) {
+      var item = this.itemByIds[ id ];
+      if ( !item ) {
+        item = $.map( this.items, function ( item ) {
+          return item.id === id ? item : null;
+        } )[ 0 ];
+      }
+      return item;
+    },
+
+    indexOf: function ( item ) {
+      return $.inArray( /*value*/ item, /*array*/ this.items /*[, fromIndex default = 0 ]*/ );
+    },
+
+    addAll: function ( items ) {
+      for ( var i = 0, l = items.length; i < l; i++ ) {
+        this.add( items[ i ] );
+      }
+      return this;
+    },
+
+    add: function ( item ) {
+      item.uid = item.uid || "item" + nextId++;
+      if ( !this.has( item ) ) {
+        this.items.push( item );
+        this.itemByIds[ item.uid ] = item;
+        this.length++;
+      }
+      return this;
+    },
+
+    insert: function ( item, index ) {
+      item.uid = item.uid || "item" + nextId++;
+      if ( !this.has( item ) ) {
+        this.itemByIds[ item.uid ] = item;
+        if ( index < 0 ) {
+          this.items.unshift( item );
+        } else if ( index >= this.items.length ) {
+          this.items.push( item );
+        } else {
+          this.items.splice( index, 0, item );
+        }
+        this.length++;
+      }
+      return this;
+    },
+
+    insertBefore: function ( item, index ) {
+      return this.insert( item, --index );
+    },
+
+    insertAfter: function ( item, index ) {
+      return this.insert( item, ++index );
+    },
+
+    empty: function () {
+      this.length = 0;
+      this.items.length = 0;
+      this.items = [];
+      this.itemByIds = {};
+    },
+
+    remove: function ( item ) {
+      var idx = this.indexOf( item );
+      if ( idx >= 0 ) {
+        this.items.splice( idx, 1 );
+        this.length--;
+      }
+      delete this.itemByIds[ item.uid ];
+      return this;
+    },
+
+    move: function ( item, cnt ) {
+      item = typeof item === "string" ? this.itemByIds[ item ] : typeof item === "number" ? this.items[ item ] : item;
+      var from = this.indexOf( item );
+      var to = from + cnt;
+
+      if ( from < 0 ) {
+        throw "can not find item";
+      } else {
+        this.items.splice( from, 1 );
+      }
+      if ( to < 0 ) {
+        this.items.unshift( item );
+      } else if ( to >= this.length ) {
+        this.items[ this.length ] = item;
+      } else {
+        this.items.splice( to, 0, item );
+      }
+      return this;
+    },
+
+    each: function ( callback, args ) {
+      var i = 0,
+        l = this.length;
+      if ( typeof callback === "string" ) {
+        for ( ; i < l; i++ ) {
+          this.items[ i ][ callback ].apply( this.items[ i ], args );
+        }
+      } else if ( callback instanceof Function ) {
+        for ( ; i < l; i++ ) {
+          callback.apply( this.items[ i ], args );
+        }
+      }
+    },
+
+    toArray: function () {
+      return this.items;
+    },
+
+    iterator: function () {
+      return iui.util.Iterator( this.items );
+    },
+
+    // exports
+    toJSON: function () {
+      return JSON.stringify( this.items );
+    },
+
+    toXML: function () {
+      var xmldoc = $.parseXML( "<collection></collection>" );
+      for ( var i = 0, l = this.items.length; i < l; i++ ) {
+        xmldoc.appendChild( this.items[ i ].toXML() );
+      }
+      return xmldoc;
+    }
+
+    // 보 류 중
+    //  toXMLString = function () { 
+    //    return (new XMLSerializer()).serializeToString(iui.util.Collection.prototype.toXML());
+    //  };
+
+
+    // 보 류 중
+    //  _trigger = function (type, event, data) {
+    //    var callback = this.events[type];
+    //    event = $.Event(event);
+    //    event.type = (type === this.eventPrefix ? type : this.eventPrefix + type).toLowerCase();
+    //    event.target = this;
+    //    data = data || {};
+    //    return !($.isFunction(callback) &&
+    //      callback.apply(this, [event].concat(data)) === false ||
+    //      event.isDefaultPrevented());
+    //  };
+  } );
+
+
+}( jQuery, window ) );
