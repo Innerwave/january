@@ -19,9 +19,9 @@
     }
 
     var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<a>' ).text( cell.value )
-      .attr( "title", cell.value )
-      .attr( "href", "www.innerwave.co.kr" )
+    var span = $( '<a>' ).wrap( '<span>' ).text( cell.value )
+      .attr( 'title', cell.value )
+      .attr( 'href', 'http://www.innerwave.co.kr' )
       .appendTo( div );
 
     return div;
