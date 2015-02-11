@@ -17,6 +17,11 @@
     if ( !( this instanceof iui.sheet.model.Cell ) ) {
       return new iui.sheet.model.Cell( info );
     }
+
+    for ( var key in info ) {
+      this[ key ] = info[ key ];
+    }
+
     this.uid = info.id || "cell" + nextId++;
     this.id = info.id || this.uid;
     this.value = info.value;
