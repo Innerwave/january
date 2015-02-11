@@ -11,7 +11,7 @@
   // Private
   // ------------------------------------    
 
-  var Renderer = iui.sheet.renderer.String = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Custom = function ( cell ) {
     cell = cell || {};
 
     if ( !( this instanceof Renderer ) ) {
