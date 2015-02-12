@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.518-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.519-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -744,7 +744,7 @@
   } );
 
   //-------------------------------------------------------------------------
-  // static public class methods 
+  // static class methods 
   /**
    * 엑셀 스타일의 컬럼 이름 생성
    * TODO 676이상의 컬럼이 지정되면 타이틀을 잘못 계산하는 것을 수정해야 한다.
