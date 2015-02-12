@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.543-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.544-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -63,7 +63,7 @@
     padding: 0;
     list-style: none;
     font-weight: normal;
-    line-height: 0;
+    /*    line-height: 0;*/
 }
 .spreadsheet-column-group-list,
 .spreadsheet-column-list {
