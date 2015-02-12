@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.582-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.583-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -2111,28 +2111,32 @@
 
     _createUiRow: function ( i, row ) {
       var that = this;
-      return row.ui = $( '<li>' )
+      row.ui = $( '<li>' )
         .attr( 'id', row.uid )
         .addClass( row.className )
         .height( row.height )
         .append( row.headerRenderer( row ) )
-        .button().removeClass( 'ui-corner-all' )
-        .resizable( {
-          handles: 's',
-          minHeight: 2,
-          stop: function ( e, ui ) {
-            that._onRowResize( ui, row );
-          }
-        } )
-        .on( 'click', function ( event ) {
-          if ( event.ctrlKey === false ) {
-            that._cells.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._columns.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._rows.each( 'removeClass', [ 'ui-state-highlight' ] );
-          }
-          row.addClass( 'ui-state-highlight' );
-          row.cells.each( 'addClass', [ 'ui-state-highlight' ] );
-        } );
+        .button().removeClass( 'ui-corner-all' );
+
+      row.ui.resizable( {
+        handles: 's',
+        minHeight: 2,
+        stop: function ( e, ui ) {
+          that._onRowResize( ui, row );
+        }
+      } );
+
+      row.ui.on( 'click', function ( event ) {
+        if ( event.ctrlKey === false ) {
+          that._cells.each( 'removeClass', [ 'ui-state-highlight' ] );
+          that._columns.each( 'removeClass', [ 'ui-state-highlight' ] );
+          that._rows.each( 'removeClass', [ 'ui-state-highlight' ] );
+        }
+        row.addClass( 'ui-state-highlight' );
+        row.cells.each( 'addClass', [ 'ui-state-highlight' ] );
+      } );
+
+      return row.ui;
     },
 
     __renderRows: function ( newFirstRow ) {
