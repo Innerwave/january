@@ -22,8 +22,8 @@
       this[ key ] = info[ key ];
     }
 
-    this.index = nextId;
-    this.uid = info.id || "cell" + nextId++;
+    this.index = nextId++;
+    this.uid = info.id || "cell" + nextId;
     this.id = info.id || this.uid;
     this.value = info.value;
     this.formula = info.formula;

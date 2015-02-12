@@ -14,8 +14,8 @@
     if ( !( this instanceof Row ) ) {
       return new Row( info );
     }
-    this.index = nextId;
-    this.uid = info.id || "row" + nextId++;
+    this.index = nextId++;
+    this.uid = info.id || "row" + nextId;
     this.id = info.id || this.uid;
     this.height = info.height || 26;
     this.label = info.label;

@@ -20,8 +20,8 @@
       this[ key ] = info[ key ];
     }
 
-    this.index = nextId;
-    this.uid = info.id || "column" + nextId++;
+    this.index = nextId++;
+    this.uid = info.id || "column" + nextId;
     this.id = info.id || this.uid;
     this.visualId = info.visualId;
     this.label = info.label;
