@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.621-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.622-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -995,6 +995,10 @@
     }
   } );
 
+  function onClick( cell ) {
+    console.log( cell.value );
+  }
+
   var Renderer = iui.sheet.renderer.Button = function ( cell ) {
     cell = cell || {};
 
@@ -1004,7 +1008,7 @@
 
     return $( '<input type="button" style="width:100%;height:100%;text-align:center;color:blue;font-weight:bolder">' )
       .attr( 'value', cell.bottonLabel )
-      .on( 'click', cell.click )
+      .on( 'click', onClick )
       .wrap( '<div class="spreadsheet-cell">' )
       .parent()
       .attr( 'title', cell.value )
