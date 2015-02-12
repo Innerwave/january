@@ -37,6 +37,8 @@
     };
     this.cells = new iui.util.Collection();
 
+    this.headerRenderer = info.headerRenderer || iui.sheet.renderer.ColumnHeader;
+
     // this.type = info.type || "Text"; // Text, Number, Date, Currency, Title, ...
     this.renderer = info.renderer || iui.sheet.renderer.String;
     this.editor = info.editor;

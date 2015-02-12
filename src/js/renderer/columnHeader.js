@@ -11,7 +11,7 @@
   // Private Area by Closure
   // ------------------------------------
 
-  var Renderer = iui.sheet.renderer.ColumnHeaderRenderer = function ( cell ) {
+  var Renderer = iui.sheet.renderer.ColumnHeader = function ( cell ) {
     cell = cell || {};
 
     if ( !( this instanceof Renderer ) ) {

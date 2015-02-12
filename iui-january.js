@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.516-SNAPSHOT - 2015-02-11
+/*! Innerwave Spreadsheet - v0.2.517-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -707,6 +707,8 @@
     };
     this.cells = new iui.util.Collection();
 
+    this.headerRenderer = info.headerRenderer || iui.sheet.renderer.ColumnHeader;
+
     // this.type = info.type || "Text"; // Text, Number, Date, Currency, Title, ...
     this.renderer = info.renderer || iui.sheet.renderer.String;
     this.editor = info.editor;
@@ -1012,13 +1014,24 @@
     }
   } );
 
-  iui.sheet.renderer.ColumnHeader = function ( column ) {
+  // ------------------------------------
+  // Private Area by Closure
+  // ------------------------------------
 
+  var Renderer = iui.sheet.renderer.ColumnHeader = function ( cell ) {
+    cell = cell || {};
+
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( cell );
+    }
+
+    var div = $( '<div>' ).attr( 'title', cell.value );
+    var span = $( '<span>' ).text( cell.value ).appendTo( div );
+
+    return div;
   };
 
-  $.extend( iui.sheet.renderer.ColumnHeader.prototype, {
 
-  } );
 }( jQuery, window ) );
 
 ( function ( $, window, undefined ) {
@@ -1037,35 +1050,6 @@
   $.extend( iui.sheet.renderer.Currency.prototype, {
 
   } );
-}( jQuery, window ) );
-
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
-    "iui": {
-      "sheet": {
-        "renderer": {}
-      }
-    }
-  } );
-
-  // ------------------------------------
-  // Private
-  // ------------------------------------    
-
-  var Renderer = iui.sheet.renderer.Custom = function ( cell ) {
-    cell = cell || {};
-
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
-    }
-
-    var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<span>' ).text( cell.value ).appendTo( div );
-
-    return div;
-  };
-
-
 }( jQuery, window ) );
 
 ( function ( $, window, undefined ) {
