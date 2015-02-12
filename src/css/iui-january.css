@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.557-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.558-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -115,8 +115,6 @@
 .spreadsheet-row .ui-button-text,
 .spreadsheet-column .ui-button-text {
     padding: 0;
-    /*    line-height: 2em;*/
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -161,55 +159,6 @@
 .spreadsheet-row.ui-state-highlight .indicator,
 .spreadsheet-column.ui-state-highlight .indicator {
     background: #e17009;
-}
-/*---------------
- * Scollbar
- *----------------*/
-
-.spreadsheet-scrollbar {
-    position: absolute;
-    background: transparent;
-}
-.spreadsheet-scrollbar.scroll-area-vertical {
-    height: 100%;
-    width: 11px;
-    right: 0;
-    bottom: 12px;
-    border-width: 1px 0 0 1px;
-    background: rgba(250, 250, 250, 0.7);
-}
-.spreadsheet-scrollbar.scroll-area-horizontal {
-    height: 11px;
-    width: 100%;
-    bottom: 0;
-    right: 11px;
-    border-width: 0 1px;
-    background: rgba(250, 250, 250, 0.7);
-}
-.spreadsheet-scrollbar-vertical {
-    height: 100%;
-    border: 0;
-}
-.spreadsheet-scrollbar-horizontal {
-    width: 100%;
-    border: 0;
-}
-.ui-slider .ui-handle-helper-parent {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-.ui-slider .ui-slider-handle {
-    width: 7px;
-    height: 7px;
-}
-.ui-slider-vertical .ui-slider-handle {
-    left: 1px;
-    height: 30px;
-}
-.ui-slider-horizontal .ui-slider-handle {
-    top: 1px;
-    width: 30px;
 }
 /*-----------------------------
  * Default Grid Line
@@ -275,4 +224,53 @@
 .spreadsheet-cell a {
     color: blue !important;
     text-decoration: underline !important;
+}
+/*---------------
+ * Scollbar
+ *----------------*/
+
+.spreadsheet-scrollbar {
+    position: absolute;
+    background: transparent;
+}
+.spreadsheet-scrollbar.scroll-area-vertical {
+    height: 100%;
+    width: 11px;
+    right: 0;
+    bottom: 12px;
+    border-width: 1px 0 0 1px;
+    background: rgba(250, 250, 250, 0.7);
+}
+.spreadsheet-scrollbar.scroll-area-horizontal {
+    height: 11px;
+    width: 100%;
+    bottom: 0;
+    right: 11px;
+    border-width: 0 1px;
+    background: rgba(250, 250, 250, 0.7);
+}
+.spreadsheet-scrollbar-vertical {
+    height: 100%;
+    border: 0;
+}
+.spreadsheet-scrollbar-horizontal {
+    width: 100%;
+    border: 0;
+}
+.ui-slider .ui-handle-helper-parent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.ui-slider .ui-slider-handle {
+    width: 7px;
+    height: 7px;
+}
+.ui-slider-vertical .ui-slider-handle {
+    left: 1px;
+    height: 30px;
+}
+.ui-slider-horizontal .ui-slider-handle {
+    top: 1px;
+    width: 30px;
 }
