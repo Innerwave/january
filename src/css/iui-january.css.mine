@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.613-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.612-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -225,7 +225,6 @@
 .spreadsheet-cell a {
     color: blue !important;
     text-decoration: underline !important;
-    <<<<<<< .mine
 }
 /*---------------
  * Scollbar
@@ -275,11 +274,4 @@
 .ui-slider-horizontal .ui-slider-handle {
     top: 1px;
     width: 30px;
-    ======
-}
-.icon-20 {
-    background: url('/src/img/test.jpg');
-    background-position: center top;
-    background-repeat: no-repeat;
-    >>>>>>> .r2260
 }
