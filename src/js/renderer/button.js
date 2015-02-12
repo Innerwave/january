@@ -17,7 +17,7 @@
     return $( '<input type="button">' )
       .attr( 'value', cell.bottonLabel )
       .on( 'click', cell.value )
-    .wrap( '<div class="spreadsheet-cell" style="text-align:center;color:blue;font-weight:bolder">' )
+      .wrap( '<div class="spreadsheet-cell" style="text-align:center;color:blue;font-weight:bolder">' )
       .parent()
       .attr( 'title', cell.value )
       .addClass( cell.className );
