@@ -638,22 +638,26 @@
 
       var renderer = ( column.headerRenderer( column ) );
 
-      return column.ui = $( '<li>' ).attr( 'id', column.uid )
+      column.ui = $( '<li>' ).attr( 'id', column.uid )
         .addClass( column.className )
         .width( column.offset().width )
         // 
-        .append( renderer )
-        // effect...
-        .resizable( {
+        .append( renderer );
+
+      // effects ...
+      if ( !column.resizable ) {
+        column.ui.resizable( {
           handles: 'e',
           minWidth: 2,
+          start: function ( e, ui ) {},
           stop: function ( e, ui ) {
             column.width = ui.size.width;
             column.ui.width( column.width );
             that._renderColumns( that.boundary.firstColumn );
           }
-        } )
-        .on( 'click', function ( event ) {
+        } );
+      }
+      column.ui.on( 'click', function ( event ) {
           // XXX 별 효력이 없어ㅜㅜ;
           // 데이터 처리와 렌더링에는 차이가 있는 것 같다.ㅜㅜ;
           //          if (that.startColumnHighlighting === true) {return false;}
