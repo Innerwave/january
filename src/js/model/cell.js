@@ -21,7 +21,7 @@
     for ( var key in info ) {
       this[ key ] = info[ key ];
     }
-      
+
     this.index = nextId;
     this.uid = info.id || "cell" + nextId++;
     this.id = info.id || this.uid;
@@ -31,6 +31,7 @@
     this.renderer = info.renderer; // iui.sheet.renderer.String;
     this.editor = info.editor;
 
+    // 성능상 배열을 사용하는 것이 좋겠다.... 파싱이 넘 느려...  
     //  this.rows = /*info.rows || */ []; 
     //  this.columns = /*info.columns || */ [];
     this.rows = ( new iui.util.Collection() ).addAll( info.rows || [] );

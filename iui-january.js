@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.590-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.591-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -638,7 +638,7 @@
     for ( var key in info ) {
       this[ key ] = info[ key ];
     }
-      
+
     this.index = nextId;
     this.uid = info.id || "cell" + nextId++;
     this.id = info.id || this.uid;
@@ -648,6 +648,7 @@
     this.renderer = info.renderer; // iui.sheet.renderer.String;
     this.editor = info.editor;
 
+    // 성능상 배열을 사용하는 것이 좋겠다.... 파싱이 넘 느려...  
     //  this.rows = /*info.rows || */ []; 
     //  this.columns = /*info.columns || */ [];
     this.rows = ( new iui.util.Collection() ).addAll( info.rows || [] );
