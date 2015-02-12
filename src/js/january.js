@@ -816,14 +816,15 @@
         .append( row.headerRenderer( row ) )
         .button();
       //        .removeClass( 'ui-corner-all' );
-
-      row.ui.resizable( {
-        handles: 's',
-        minHeight: 2,
-        stop: function ( e, ui ) {
-          that._onRowResize( ui, row );
-        }
-      } );
+      if ( row.resizable ) {
+        row.ui.resizable( {
+          handles: 's',
+          minHeight: 2,
+          stop: function ( e, ui ) {
+            that._onRowResize( ui, row );
+          }
+        } );
+      }
 
       row.ui.on( 'click', function ( event ) {
         if ( event.ctrlKey === false ) {
