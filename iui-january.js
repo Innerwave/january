@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.600-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.601-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -801,9 +801,9 @@
     this.id = info.id || this.uid;
     this.label = info.label;
     this.columns = iui.util.Collection();
-    this._ui = info.ui || iui.sheet.renderer.ColumnGroupHeader( this );
+    //    this._ui = info.ui || iui.sheet.renderer.ColumnGroupHeader( this );
 
-    this.renderer = null;
+    this.renderer = info.renderer || iui.sheet.renderer.ColumnGroupHeader;
     this.editor = null;
   };
 
@@ -811,37 +811,37 @@
   $.extend( iui.sheet.model.ColumnGroup.prototype, iui.sheet.model.Entity, {
 
     width: function () {
-      var w = 0,
-        brw = 0,
-        numberOfVisibleColumn = 0,
-        $uiColumns = this._parent ? $.map( this._parent._columns.toArray(), function ( column, index ) {
-          if ( !column.ui ) {
-            return null;
-          }
-          var parent = column.ui.parent();
-          if ( !parent ) {
-            return null;
-          }
-          return parent.children().index( column.ui ) >= 0 ? column : null;
-        } ) : [];
+        var w = 0,
+          brw = 0,
+          numberOfVisibleColumn = 0,
+          $uiColumns = this._parent ? $.map( this._parent._columns.toArray(), function ( column, index ) {
+            if ( !column.ui ) {
+              return null;
+            }
+            var parent = column.ui.parent();
+            if ( !parent ) {
+              return null;
+            }
+            return parent.children().index( column.ui ) >= 0 ? column : null;
+          } ) : [];
 
-      $.each( this.columns.toArray(), function ( i ) {
-        if ( $.inArray( this, $uiColumns ) >= 0 ) {
-          w += this.offset().width;
-          brw = parseInt( this.ui.css( "border-right-width" ) );
-          numberOfVisibleColumn++;
-        }
-      } );
-      return w + brw * ( numberOfVisibleColumn - 1 );
-    },
-
-    ui: function ( ui ) {
-      if ( ui ) {
-        this._ui = ui.text( this.label );
+        $.each( this.columns.toArray(), function ( i ) {
+          if ( $.inArray( this, $uiColumns ) >= 0 ) {
+            w += this.offset().width;
+            brw = parseInt( this.ui.css( "border-right-width" ) );
+            numberOfVisibleColumn++;
+          }
+        } );
+        return w + brw * ( numberOfVisibleColumn - 1 );
       }
-      this._ui.data( "group", this );
-      return this._ui.width( this.width() );
-    }
+      //      ,
+      //    ui: function ( ui ) {
+      //      if ( ui ) {
+      //        this._ui = ui.text( this.label );
+      //      }
+      //      this._ui.data( "group", this );
+      //      return this._ui.width( this.width() );
+      //    }
   } );
 
 }( jQuery, window ) );
@@ -1928,7 +1928,8 @@
 
       var renderer = group.renderer( group );
 
-      var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' );
+      var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
+        .append( renderer );
       /*
         .button()
         .removeClass( 'ui-corner-all' )

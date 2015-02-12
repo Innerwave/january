@@ -638,7 +638,7 @@
       var renderer = group.renderer( group );
 
       var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
-      .append(renderer);
+        .append( renderer );
       /*
         .button()
         .removeClass( 'ui-corner-all' )
