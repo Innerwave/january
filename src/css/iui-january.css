@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.548-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.549-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -226,6 +226,7 @@
 .spreadsheet-cell {
     position: absolute;
     margin: -1px;
+    overflow: hidden;
 }
 .spreadsheet-cell span {
     display: block;
