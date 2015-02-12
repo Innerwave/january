@@ -8,11 +8,16 @@
   } );
 
 
-  var ColumnGroupHeader = iui.sheet.renderer.ColumnGroupHeader = function ( group ) {
-    var renderer = $( "<span>" ).text( group.label );
-    return renderer;
+  var Renderer = iui.sheet.renderer.ColumnGroupHeader = function ( group ) {
+    group = group || {};
+
+    if ( !( this instanceof Renderer ) ) {
+      return new Renderer( column );
+    }
+
+    return $( "<span>" ).text( group.label );
   };
 
-  $.extend( ColumnGroupHeader.prototype, {} );
+  $.extend( Renderer.prototype, {} );
 
 }( jQuery, window ) );
