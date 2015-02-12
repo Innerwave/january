@@ -18,6 +18,7 @@
     this.id = info.id || this.uid;
     this.height = info.height || 26;
     this.label = info.label;
+    this.index = 0;
     this.width = info.width || 80;
     this.className = "ui-state-default spreadsheet-row " + ( info.className || "" );
     this.ui = null;

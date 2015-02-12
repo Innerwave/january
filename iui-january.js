@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.586-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.587-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -862,6 +862,7 @@
     this.id = info.id || this.uid;
     this.height = info.height || 26;
     this.label = info.label;
+    this.index = 0;
     this.width = info.width || 80;
     this.className = "ui-state-default spreadsheet-row " + ( info.className || "" );
     this.ui = null;

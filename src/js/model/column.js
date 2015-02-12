@@ -24,6 +24,7 @@
     this.id = info.id || this.uid;
     this.visualId = info.visualId;
     this.label = info.label;
+    this.index = 0;
     this.width = info.width || 80;
     this.height = info.height || 26;
     this.className = "spreadsheet-column ui-state-default " + ( info.className || "" );
