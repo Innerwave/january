@@ -641,11 +641,12 @@
       column.ui = $( '<li>' ).attr( 'id', column.uid )
         .addClass( column.className )
         .width( column.offset().width )
+            .button()
         // 
         .append( renderer );
 
       // effects ...
-      if ( !column.resizable ) {
+      if ( column.resizable ) {
         column.ui.resizable( {
           handles: 'e',
           minWidth: 2,
