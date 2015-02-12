@@ -20,7 +20,7 @@
 
     return $( '<input type="button" style="width:100%;height:100%;text-align:center;color:blue;font-weight:bolder">' )
       .attr( 'value', cell.bottonLabel )
-      .on( 'click', onClick )
+      .on( 'click', onClick ) // cell.click ...
       .wrap( '<div class="spreadsheet-cell">' )
       .parent()
       .attr( 'title', cell.value )
