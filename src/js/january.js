@@ -635,7 +635,7 @@
 
     _createUiColumn: function ( i, column ) {
       var that = this;
-      return column.ui = ( new column.headerRenderer( column ) )
+      return column.ui = ( column.headerRenderer( column ) )
         .resizable( {
           handles: 'e',
           minWidth: 2,
