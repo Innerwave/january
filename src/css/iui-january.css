@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.546-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.547-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -75,8 +75,7 @@
 .spreadsheet-column {
     padding: 0;
     margin: 0;
-        height: 26px;
-    
+    min-height: 26px;
     display: inline-block;
     text-align: center;
     border-width: 1px 1px 0 0;
