@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.617-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.616-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -52,7 +52,6 @@
   options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
   options.numberOfColumns = Math.max(options.numberOfColumns, 20);
   options.numberOfRows = Math.max(options.numberOfRows, 20);
-  options.regional = options.regional ? options.regional : 'ko';
 
   options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
 
@@ -86,7 +85,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.617-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.616-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -173,12 +172,6 @@
 
     <div>
       <input type="submit" value="Show" />
-    </div>
-    <div>
-      <select id="regional" name="regional" onchange="submit()">
-        <option value="ko">ko</option>
-        <option value="en">en</option>
-      </select>
     </div>
   </form>
 
@@ -403,37 +396,12 @@
         /**
          * var cell = {value: '', css: '', colspan:1, rowspan: 1, className:'spreadsheet-cell cell-format-text', formular:formular };
          */
-
-
-
         if (j === 1) {
           link = links[i > 0 ? i % links.length : 0];
           row[ /*columnId*/ 'col' + j] = {
             value: link.value,
             link: link.url
           };
-        } else if (j == 2) {
-          row[ /*columnId*/ 'col' + j] = {
-            value: new Date().getTime().toString()
-          };
-
-        } else if (j == 3) {
-          row[ /*columnId*/ 'col' + j] = {
-            value: "" + i * j * 1000
-          };
-
-        } else if (j == 4) {
-          row[ /*columnId*/ 'col' + j] = {
-            value: j + '' + i
-          };
-        } else if (j == 6) {
-          row[ /*columnId*/ 'col' + j] = {
-
-            value: "red('" + j + ', ' + i + "');",
-            bottonLabel: "test button"
-              //            rows: ['row' + i, 'row' + (i + 1)]
-          };
-
         } else {
           row[ /*columnId*/ 'col' + j] = {
             value: j + ', ' + i
@@ -444,10 +412,6 @@
       data.push(row);
     }
     return data;
-  }
-
-  function red(str) {
-    alert(str);
   }
 
   function drawSheet() {
@@ -469,8 +433,6 @@
 
     $('input[name="showDefaultGrid"]').prop('checked', options.showDefaultGrid);
     $('input[name="defaultGridLineColor"]').val(options.defaultGridLineColor);
-
-    $('select[name=regional]').val(options.regional);
 
 
     var columns = mkColumn(options.numberOfColumns);
@@ -499,12 +461,6 @@
     columns[0].renderer = iui.sheet.renderer.String;
     columns[1].renderer = iui.sheet.renderer.Link;
     columns[1].width = '150';
-
-    columns[2].renderer = iui.sheet.renderer.Date;
-    columns[3].renderer = iui.sheet.renderer.Currency;
-    columns[4].renderer = iui.sheet.renderer.Icon;
-    columns[5].renderer = iui.sheet.renderer.Image;
-    columns[6].renderer = iui.sheet.renderer.Button;
 
     var data = mkData(columns.length, options.numberOfRows);
 

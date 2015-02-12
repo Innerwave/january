@@ -429,9 +429,9 @@
         } else if (j == 6) {
           row[ /*columnId*/ 'col' + j] = {
 
-            value: "red('" + j + ', ' + i + "');",
+            value: "red('"+j + ', ' + i+"');",
             bottonLabel: "test button"
-              //            rows: ['row' + i, 'row' + (i + 1)]
+            //            rows: ['row' + i, 'row' + (i + 1)]
           };
 
         } else {
@@ -447,7 +447,7 @@
   }
 
   function red(str) {
-    alert(str);
+	alert(str);
   }
 
   function drawSheet() {
@@ -469,7 +469,7 @@
 
     $('input[name="showDefaultGrid"]').prop('checked', options.showDefaultGrid);
     $('input[name="defaultGridLineColor"]').val(options.defaultGridLineColor);
-
+    
     $('select[name=regional]').val(options.regional);
 
 
