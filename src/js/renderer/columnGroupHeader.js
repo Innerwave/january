@@ -12,7 +12,7 @@
     group = group || {};
 
     if ( !( this instanceof Renderer ) ) {
-      return new Renderer( column );
+      return new Renderer( group );
     }
 
     return $( "<span>" ).text( group.label );
