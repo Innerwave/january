@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.546-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.547-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
