@@ -11,17 +11,28 @@
   // Private Area by Closure
   // ------------------------------------
 
-  var Renderer = iui.sheet.renderer.ColumnHeader = function ( cell ) {
-    cell = cell || {};
+  var Renderer = iui.sheet.renderer.ColumnHeader = function ( column ) {
+    column = column || {};
 
     if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+      return new Renderer( column );
     }
 
-    var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<span>' ).text( cell.value ).appendTo( div );
+    var renderer = $( '<li>' )
+      .attr( 'id', column.uid )
+      .addClass( column.className )
+      .width( column.offset().width )
+      .append(
+        $( '<span>' ).text(
+          column.label !== undefined ? column.label : column.visualId
+        )
+      )
+      .append( '<div class="indicator">' )
+      //        .data( 'column', column )
+      .button()
+      .removeClass( 'ui-corner-all' );
 
-    return div;
+    return renderer;
   };
 
 

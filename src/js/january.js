@@ -635,19 +635,7 @@
 
     _createUiColumn: function ( i, column ) {
       var that = this;
-      return column.ui = $( '<li>' )
-        .attr( 'id', column.uid )
-        .addClass( column.className )
-        .width( column.offset().width )
-        .append(
-          $( '<span>' ).text(
-            column.label !== undefined ? column.label : column.visualId /* getColumnHeaderText(i) */
-          )
-        )
-        .append( '<div class="indicator">' )
-        .data( 'column', column )
-        .button()
-        .removeClass( 'ui-corner-all' )
+      return column.ui = ( ( column.headerRenderer || iui.sheet.renderer.ColumnHeader )() )
         .resizable( {
           handles: 'e',
           minWidth: 2,
