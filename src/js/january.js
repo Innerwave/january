@@ -689,6 +689,8 @@
           }
           that.$uiColumns.sortable( 'option', 'items', uis );
         } );
+
+      return column.ui;
     },
 
     __renderColumns: function ( newFirstColumn ) {
