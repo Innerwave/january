@@ -641,7 +641,7 @@
       column.ui = $( '<li>' ).attr( 'id', column.uid )
         .addClass( column.className )
         .width( column.offset().width )
-            .button()
+        .button()
         // 
         .append( renderer );
 

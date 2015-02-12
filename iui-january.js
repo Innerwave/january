@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.541-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.542-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1930,6 +1930,7 @@
       column.ui = $( '<li>' ).attr( 'id', column.uid )
         .addClass( column.className )
         .width( column.offset().width )
+        .button()
         // 
         .append( renderer );
 
