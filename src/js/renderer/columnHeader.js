@@ -18,10 +18,7 @@
       return new Renderer( column );
     }
 
-    var renderer = $( '<li>' )
-      .attr( 'id', column.uid )
-      .addClass( column.className )
-      .width( column.offset().width )
+    var renderer = $( '<div style="padding:0;margin:0;height:100%;width:100%">' )
       .append(
         $( '<span>' ).text(
           column.label !== undefined ? column.label : column.visualId
