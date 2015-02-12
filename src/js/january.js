@@ -635,7 +635,15 @@
 
     _createUiColumn: function ( i, column ) {
       var that = this;
-      return column.ui = ( column.headerRenderer( column ) )
+
+      var renderer = ( column.headerRenderer( column ) );
+
+      return column.ui = $( '<li>' ).attr( 'id', column.uid )
+        .addClass( column.className )
+        .width( column.offset().width )
+        // 
+        .append( renderer )
+        // effect...
         .resizable( {
           handles: 'e',
           minWidth: 2,
