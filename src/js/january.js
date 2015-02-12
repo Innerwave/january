@@ -813,8 +813,7 @@
         .attr( 'id', row.uid )
         .addClass( row.className )
         .height( row.height )
-        .append( $( '<span>' ).text( row.label || i + 1 ) )
-        .append( '<div class="indicator">' )
+        .append( row.headerRenderer(row))
         .button().removeClass( 'ui-corner-all' )
         .resizable( {
           handles: 's',
