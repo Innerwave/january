@@ -8,7 +8,7 @@
   } );
 
   var Renderer = iui.sheet.renderer.RowHeader = function ( row ) {
-    var renderer = $( '<span>' ).text( row.label || i + 1 )
+    var renderer = $( '<span>' ).text( row.label || row.index + 1 )
       .wrap( '<div>' ).parent()
       .css( {
         border: '0px',
