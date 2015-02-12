@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.615-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.616-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -275,10 +275,8 @@
     top: 1px;
     width: 30px;
 }
-
-
 .icon-20 {
     background: url('/src/img/test.jpg');
     background-position: center top;
     background-repeat: no-repeat;
-}}
+}
