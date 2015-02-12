@@ -48,6 +48,14 @@
 
   $.extend( iui.sheet.model.Column.prototype, iui.sheet.model.Entity, {
 
+    //    getHeaderRenderer : function () {
+    //      return this.headerRenderer ? this.headerRenderer : iui.sheet.renderer.ColumnHeader;
+    //    },
+    //      
+    //    getRenderer: function () {
+    //      return this.renderer ? this.renderer : iui.sheet.renderer.String;
+    //    },
+
     setWidth: function ( width ) {
       this.width = width;
       if ( this.ui ) {
