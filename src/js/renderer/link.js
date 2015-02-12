@@ -17,11 +17,10 @@
     if ( !( this instanceof Renderer ) ) {
       return new Renderer( cell );
     }
-    var title = cell.title || cell.value;
     var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<a>' ).text( title )
-      .attr( 'title', title )
-      .attr( 'href', cell.value )
+    var span = $( '<a>' ).text( cell.value )
+      .attr( 'title', cell.value )
+      .attr( 'href', cell.url )
       .wrap( '<span>' ).parent()
       .appendTo( div );
 
