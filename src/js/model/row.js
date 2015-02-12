@@ -28,6 +28,9 @@
       innerHeight: 0
     };
     this.cells = new iui.util.Collection().addAll( info.cells || [] );
+
+    this.headerRenderer = info.headerRenderer || iui.sheet.renderer.RowHeader;
+
     this.renderer = null;
     this.editor = null;
     this.buttons = null;
