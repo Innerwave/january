@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.530-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.531-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -2198,7 +2198,7 @@
     _createUiCell: function ( cell ) {
       // TODO cell에 지정된 formular가 있을 경우 이를 처리
       var that = this;
-      cell.ui = cell.getRenderer()( cell )
+      cell.ui = ( cell.getRenderer()( cell ) )
         .hover( function () {
           if ( that._scrolling ) {
             return;

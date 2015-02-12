@@ -912,7 +912,7 @@
     _createUiCell: function ( cell ) {
       // TODO cell에 지정된 formular가 있을 경우 이를 처리
       var that = this;
-      cell.ui = cell.getRenderer()( cell )
+      cell.ui = ( cell.getRenderer()( cell ) )
         .hover( function () {
           if ( that._scrolling ) {
             return;
