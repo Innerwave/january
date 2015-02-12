@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.539-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.540-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1048,7 +1048,6 @@
       )
       .append( '<div class="indicator">' )
       //        .data( 'column', column )
-      .button()
       .removeClass( 'ui-corner-all' );
 
     return renderer;

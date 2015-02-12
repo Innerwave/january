@@ -33,7 +33,6 @@
       )
       .append( '<div class="indicator">' )
       //        .data( 'column', column )
-      .button()
       .removeClass( 'ui-corner-all' );
 
     return renderer;
