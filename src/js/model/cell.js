@@ -10,12 +10,12 @@
   // private 
   var nextId = 0;
 
-  iui.sheet.model.Cell = function ( info ) {
+  var Cell = iui.sheet.model.Cell = function ( info ) {
 
     info = info || {};
 
-    if ( !( this instanceof iui.sheet.model.Cell ) ) {
-      return new iui.sheet.model.Cell( info );
+    if ( !( this instanceof Cell ) ) {
+      return new Cell( info );
     }
 
     for ( var key in info ) {
@@ -41,7 +41,7 @@
   };
 
   // public methods
-  $.extend( iui.sheet.model.Cell.prototype, iui.sheet.model.Entity, {
+  $.extend( Cell.prototype, iui.sheet.model.Entity, {
     getRenderer: function () {
       return this.renderer ? this.renderer :
         this.columns.length > 0 ? this.columns.get( 0 ).renderer :
