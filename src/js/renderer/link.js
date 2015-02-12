@@ -17,9 +17,9 @@
     if ( !( this instanceof Renderer ) ) {
       return new Renderer( cell );
     }
-    var div = $( '<div>' ).attr( 'title', cell.value );
+    var div = $( '<div>' ).attr( 'title', cell.link );
     var span = $( '<a>' ).text( cell.value )
-      .attr( 'title', cell.value )
+      .attr( 'title', cell.link )
       .attr( 'href', cell.link )
       .wrap( '<span>' ).parent()
       .appendTo( div );
