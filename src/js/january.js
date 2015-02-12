@@ -633,7 +633,7 @@
     },
 
 
-    _createUiColumn: function ( i, column ) {
+    _createUiColumn: function ( column ) {
       var that = this;
 
       var renderer = ( column.headerRenderer( column ) );
@@ -711,7 +711,7 @@
         for ( ; i < l && columnsWidth < this.$uiViewport.width(); i++ ) {
           column = this._columns.get( i );
           column.removeClass( 'ui-state-hover' );
-          $uiColumn = ( column.ui || this._createUiColumn( i, column ) ).appendTo( this.$uiColumns );
+          $uiColumn = ( column.ui || this._createUiColumn( column ) ).appendTo( this.$uiColumns );
           $uiColumn.removeClass().addClass( column.className );
           columnsWidth += column.offset().outerWidth;
 
@@ -807,7 +807,7 @@
       );
     },
 
-    _createUiRow: function ( i, row ) {
+    _createUiRow: function ( row ) {
       var that = this;
       row.ui = $( '<li>' )
         .attr( 'id', row.uid )
@@ -853,7 +853,7 @@
           row = this._rows.get( i );
           row.fixed = !!fixed;
           row.removeClass( 'ui-state-hover' );
-          $uiRow = ( row.ui || this._createUiRow( i, row ) ).appendTo( this.$uiRows );
+          $uiRow = ( row.ui || this._createUiRow( row ) ).appendTo( this.$uiRows );
           $uiRow.removeClass().addClass( row.className );
           rowsHeight += row.offset().outerHeight;
         }
