@@ -7,11 +7,11 @@
     }
   } );
 
-  iui.sheet.renderer.RowHeader = function ( row ) {
+  var Renderer = iui.sheet.renderer.RowHeader = function ( row ) {
 
   };
 
-  $.extend( iui.sheet.renderer.RowHeader.prototype, {
+  $.extend( Renderer.prototype, {
 
   } );
 }( jQuery, window ) );
