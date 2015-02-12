@@ -638,7 +638,6 @@
       var renderer = group.renderer( group );
 
       return group.ui = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
-        .width( group.width() )
         .append( renderer );
       /*
         .button()
