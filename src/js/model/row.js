@@ -31,6 +31,7 @@
     this.cells = new iui.util.Collection().addAll( info.cells || [] );
 
     this.headerRenderer = info.headerRenderer || iui.sheet.renderer.RowHeader;
+    this.resizable = true;
 
     this.renderer = null;
     this.editor = null;
