@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.521-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.522-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -85,7 +85,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.521-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.522-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -399,8 +399,8 @@
         if (j === 1) {
           link = links[i > 0 ? i % links.length : 0];
           row[ /*columnId*/ 'col' + j] = {
-            value: link.url,
-            title: link.title
+            value: link.value,
+            link: link.url
           };
         } else {
           row[ /*columnId*/ 'col' + j] = {
