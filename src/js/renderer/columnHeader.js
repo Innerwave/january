@@ -18,7 +18,13 @@
       return new Renderer( column );
     }
 
-    var renderer = $( '<div style="padding:0;margin:0;height:100%;width:100%">' )
+    var renderer = $( '<div>' )
+      .css( {
+        padding: '0px',
+        margin: '0px',
+        height: '100%',
+        width: '100%'
+      } )
       .append(
         $( '<span>' ).text(
           column.label !== undefined ? column.label : column.visualId
