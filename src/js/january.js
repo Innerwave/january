@@ -637,7 +637,7 @@
 
       var renderer = group.renderer( group );
 
-      var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
+      return group.ui = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
         .append( renderer );
       /*
         .button()
@@ -662,9 +662,6 @@
         } );
         */
 
-      group.ui( container );
-
-      return container;
     },
 
     _createUiColumn: function ( column ) {

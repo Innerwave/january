@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.602-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.603-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1929,7 +1929,7 @@
 
       var renderer = group.renderer( group );
 
-      var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
+      return group.ui = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
         .append( renderer );
       /*
         .button()
@@ -1954,9 +1954,6 @@
         } );
         */
 
-      group.ui( container );
-
-      return container;
     },
 
     _createUiColumn: function ( column ) {
