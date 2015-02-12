@@ -37,6 +37,7 @@
   };
 
   $.extend( Row.prototype, iui.sheet.model.Entity, {
+
     setHeight: function ( height ) {
       this.height = height;
       if ( this.ui ) {
@@ -44,6 +45,7 @@
       }
       this._parent._trigger( "rowChanged" );
     },
+
     offset: function () {
       if ( this.ui ) {
         this._offset = {
