@@ -21,6 +21,7 @@
     this.label = info.label;
     this.columns = iui.util.Collection();
     //    this._ui = info.ui || iui.sheet.renderer.ColumnGroupHeader( this );
+    this.ui = null;
 
     this.renderer = info.renderer || iui.sheet.renderer.ColumnGroupHeader;
     this.editor = null;
