@@ -814,8 +814,8 @@
         .addClass( row.className )
         .height( row.height )
         .append( row.headerRenderer( row ) )
-        .button()
-        .removeClass( 'ui-corner-all' );
+        .button();
+      //        .removeClass( 'ui-corner-all' );
 
       row.ui.resizable( {
         handles: 's',
