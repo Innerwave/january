@@ -10,7 +10,6 @@
 
   var ColumnGroupHeader = iui.sheet.renderer.ColumnGroupHeader = function ( group ) {
     var renderer = $( "<span>" ).text( group.label );
-
     return renderer;
   };
 

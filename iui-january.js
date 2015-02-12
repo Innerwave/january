@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.605-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.606-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -998,7 +998,6 @@
 
   var ColumnGroupHeader = iui.sheet.renderer.ColumnGroupHeader = function ( group ) {
     var renderer = $( "<span>" ).text( group.label );
-
     return renderer;
   };
 
