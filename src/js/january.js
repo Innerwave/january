@@ -813,7 +813,7 @@
         .attr( 'id', row.uid )
         .addClass( row.className )
         .height( row.height )
-        .append( row.headerRenderer(row))
+        .append( row.headerRenderer( row ) )
         .button().removeClass( 'ui-corner-all' )
         .resizable( {
           handles: 's',
