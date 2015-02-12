@@ -14,7 +14,7 @@
       return new Renderer( cell );
     }
 
-    return $( '<input type="button">' )
+    return $( '<input type="button" style="width:100%;height:100%;text-align:center;">' )
       .attr( 'value', cell.bottonLabel )
       .on( 'click', cell.value )
       .wrap( '<div class="spreadsheet-cell" style="text-align:center;color:blue;font-weight:bolder">' )
