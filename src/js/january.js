@@ -794,7 +794,7 @@
         } );
         for ( i = 0, l = groups.length; i < l; i++ ) {
           group = groups[ i ];
-          this.$uiColumnGroups.append( group.ui || this._createUiColumnGroup( group ) );
+          this.$uiColumnGroups.append( ( group.ui || this._createUiColumnGroup( group ) ).width( group.width() ) );
         }
       }
 
