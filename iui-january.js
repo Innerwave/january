@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.599-SNAPSHOT - 2015-02-12
+/*! Innerwave Spreadsheet - v0.2.600-SNAPSHOT - 2015-02-12
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1923,6 +1923,39 @@
       }
     },
 
+    _createUiColumnGroup: function ( group ) {
+      var that = this;
+
+      var renderer = group.renderer( group );
+
+      var container = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' );
+      /*
+        .button()
+        .removeClass( 'ui-corner-all' )
+        group.ui.resizable( {
+          handles: "e",
+          minWidth: 2,
+          stop: function ( e, ui ) {
+            // var group = $(this).data("group");
+            // 그룹의 너비를 컬럼의 수로 나눈다.
+            var groupWidth = ui.size.width - ui.originalSize.width;
+            var columnWidth = Math.floor( groupWidth / group.columns.length );
+            var totalWidth = 0;
+            group.columns.each( function ( i ) {
+              var width = group.columns.length === i + 1 ? groupWidth - totalWidth : columnWidth;
+              this.width = this.ui.width() + width;
+              this.ui.width( this.width );
+              totalWidth += width;
+            } );
+            group.parent._renderColumns( group.parent.boundary.firstColumn );
+          }
+        } );
+        */
+
+      group.ui( container );
+
+      return container;
+    },
 
     _createUiColumn: function ( column ) {
       var that = this;
@@ -2054,7 +2087,7 @@
         } );
         for ( i = 0, l = groups.length; i < l; i++ ) {
           group = groups[ i ];
-          group.ui().appendTo( this.$uiColumnGroups );
+          this.$uiColumnGroups.append( group.ui || _createUiColumnGroup( group ) );
         }
       }
 
