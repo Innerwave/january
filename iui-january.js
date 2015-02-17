@@ -1,39 +1,39 @@
-/*! Innerwave Spreadsheet - v0.2.629-SNAPSHOT - 2015-02-13
+/*! Innerwave Spreadsheet - v0.2.617-SNAPSHOT - 2015-02-17
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
   var simbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-  function utf8_encode( i ) {
-    i = i.replace( /\r\n/g, "\n" );
+  function utf8_encode(i) {
+    i = i.replace(/\r\n/g, "\n");
     var o = [],
       c, l = 0;
     // BOM
     //    o[l++] = String.fromCharCode(239);
     //    o[l++] = String.fromCharCode(191);
     //    o[l++] = String.fromCharCode(187);
-    for ( var idx = 0, len = i.length; idx < len; idx++ ) {
-      c = i.charCodeAt( idx );
-      if ( c < 128 ) {
-        o[ l++ ] = String.fromCharCode( c );
-      } else if ( ( c > 127 ) && ( c < 2048 ) ) {
-        o[ l++ ] = String.fromCharCode( ( c >> 6 ) | 192 );
-        o[ l++ ] = String.fromCharCode( ( c & 63 ) | 128 );
+    for (var idx = 0, len = i.length; idx < len; idx++) {
+      c = i.charCodeAt(idx);
+      if (c < 128) {
+        o[l++] = String.fromCharCode(c);
+      } else if ((c > 127) && (c < 2048)) {
+        o[l++] = String.fromCharCode((c >> 6) | 192);
+        o[l++] = String.fromCharCode((c & 63) | 128);
       } else {
-        o[ l++ ] = String.fromCharCode( ( c >> 12 ) | 224 );
-        o[ l++ ] = String.fromCharCode( ( ( c >> 6 ) & 63 ) | 128 );
-        o[ l++ ] = String.fromCharCode( ( c & 63 ) | 128 );
+        o[l++] = String.fromCharCode((c >> 12) | 224);
+        o[l++] = String.fromCharCode(((c >> 6) & 63) | 128);
+        o[l++] = String.fromCharCode((c & 63) | 128);
       }
     }
-    return o.join( "" );
+    return o.join("");
   }
 
-  function utf8_decode( i ) {
+  function utf8_decode(i) {
     var o = [],
       l = 0,
       idx = 0,
@@ -41,20 +41,20 @@
       c1 = 0,
       c2 = 0,
       len = i.length;
-    while ( idx < len ) {
-      c = i.charCodeAt( idx++ );
-      if ( c < 128 ) {
-        o[ l++ ] = String.fromCharCode( c );
-      } else if ( ( c > 191 ) && ( c < 224 ) ) {
-        c2 = i.charCodeAt( idx++ );
-        o[ l++ ] = String.fromCharCode( ( ( c & 31 ) << 6 ) | ( c2 & 63 ) );
+    while (idx < len) {
+      c = i.charCodeAt(idx++);
+      if (c < 128) {
+        o[l++] = String.fromCharCode(c);
+      } else if ((c > 191) && (c < 224)) {
+        c2 = i.charCodeAt(idx++);
+        o[l++] = String.fromCharCode(((c & 31) << 6) | (c2 & 63));
       } else {
-        c2 = i.charCodeAt( idx++ );
-        c3 = i.charCodeAt( idx++ );
-        o[ l++ ] = String.fromCharCode( ( ( c & 15 ) << 12 ) | ( ( c2 & 63 ) << 6 ) | ( c3 & 63 ) );
+        c2 = i.charCodeAt(idx++);
+        c3 = i.charCodeAt(idx++);
+        o[l++] = String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
       }
     }
-    return o.join( "" );
+    return o.join("");
   }
 
 
@@ -63,78 +63,78 @@
    *
    */
   iui.util.Base64 = {
-    encode: function ( i ) {
-      i = utf8_encode( i );
+    encode: function (i) {
+      i = utf8_encode(i);
       var o = [],
         l = 0,
         c1, c2, c3,
         e1, e2, e3, e4,
         idx = 0,
         len = i.length;
-      while ( idx < len ) {
-        c1 = i.charCodeAt( idx++ );
-        c2 = i.charCodeAt( idx++ );
-        c3 = i.charCodeAt( idx++ );
+      while (idx < len) {
+        c1 = i.charCodeAt(idx++);
+        c2 = i.charCodeAt(idx++);
+        c3 = i.charCodeAt(idx++);
         e1 = c1 >> 2;
-        e2 = ( ( c1 & 3 ) << 4 ) | ( c2 >> 4 );
-        e3 = ( ( c2 & 15 ) << 2 ) | ( c3 >> 6 );
+        e2 = ((c1 & 3) << 4) | (c2 >> 4);
+        e3 = ((c2 & 15) << 2) | (c3 >> 6);
         e4 = c3 & 63;
-        if ( isNaN( c2 ) ) {
+        if (isNaN(c2)) {
           e3 = e4 = 64;
-        } else if ( isNaN( c3 ) ) {
+        } else if (isNaN(c3)) {
           e4 = 64;
         }
-        o[ l++ ] = simbols.charAt( e1 );
-        o[ l++ ] = simbols.charAt( e2 );
-        o[ l++ ] = simbols.charAt( e3 );
-        o[ l++ ] = simbols.charAt( e4 );
+        o[l++] = simbols.charAt(e1);
+        o[l++] = simbols.charAt(e2);
+        o[l++] = simbols.charAt(e3);
+        o[l++] = simbols.charAt(e4);
       }
-      return o.join( "" );
+      return o.join("");
     },
 
-    decode: function ( i ) {
-      i = i.replace( /[^A-Za-z0-9\+\/\=]/g, "" );
+    decode: function (i) {
+      i = i.replace(/[^A-Za-z0-9\+\/\=]/g, "");
       var o = [],
         c1, c2, c3,
         e1, e2, e3, e4,
         idx = 0,
         l = 0,
         len = i.length;
-      while ( idx < len ) {
-        e1 = simbols.indexOf( i.charAt( idx++ ) );
-        e2 = simbols.indexOf( i.charAt( idx++ ) );
-        e3 = simbols.indexOf( i.charAt( idx++ ) );
-        e4 = simbols.indexOf( i.charAt( idx++ ) );
-        c1 = ( e1 << 2 ) | ( e2 >> 4 );
-        c2 = ( ( e2 & 15 ) << 4 ) | ( e3 >> 2 );
-        c3 = ( ( e3 & 3 ) << 6 ) | e4;
-        o[ l++ ] = String.fromCharCode( c1 );
-        if ( e3 !== 64 ) {
-          o[ l++ ] = String.fromCharCode( c2 );
+      while (idx < len) {
+        e1 = simbols.indexOf(i.charAt(idx++));
+        e2 = simbols.indexOf(i.charAt(idx++));
+        e3 = simbols.indexOf(i.charAt(idx++));
+        e4 = simbols.indexOf(i.charAt(idx++));
+        c1 = (e1 << 2) | (e2 >> 4);
+        c2 = ((e2 & 15) << 4) | (e3 >> 2);
+        c3 = ((e3 & 3) << 6) | e4;
+        o[l++] = String.fromCharCode(c1);
+        if (e3 !== 64) {
+          o[l++] = String.fromCharCode(c2);
         }
-        if ( e4 !== 64 ) {
-          o[ l++ ] = String.fromCharCode( c3 );
+        if (e4 !== 64) {
+          o[l++] = String.fromCharCode(c3);
         }
       }
-      return utf8_decode( o.join( "" ) );
+      return utf8_decode(o.join(""));
     },
 
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  iui.util.Circuit = function ( elements ) {
-    elements = elements ? $.isArray( elements ) ? elements : [ elements ] : [];
+  iui.util.Circuit = function (elements) {
+    elements = elements ? $.isArray(elements) ? elements : [elements] : [];
 
-    if ( !( this instanceof iui.util.Circuit ) ) {
-      return new iui.util.Circuit( elements );
+    if (!(this instanceof iui.util.Circuit)) {
+      return new iui.util.Circuit(elements);
     }
 
     this.index = NaN;
@@ -142,59 +142,59 @@
     this.length = this.elements.length;
   };
 
-  $.extend( iui.util.Circuit.prototype, {
+  $.extend(iui.util.Circuit.prototype, {
     getIndex: function () {
-      return this.index = ( this.elements.length + this.index ) % this.elements.length;
+      return this.index = (this.elements.length + this.index) % this.elements.length;
     },
 
     prev: function () {
-      if ( isNaN( parseInt( this.index ) ) ) {
+      if (isNaN(parseInt(this.index))) {
         this.index = 0;
       } else {
         this.index--;
         this.index = this.getIndex();
       }
-      return this.elements[ this.index ];
+      return this.elements[this.index];
     },
 
     now: function () {
-      return this.elements[ this.index ];
+      return this.elements[this.index];
     },
 
     next: function () {
-      if ( isNaN( parseInt( this.index ) ) ) {
+      if (isNaN(parseInt(this.index))) {
         this.index = 0;
       } else {
         this.index++;
         this.index = this.getIndex();
       }
-      return this.elements[ this.index ];
+      return this.elements[this.index];
     },
 
-    append: function ( element ) {
-      this.elements[ this.length++ ] = element;
+    append: function (element) {
+      this.elements[this.length++] = element;
     },
 
     remove: function () {
       this.index = this.getIndex();
-      this.elements.splice( this.index, 1 );
+      this.elements.splice(this.index, 1);
       this.length--;
     }
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
   var nextId = 0;
 
-  iui.util.Collection = function ( name ) {
+  iui.util.Collection = function (name) {
 
-    if ( !( this instanceof iui.util.Collection ) ) {
+    if (!(this instanceof iui.util.Collection)) {
       return new iui.util.Collection();
     }
 
@@ -205,76 +205,76 @@
     this.eventPrefix = "collection";
   };
 
-  $.extend( iui.util.Collection.prototype, {
+  $.extend(iui.util.Collection.prototype, {
 
     /**
      *
      */
-    find: function ( id ) {
-      return this.indexOf( this.itemByIds[ id ] );
+    find: function (id) {
+      return this.indexOf(this.itemByIds[id]);
     },
 
-    has: function ( item ) {
-      return !!this.itemByIds[ item.uid ];
+    has: function (item) {
+      return !!this.itemByIds[item.uid];
     },
 
-    get: function ( index ) {
-      return this.items[ index ];
+    get: function (index) {
+      return this.items[index];
     },
 
-    getById: function ( id ) {
-      var item = this.itemByIds[ id ];
-      if ( !item ) {
-        item = $.map( this.items, function ( item ) {
+    getById: function (id) {
+      var item = this.itemByIds[id];
+      if (!item) {
+        item = $.map(this.items, function (item) {
           return item.id === id ? item : null;
-        } )[ 0 ];
+        })[0];
       }
       return item;
     },
 
-    indexOf: function ( item ) {
+    indexOf: function (item) {
       return $.inArray( /*value*/ item, /*array*/ this.items /*[, fromIndex default = 0 ]*/ );
     },
 
-    addAll: function ( items ) {
-      for ( var i = 0, l = items.length; i < l; i++ ) {
-        this.add( items[ i ] );
+    addAll: function (items) {
+      for (var i = 0, l = items.length; i < l; i++) {
+        this.add(items[i]);
       }
       return this;
     },
 
-    add: function ( item ) {
+    add: function (item) {
       item.uid = item.uid || "item" + nextId++;
-      if ( !this.has( item ) ) {
-        this.items.push( item );
-        this.itemByIds[ item.uid ] = item;
+      if (!this.has(item)) {
+        this.items.push(item);
+        this.itemByIds[item.uid] = item;
         this.length++;
       }
       return this;
     },
 
-    insert: function ( item, index ) {
+    insert: function (item, index) {
       item.uid = item.uid || "item" + nextId++;
-      if ( !this.has( item ) ) {
-        this.itemByIds[ item.uid ] = item;
-        if ( index < 0 ) {
-          this.items.unshift( item );
-        } else if ( index >= this.items.length ) {
-          this.items.push( item );
+      if (!this.has(item)) {
+        this.itemByIds[item.uid] = item;
+        if (index < 0) {
+          this.items.unshift(item);
+        } else if (index >= this.items.length) {
+          this.items.push(item);
         } else {
-          this.items.splice( index, 0, item );
+          this.items.splice(index, 0, item);
         }
         this.length++;
       }
       return this;
     },
 
-    insertBefore: function ( item, index ) {
-      return this.insert( item, --index );
+    insertBefore: function (item, index) {
+      return this.insert(item, --index);
     },
 
-    insertAfter: function ( item, index ) {
-      return this.insert( item, ++index );
+    insertAfter: function (item, index) {
+      return this.insert(item, ++index);
     },
 
     empty: function () {
@@ -284,46 +284,46 @@
       this.itemByIds = {};
     },
 
-    remove: function ( item ) {
-      var idx = this.indexOf( item );
-      if ( idx >= 0 ) {
-        this.items.splice( idx, 1 );
+    remove: function (item) {
+      var idx = this.indexOf(item);
+      if (idx >= 0) {
+        this.items.splice(idx, 1);
         this.length--;
       }
-      delete this.itemByIds[ item.uid ];
+      delete this.itemByIds[item.uid];
       return this;
     },
 
-    move: function ( item, cnt ) {
-      item = typeof item === "string" ? this.itemByIds[ item ] : typeof item === "number" ? this.items[ item ] : item;
-      var from = this.indexOf( item );
+    move: function (item, cnt) {
+      item = typeof item === "string" ? this.itemByIds[item] : typeof item === "number" ? this.items[item] : item;
+      var from = this.indexOf(item);
       var to = from + cnt;
 
-      if ( from < 0 ) {
+      if (from < 0) {
         throw "can not find item";
       } else {
-        this.items.splice( from, 1 );
+        this.items.splice(from, 1);
       }
-      if ( to < 0 ) {
-        this.items.unshift( item );
-      } else if ( to >= this.length ) {
-        this.items[ this.length ] = item;
+      if (to < 0) {
+        this.items.unshift(item);
+      } else if (to >= this.length) {
+        this.items[this.length] = item;
       } else {
-        this.items.splice( to, 0, item );
+        this.items.splice(to, 0, item);
       }
       return this;
     },
 
-    each: function ( callback, args ) {
+    each: function (callback, args) {
       var i = 0,
         l = this.length;
-      if ( typeof callback === "string" ) {
-        for ( ; i < l; i++ ) {
-          this.items[ i ][ callback ].apply( this.items[ i ], args );
+      if (typeof callback === "string") {
+        for (; i < l; i++) {
+          this.items[i][callback].apply(this.items[i], args);
         }
-      } else if ( callback instanceof Function ) {
-        for ( ; i < l; i++ ) {
-          callback.apply( this.items[ i ], args );
+      } else if (callback instanceof Function) {
+        for (; i < l; i++) {
+          callback.apply(this.items[i], args);
         }
       }
     },
@@ -333,24 +333,24 @@
     },
 
     iterator: function () {
-      return iui.util.Iterator( this.items );
+      return iui.util.Iterator(this.items);
     },
 
     // exports
     toJSON: function () {
-      return JSON.stringify( this.items );
+      return JSON.stringify(this.items);
     },
 
     toXML: function () {
-      var xmldoc = $.parseXML( "<collection></collection>" );
-      for ( var i = 0, l = this.items.length; i < l; i++ ) {
-        xmldoc.appendChild( this.items[ i ].toXML() );
+      var xmldoc = $.parseXML("<collection></collection>");
+      for (var i = 0, l = this.items.length; i < l; i++) {
+        xmldoc.appendChild(this.items[i].toXML());
       }
       return xmldoc;
     }
 
     // 보 류 중
-    //  toXMLString = function () { 
+    //  toXMLString = function () {
     //    return (new XMLSerializer()).serializeToString(iui.util.Collection.prototype.toXML());
     //  };
 
@@ -366,44 +366,44 @@
     //      callback.apply(this, [event].concat(data)) === false ||
     //      event.isDefaultPrevented());
     //  };
-  } );
+  });
 
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
   iui.util.DoubleLinkedList = function () {
-    if ( !this instanceof iui.util.DoubleLinkedList ) {
+    if (!this instanceof iui.util.DoubleLinkedList) {
       return new iui.util.DoubleLinkedList();
     }
     this.items = {};
   };
 
-  $.extend( iui.util.DoubleLinkedList.prototype, {
-    add: function ( item ) {
-      var key = iui.util.hash( item );
-      this.items[ key ] = item;
+  $.extend(iui.util.DoubleLinkedList.prototype, {
+    add: function (item) {
+      var key = iui.util.hash(item);
+      this.items[key] = item;
     },
     remove: function () {},
     has: function () {},
     first: function () {},
     last: function () {},
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
   /**
    * 주어진 문자열의 32비트 해시를 계산한다.
@@ -415,190 +415,192 @@
    * @param {string} str 해시 값을 구할 문자열
    * @return {integer}
    */
-  iui.util.fnv32a = function ( str ) {
+  iui.util.fnv32a = function (str) {
     var FNV1_32A_INIT = 0x811c9dc5,
       hval = FNV1_32A_INIT,
       i = 0,
       l = str.length;
-    for ( ; i < l; i++ ) {
-      hval ^= str.charCodeAt( i );
-      hval += ( hval << 1 ) + ( hval << 4 ) + ( hval << 7 ) + ( hval << 8 ) + ( hval << 24 );
+    for (; i < l; i++) {
+      hval ^= str.charCodeAt(i);
+      hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
     }
     return hval >>> 0;
   };
 
-  iui.util.hash = function ( obj ) {
-    return iui.util.fnv32a( iui.util.Base64.encode( obj ) );
+  iui.util.hash = function (obj) {
+    return iui.util.fnv32a(iui.util.Base64.encode(obj));
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  iui.util.Iterator = function ( elements ) {
+  iui.util.Iterator = function (elements) {
     this.nextIndex = 0;
     this.elements = elements || [];
   };
 
-  $.extend( iui.util.Iterator.prototype, {
+  $.extend(iui.util.Iterator.prototype, {
     hasNext: function () {
       return this.nextIndex < this.elements.length;
     },
 
     next: function () {
-      if ( this.hasNext() ) {
-        return this.elements[ this.nextIndex++ ];
+      if (this.hasNext()) {
+        return this.elements[this.nextIndex++];
       }
     },
 
     remove: function () {
-      if ( this.hasNext() ) {
-        this.elements.splice( this.nextIndex, 1 );
+      if (this.hasNext()) {
+        this.elements.splice(this.nextIndex, 1);
       }
     }
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  var startTime = ( new Date() ).getTime();
+  var startTime = (new Date())
+    .getTime();
 
-  iui.util.laptime = function ( message ) {
-    var time = ( new Date() ).getTime() - startTime;
-    console.log( ( message || "Lap Time" ) + " : " + time );
+  iui.util.laptime = function (message) {
+    var time = (new Date())
+      .getTime() - startTime;
+    console.log((message || "Lap Time") + " : " + time);
     return time;
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  iui.util.List = function ( elements ) {};
+  iui.util.List = function (elements) {};
 
-  $.extend( iui.util.List.prototype, {
+  $.extend(iui.util.List.prototype, {
     append: function () {},
     insert: function () {},
     before: function () {},
     after: function () {},
     remove: function () {}
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  iui.util.List = function ( array ) {
-    if ( !this instanceof iui.util.List ) {
-      return new iui.util.List( array );
+  iui.util.List = function (array) {
+    if (!this instanceof iui.util.List) {
+      return new iui.util.List(array);
     }
 
-    this.items = array ? $.isArray( array ) ? array : [ array ] : [];
+    this.items = array ? $.isArray(array) ? array : [array] : [];
   };
 
-  $.extend( iui.util.List.prototype, {
+  $.extend(iui.util.List.prototype, {
     add: function () {},
     remove: function () {},
     has: function () {},
     first: function () {},
     last: function () {},
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "util": {}
     }
-  } );
+  });
 
-  iui.util.uniqueId = ( function () {
+  iui.util.uniqueId = (function () {
     var guid = 0;
-    return function ( prefix ) {
+    return function (prefix) {
       return prefix + guid++;
     };
-  }() );
+  }());
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "model": {}
       }
     }
-  } );
+  });
 
   var classnames = [];
 
   iui.sheet.model.Entity = {
 
-    parent: function ( parent ) {
-      if ( !parent ) {
+    parent: function (parent) {
+      if (!parent) {
         return this._parent;
       }
       this._parent = parent;
     },
 
-    hasClass: function ( classname ) {
-      if ( !classname ) {
+    hasClass: function (classname) {
+      if (!classname) {
         return -1;
       }
-      classnames = this.className ? this.className.split( /\s+/ ) : [];
-      return $.inArray( classname, classnames, 0 );
+      classnames = this.className ? this.className.split(/\s+/) : [];
+      return $.inArray(classname, classnames, 0);
     },
 
-    addClass: function ( classname ) {
-      if ( !!classname && this.hasClass( classname ) < 0 ) {
-        classnames.push( classname );
-        this.className = classnames.join( " " );
-        if ( this.ui ) {
-          this.ui.addClass( classname );
+    addClass: function (classname) {
+      if (!!classname && this.hasClass(classname) < 0) {
+        classnames.push(classname);
+        this.className = classnames.join(" ");
+        if (this.ui) {
+          this.ui.addClass(classname);
         }
       }
       return this;
     },
 
-    removeClass: function ( classname ) {
-      if ( classname ) {
-        var index = this.hasClass( classname );
-        if ( index >= 0 ) {
-          classnames.splice( index, 1 );
-          this.className = classnames.join( " " );
-          if ( this.ui ) {
-            this.ui.removeClass( classname );
+    removeClass: function (classname) {
+      if (classname) {
+        var index = this.hasClass(classname);
+        if (index >= 0) {
+          classnames.splice(index, 1);
+          this.className = classnames.join(" ");
+          if (this.ui) {
+            this.ui.removeClass(classname);
           }
         }
       }
       return this;
     },
 
-    toggleClass: function ( classname ) {
-      if ( classname ) {
-        if ( this.hasClass( classname ) < 0 ) {
-          this.addClass( classname );
+    toggleClass: function (classname) {
+      if (classname) {
+        if (this.hasClass(classname) < 0) {
+          this.addClass(classname);
         } else {
-          this.removeClass( classname );
+          this.removeClass(classname);
         }
       }
       return this;
@@ -606,90 +608,138 @@
 
     toString: function () {
       var buffer = {};
-      for ( var prop in this ) {
-        buffer[ prop ] = this[ prop ];
+      for (var prop in this) {
+        buffer[prop] = this[prop];
       }
-      return JSON.stringify( buffer ).replace( /\r\n/g, "" );
+      return JSON.stringify(buffer)
+        .replace(/\r\n/g, "");
     }
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "model": {}
       }
     }
-  } );
+  });
 
-  // private 
+  // private
   var nextId = 0;
 
-  var Cell = iui.sheet.model.Cell = function ( info ) {
+  var Cell = iui.sheet.model.Cell = function (info) {
 
     info = info || {};
 
-    if ( !( this instanceof Cell ) ) {
-      return new Cell( info );
+    if (!(this instanceof Cell)) {
+      return new Cell(info);
     }
 
-    for ( var key in info ) {
-      this[ key ] = info[ key ];
+    for (var key in info) {
+      if (key === 'value') {
+        this.value(info.value === undefined ? '' : info.value);
+      } else {
+        this[key] = info[key];
+      }
     }
 
     this.index = nextId++;
     this.uid = info.id || "cell" + nextId;
     this.id = info.id || this.uid;
-    this.value = info.value;
     this.formula = info.formula;
-    this.className = "spreadsheet-cell " + ( info.classname || "" );
-    this.renderer = info.renderer; // iui.sheet.renderer.String;
+    this.className = "spreadsheet-cell " + (info.classname || "");
+    this.renderer = info.renderer;
     this.editor = info.editor;
 
-    // 성능상 배열을 사용하는 것이 좋겠다.... 파싱이 넘 느려...  
-    //  this.rows = /*info.rows || */ []; 
-    //  this.columns = /*info.columns || */ [];
-    this.rows = ( new iui.util.Collection() ).addAll( info.rows || [] );
-    this.columns = ( new iui.util.Collection() ).addAll( info.columns || [] );
+    // 성능상 배열을 사용하는 것이.... 파싱이 넘 느려...
+    this.rows = info.rows || [];
+    this.columns = info.columns || [];
+    //    this.rows = (new iui.util.Collection()).addAll(info.rows || []);
+    //    this.columns = (new iui.util.Collection()).addAll(info.columns || []);
 
-    // privileged method
     this.ui = null;
 
   };
 
+  // constants
+  Cell.EVENT_CLL_DATA_CHANGED = 'celldatachanged';
+
+
   // public methods
-  $.extend( Cell.prototype, iui.sheet.model.Entity, {
+  $.extend(Cell.prototype, iui.sheet.model.Entity, {
+    /**
+     * TODO
+     * 아규멘트가 주어지면 셀에 값을 세팅하고 그렇지 않으면 현재 갖고 있는 값을 반환한다.
+     * 다시 별도의 함수를 구현하지 않고 프로퍼티로 설정하고 이벤트를 트리거하는 것이 좋겠다.
+     */
+    value: function (value) {
+      if (value === undefined) {
+        return this._value;
+      }
+      this._value = value;
+      this.trigger.call(this, Cell.EVENT_CLL_DATA_CHANGED);
+    },
+
+
+
+    edit: function () {
+      (this.getEditor()()).init(this);
+    },
+
+
+
     getRenderer: function () {
       return this.renderer ? this.renderer :
-        this.columns.length > 0 ? this.columns.get( 0 ).renderer :
+        this.columns.length > 0 ? this.columns[0].renderer :
         iui.sheet.renderer.String;
+    },
+
+
+
+    getEditor: function () {
+      return this.editor ? this.editor :
+        this.columns.length > 0 ? this.columns[0].editor :
+        iui.sheet.editor.String;
+    },
+
+
+
+    /**
+     * 시트에 이벤트를 발생시킨다.
+     */
+    trigger: function (type) {
+      if (this.parent() !== undefined) {
+        this.parent()._trigger(type, null, this);
+      }
     }
-  } );
+  });
 
-}( jQuery, window ) );
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "model": {}
       }
     }
-  } );
+  });
 
   var nextId = 0;
 
-  iui.sheet.model.Column = function ( info ) {
+  iui.sheet.model.Column = function (info) {
     info = info || {};
 
-    if ( !( this instanceof iui.sheet.model.Column ) ) {
-      return new iui.sheet.model.Column( info );
+    if (!(this instanceof iui.sheet.model.Column)) {
+      return new iui.sheet.model.Column(info);
     }
 
-    for ( var key in info ) {
-      this[ key ] = info[ key ];
+    for (var key in info) {
+      this[key] = info[key];
     }
 
     this.index = nextId++;
@@ -699,7 +749,7 @@
     this.label = info.label;
     this.width = info.width || 80;
     this.height = info.height || 26;
-    this.className = "spreadsheet-column ui-state-default " + ( info.className || "" );
+    this.className = "spreadsheet-column ui-state-default " + (info.className || "");
     this.group = info.group;
     this.ui = null;
     this._offset = {
@@ -711,41 +761,28 @@
     this.cells = new iui.util.Collection();
 
     this.headerRenderer = info.headerRenderer || iui.sheet.renderer.ColumnHeader;
-    this.resizable = false;
+    this.resizable = !!info.resizable;
 
-    // this.type = info.type || "Text"; // Text, Number, Date, Currency, Title, ...
     this.renderer = info.renderer || iui.sheet.renderer.String;
-    this.editor = info.editor;
-    this.buttons = null;
+    this.editor = info.editor || iui.sheet.editor.String;
 
+    this.buttons = null;
   };
 
-  $.extend( iui.sheet.model.Column.prototype, iui.sheet.model.Entity, {
+  $.extend(iui.sheet.model.Column.prototype, iui.sheet.model.Entity, {
 
-    //    getHeaderRenderer : function () {
-    //      return this.headerRenderer ? this.headerRenderer : iui.sheet.renderer.ColumnHeader;
-    //    },
-    //      
-    //    getRenderer: function () {
-    //      return this.renderer ? this.renderer : iui.sheet.renderer.String;
-    //    },
-
-    setWidth: function ( width ) {
+    setWidth: function (width) {
       this.width = width;
-      if ( this.ui ) {
-        this.ui.width( width );
+      if (this.ui) {
+        this.ui.width(width);
       }
-      this._parent._trigger( "columnChanged" );
+      this._parent._trigger("columnChanged");
     },
 
-    render: function () {},
-
-    refresh: function () {},
-
     offset: function () {
-      if ( this.ui ) {
+      if (this.ui) {
         this._offset = {
-          left: this.ui[ 0 ].offsetLeft,
+          left: this.ui[0].offsetLeft,
           width: this.ui.width(),
           outerWidth: this.ui.outerWidth(),
           innerWidth: this.ui.innerWidth()
@@ -753,55 +790,55 @@
       }
       return this._offset;
     }
-  } );
+  });
 
   //-------------------------------------------------------------------------
-  // static class methods 
+  // static class methods
   /**
    * 엑셀 스타일의 컬럼 이름 생성
    * TODO 676이상의 컬럼이 지정되면 타이틀을 잘못 계산하는 것을 수정해야 한다.
    * A ~ YZ 까지의 676(26^2)개만 정상적으로 생성되며,
    * ZA ~ ZZ 는 생성되지 못하고 AAA로 넘어간다.
    */
-  iui.sheet.model.Column.getColumnLabel = function ( index ) {
-    return $.map( ( index )
-        .toString( 26 )
-        .split( "" ),
-        function ( e, i ) {
-          e = parseInt( e, 26 );
-          if ( index > 25 && i === 0 ) {
+  iui.sheet.model.Column.getColumnLabel = function (index) {
+    return $.map((index)
+        .toString(26)
+        .split(""),
+        function (e, i) {
+          e = parseInt(e, 26);
+          if (index > 25 && i === 0) {
             e--;
           }
-          return String.fromCharCode( e + 65 );
-        } )
-      .join( "" );
+          return String.fromCharCode(e + 65);
+        })
+      .join("");
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "model": {}
       }
     }
-  } );
+  });
 
   var nextId = 0;
 
-  iui.sheet.model.ColumnGroup = function ( info ) {
+  iui.sheet.model.ColumnGroup = function (info) {
 
     info = info || {};
 
-    if ( !( this instanceof iui.sheet.model.ColumnGroup ) ) {
-      return new iui.sheet.model.ColumnGroup( info );
+    if (!(this instanceof iui.sheet.model.ColumnGroup)) {
+      return new iui.sheet.model.ColumnGroup(info);
     }
     this.uid = info.id || "columngroup" + nextId++;
     this.id = info.id || this.uid;
     this.label = info.label;
     this.columns = iui.util.Collection();
-    //    this._ui = info.ui || iui.sheet.renderer.ColumnGroupHeader( this );
+
     this.ui = null;
 
     this.renderer = info.renderer || iui.sheet.renderer.ColumnGroupHeader;
@@ -809,67 +846,63 @@
   };
 
 
-  $.extend( iui.sheet.model.ColumnGroup.prototype, iui.sheet.model.Entity, {
+  $.extend(iui.sheet.model.ColumnGroup.prototype, iui.sheet.model.Entity, {
 
     width: function () {
-        var w = 0,
-          brw = 0,
-          numberOfVisibleColumn = 0,
-          $uiColumns = this._parent ? $.map( this._parent._columns.toArray(), function ( column, index ) {
-            if ( !column.ui ) {
-              return null;
-            }
-            var parent = column.ui.parent();
-            if ( !parent ) {
-              return null;
-            }
-            return parent.children().index( column.ui ) >= 0 ? column : null;
-          } ) : [];
-
-        $.each( this.columns.toArray(), function ( i ) {
-          if ( $.inArray( this, $uiColumns ) >= 0 ) {
-            w += this.offset().width;
-            brw = parseInt( this.ui.css( "border-right-width" ) );
-            numberOfVisibleColumn++;
+      var w = 0,
+        brw = 0,
+        numberOfVisibleColumn = 0,
+        $uiColumns = this._parent ? $.map(this._parent._columns.toArray(), function (column, index) {
+          if (!column.ui) {
+            return null;
           }
-        } );
-        return w + brw * ( numberOfVisibleColumn - 1 );
-      }
-      //      ,
-      //    ui: function ( ui ) {
-      //      if ( ui ) {
-      //        this._ui = ui.text( this.label );
-      //      }
-      //      this._ui.data( "group", this );
-      //      return this._ui.width( this.width() );
-      //    }
-  } );
+          var parent = column.ui.parent();
+          if (!parent) {
+            return null;
+          }
+          return parent.children()
+            .index(column.ui) >= 0 ? column : null;
+        }) : [];
 
-}( jQuery, window ) );
+      $.each(this.columns.toArray(), function (i) {
+        if ($.inArray(this, $uiColumns) >= 0) {
+          w += this.offset()
+            .width;
+          brw = parseInt(this.ui.css("border-right-width"));
+          numberOfVisibleColumn++;
+        }
+      });
+      return w + brw * (numberOfVisibleColumn - 1);
+    }
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+  });
+
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "model": {}
       }
     }
-  } );
+  });
   var nextId = 0;
 
-  var Row = iui.sheet.model.Row = function ( info ) {
+  var Row = iui.sheet.model.Row = function (info) {
     info = info || {};
 
-    if ( !( this instanceof Row ) ) {
-      return new Row( info );
+    if (!(this instanceof Row)) {
+      return new Row(info);
     }
+
     this.index = nextId++;
     this.uid = info.id || "row" + nextId;
     this.id = info.id || this.uid;
     this.height = info.height || 26;
     this.label = info.label;
     this.width = info.width || 80;
-    this.className = "ui-state-default spreadsheet-row " + ( info.className || "" );
+    this.className = "ui-state-default spreadsheet-row " + (info.className || "");
     this.ui = null;
     this._offset = {
       top: 0,
@@ -877,30 +910,34 @@
       outerHeight: 0,
       innerHeight: 0
     };
-    this.cells = new iui.util.Collection().addAll( info.cells || [] );
+
+    this.cells = new iui.util.Collection()
+      .addAll(info.cells || []);
 
     this.headerRenderer = info.headerRenderer || iui.sheet.renderer.RowHeader;
-    this.resizable = false;
+
+    // 행 높이를 수정할 수 있는 옵션.
+    this.resizable = true; //!!info.resizable;
 
     this.renderer = null;
     this.editor = null;
     this.buttons = null;
   };
 
-  $.extend( Row.prototype, iui.sheet.model.Entity, {
+  $.extend(Row.prototype, iui.sheet.model.Entity, {
 
-    setHeight: function ( height ) {
+    setHeight: function (height) {
       this.height = height;
-      if ( this.ui ) {
-        this.ui.height( height );
+      if (this.ui) {
+        this.ui.height(height);
       }
-      this._parent._trigger( "rowChanged" );
+      this._parent._trigger("rowChanged");
     },
 
     offset: function () {
-      if ( this.ui ) {
+      if (this.ui) {
         this._offset = {
-          top: this.ui[ 0 ].offsetTop,
+          top: this.ui[0].offsetTop,
           height: this.ui.height(),
           outerHeight: this.ui.outerHeight(),
           innerHeight: this.ui.innerHeight()
@@ -908,572 +945,903 @@
       }
       return this._offset;
     }
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "editor": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.editor.Currency = function ( elements ) {};
+  iui.sheet.editor.Currency = function (elements) {};
 
-  $.extend( iui.sheet.editor.Currency.prototype, {} );
-}( jQuery, window ) );
+  $.extend(iui.sheet.editor.Currency.prototype, {});
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "editor": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.editor.Date = function ( elements ) {};
+  iui.sheet.editor.Date = function (elements) {};
 
-  $.extend( iui.sheet.editor.Date.prototype, {} );
-}( jQuery, window ) );
+  $.extend(iui.sheet.editor.Date.prototype, {});
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "editor": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.editor.Email = function ( elements ) {};
+  iui.sheet.editor.Email = function (elements) {};
 
-  $.extend( iui.sheet.editor.Email.prototype, {} );
-}( jQuery, window ) );
+  $.extend(iui.sheet.editor.Email.prototype, {});
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "editor": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.editor.Number = function ( elements ) {};
+  var instance;
 
-  $.extend( iui.sheet.editor.Number.prototype, {} );
-}( jQuery, window ) );
+  var Editor = iui.sheet.editor.Link = function () {
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
-    "iui": {
-      "sheet": {
-        "editor": {}
+    if (this instanceof Editor) {
+      // 싱글톤(singletone): 시트에 생성된 것 하나를 모든 셀에서 공유하여 사용하도록 한다.
+      if (instance) {
+        return instance;
       }
+    } else {
+      // 언제나 new를 사용하여 객체를 생성하도록 강제
+      return new Editor();
     }
-  } );
 
-  iui.sheet.editor.String = function ( elements ) {
+    instance = this;
 
+    this.ui = $('<div>').html('<form name="linkEditorForm"><fieldset >' +
+      '<p><label style="display:inline-block;width:50px">이름:</label> <input name="value" type="text" style="width:300px"></p>' +
+      '<p><label style="display:inline-block;width:50px">URL:</label> <input name="link" type="text" style="width:300px"></p>' +
+      '</fieldset></form>');
+
+    // 복합 에디터를 다이얼로그로 감싸둔다.
+    this.popup = this.ui.dialog({
+      title: 'Site Link',
+      width: 430,
+      height: 275,
+      // 자동으로 팝업이 열리지 않도록 한다.
+      autoOpen: false,
+      // 팝업을 닫기 전에는 다른 것을 건드릴 수 없도록 한다.
+      modal: true,
+      // 컨트롤 버튼들
+      buttons: {
+        "Confirm": function () {
+          instance.submit();
+        },
+        "Cancel": function () {
+          instance.ui.dialog('close');
+        }
+      }
+    });
+
+    return instance;
   };
 
-  $.extend( iui.sheet.editor.String.prototype, {
 
-  } );
 
-}( jQuery, window ) );
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+
+  $.extend(Editor.prototype, {
+
+    /**
+     * 팝업 에디터 초기화 위치 및 현재 셀의 데이터 등을 세팅
+     */
+    init: function (cell) {
+      this.cell = cell;
+
+      this.popup
+        .find('input[name=value]').val(cell.value()).focus().end()
+        .find('input[name=link]').val(cell.link).end()
+        .dialog('open');
+      return this;
+    },
+
+
+
+    /**
+     * 팝업 에디터 숨김
+     */
+    hide: function () {
+      this.popup.dialog('close');
+      return this;
+    },
+
+
+
+    /**
+     * 팝업 에디터에서 변경된 데이터를 셀 모델에 반영
+     * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
+     */
+    submit: function () {
+      this.cell.link = instance.popup.find('input[name=link]').val();
+      this.cell.value(instance.popup.find('input[name=value]').val());
+      this.cell.trigger('celldatachanged');
+      console.log('submit');
+    }
+
+  });
+
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
+    "iui": {
+      "sheet": {
+        "editor": {}
+      }
+    }
+  });
+
+  iui.sheet.editor.Number = function (elements) {};
+
+  $.extend(iui.sheet.editor.Number.prototype, {});
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
+    "iui": {
+      "sheet": {
+        "editor": {}
+      }
+    }
+  });
+
+  var instance;
+
+  var Editor = iui.sheet.editor.Popup = function () {
+
+    if (this instanceof Editor) {
+      // 싱글톤(singletone): 시트에 생성된 것 하나를 모든 셀에서 공유하여 사용하도록 한다.
+      if (instance) {
+        return instance;
+      }
+    } else {
+      // 언제나 new를 사용하여 객체를 생성하도록 강제
+      return new Editor();
+    }
+
+    instance = this;
+
+    this.editor = $('<input type="text">');
+
+    this.ui = this.editor.wrap('<div>').parent();
+
+    // 복합 에디터를 다이얼로그로 감싸둔다.
+    this.popup = this.ui.dialog({
+      // 자동으로 팝업이 열리지 않도록 한다.
+      autoOpen: false,
+      // 팝업을 닫기 전에는 다른 것을 건드릴 수 없도록 한다.
+      modal: true,
+      // 컨트롤 버튼들
+      buttons: {
+        "Confirm": function () {
+          instance.submit(instance.editor.val());
+        },
+        "Cancel": function () {
+          instance.ui.dialog('close');
+        }
+      }
+    });
+
+    return instance;
+  };
+
+
+
+
+
+  $.extend(Editor.prototype, {
+
+    /**
+     * 팝업 에디터 초기화 위치 및 현재 셀의 데이터 등을 세팅
+     */
+    init: function (cell) {
+      this.cell = cell;
+      this.popup.dialog('open');
+      // 팝업의 위치 지정
+      //      this.ui
+      //        .css({
+      //          position: 'absolute',
+      //          width: cell.ui.width(),
+      //          height: cell.ui.height() - 2,
+      //          top: parseInt(cell.ui.css('top')) - 2,
+      //          left: parseInt(cell.ui.css('left')) - 2
+      //        })
+      //        .show();
+      this.editor.val(cell.value()).focus();
+      return this;
+    },
+
+
+
+    /**
+     * 팝업 에디터 숨김
+     */
+    hide: function () {
+      this.popup.dialog('close');
+      return this;
+    },
+
+
+
+    /**
+     * 팝업 에디터에서 변경된 데이터를 셀 모델에 반영
+     * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
+     */
+    submit: function (value) {
+      this.cell.value(value);
+    }
+
+  });
+
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
+    "iui": {
+      "sheet": {
+        "editor": {}
+      }
+    }
+  });
+
+  var instance;
+
+  var Editor = iui.sheet.editor.String = function () {
+
+    if (this instanceof Editor) {
+      // 싱글톤(singletone): 시트에 생성된 것 하나를 모든 셀에서 공유하여 사용하도록 한다.
+      if (instance) {
+        return instance;
+      }
+    } else {
+      // 언제나 new를 사용하여 객체를 생성하도록 강제
+      return new Editor();
+    }
+
+    instance = this;
+
+    this.editor = $('<input type="text" style="width:100%;height:100%">')
+      .change(function (event) {
+        instance.submit(this.value);
+      })
+      .blur(function (event) {
+        instance.hide();
+      });
+
+    this.ui = this.editor
+      .wrap('<span>').parent()
+      .wrap('<div id="editorString">').parent();
+
+    return instance;
+  };
+
+
+
+
+
+  $.extend(Editor.prototype, {
+
+    /**
+     * 에디터 초기화
+     * 하나의 에디터를 공유하여 사용하므로 매번 불려질 때마다 초기화 한다.
+     */
+    init: function (cell) {
+      this.cell = cell;
+
+      // 팝업의 위치 지정
+      this.ui
+        .css({
+          position: 'absolute',
+          width: cell.ui.width(),
+          height: cell.ui.height() - 2,
+          top: parseInt(cell.ui.css('top')) - 2,
+          left: parseInt(cell.ui.css('left')) - 2
+        })
+        .show()
+        .appendTo(cell.ui.parent());
+
+      this.editor.val(cell.value()).focus();
+      return this;
+    },
+
+
+
+    /**
+     * 에디터 숨김
+     */
+    hide: function () {
+      //    * input에서 블러 이벤트를 처리하는 것과 같이 서브밋이 발생함에 따라 이중 호출이 있다.
+      //    * 두번째 호출될 때를 거를 만한 방법을 찾지 못하였다.
+      // TODO try catch 구문을 사용하지 않을 수 있는 방법이 없을까?
+      try {
+        this.ui.detach();
+      } catch (error) {}
+      return this;
+    },
+
+
+
+    /**
+     * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
+     */
+    submit: function (value) {
+      this.cell.value(value);
+      //      this.cell.parent().refresh(this.cell);
+    }
+
+  });
+
+
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  function onClick( cell ) {
-    console.log( cell.value );
-  }
-
-  var Renderer = iui.sheet.renderer.Button = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Button = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    return $( '<input type="button" style="width:100%;height:100%;text-align:center;color:blue;font-weight:bolder">' )
-      .attr( 'value', cell.bottonLabel )
-      .on( 'click', function ( event ) {
-        onClick( this ); // cell.clickCallback ...
-      } )
-      .wrap( '<div class="spreadsheet-cell">' )
-      .parent()
-      .attr( 'title', cell.value )
-      .addClass( cell.className );
+    var renderer = $('<input type="button" style="height:100%;width:100%;color:blue;font-weight:bolder">')
+      .attr('value', cell.bottonLabel)
+      .attr('title', cell.value())
+      .button()
+
+    .click(function (event) {
+      // 이벤트 번짐(버블링)을 방지.
+      event.stopPropagation();
+      // 콜백함수 호출.
+      cell.click.call(this, cell);
+    })
+
+    .wrap('<div style="padding:1px">').parent();
+
+    return renderer;
   };
 
-  $.extend( Renderer.prototype, {
+  $.extend(Renderer.prototype, {});
 
-  } );
+}(jQuery, window));
 
-}( jQuery, window ) );
-
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
+
+  var Renderer = iui.sheet.renderer.Checkbox = function (cell) {
+    cell = cell || {};
+
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
+    }
+
+    return $('<input type="checkbox">')
+      .attr('value', cell.bottonLabel)
+      .attr('title', cell.value())
+      .prop('checked', !!cell.value())
+      .change(function () {
+        cell.value(this.checked);
+        $(this).attr('title', cell.value());
+      })
+      .wrap('<span>').parent()
+      .wrap('<div>').parent();
+  };
+
+  $.extend(Renderer.prototype, {});
+
+}(jQuery, window));
+
+(function ($, window, undefined) {
+  $.extend(true, window, {
+    "iui": {
+      "sheet": {
+        "renderer": {}
+      }
+    }
+  });
 
 
-  var Renderer = iui.sheet.renderer.ColumnGroupHeader = function ( group ) {
+  var Renderer = iui.sheet.renderer.ColumnGroupHeader = function (group) {
     group = group || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( group );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(group);
     }
 
-    return $( "<span>" ).text( group.label );
+    return $("<span>")
+      .text(group.label);
   };
 
-  $.extend( Renderer.prototype, {} );
+  $.extend(Renderer.prototype, {});
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
   // ------------------------------------
   // Private Area by Closure
   // ------------------------------------
 
-  var Renderer = iui.sheet.renderer.ColumnHeader = function ( column ) {
+  var Renderer = iui.sheet.renderer.ColumnHeader = function (column) {
     column = column || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( column );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(column);
     }
 
-    var renderer = $( '<div>' )
-      .css( {
+    var renderer = $('<div>')
+      .css({
         padding: '0px',
         margin: '0px',
         height: '100%',
         width: '100%',
         border: 0
-      } )
+      })
       .append(
-        $( '<span>' ).text(
-          column.label !== undefined ? column.label : column.visualId
-        )
+        $('<span>')
+        .text(column.label !== undefined ? column.label : column.visualId)
       )
-      .append( '<div class="indicator">' )
+      .append('<div class="indicator">')
       //        .data( 'column', column )
-      .removeClass( 'ui-corner-all' );
+      .removeClass('ui-corner-all');
 
     return renderer;
   };
 
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  var Renderer = iui.sheet.renderer.Currency = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Currency = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    var currencyCnt = Math.floor( cell.value.length / 3 );
+    var currencyCnt = Math.floor(cell.value().length / 3);
     var temp = "";
     var startIdx, endIdx = 0;
     var commaCnt = 3;
     var currency = "￦";
-    startIdx = cell.value.length - commaCnt;
-    endIdx = cell.value.length;
+    startIdx = cell.value().length - commaCnt;
+    endIdx = cell.value().length;
 
-    for ( var i = 0; i < currencyCnt; i++ ) {
-      temp = "," + cell.value.substring( startIdx, endIdx ) + temp;
+    for (var i = 0; i < currencyCnt; i++) {
+      temp = "," + cell.value().substring(startIdx, endIdx) + temp;
       endIdx = startIdx;
       startIdx -= commaCnt;
     }
 
-    if ( startIdx + commaCnt >= 0 ) {
-      temp = cell.value.substring( 0, endIdx ) + temp;
-    } else if ( currencyCnt === 0 ) {
-      temp = cell.value;
+    if (startIdx + commaCnt >= 0) {
+      temp = cell.value().substring(0, endIdx) + temp;
+    } else if (currencyCnt === 0) {
+      temp = cell.value();
     }
 
-    if ( temp.substring( 0, 1 ) === "," ) {
-      temp = temp.substring( 1, temp.length );
+    if (temp.substring(0, 1) === ",") {
+      temp = temp.substring(1, temp.length);
     }
 
-    if ( options.regional === "en" ) {
+    if (options.regional === "en") {
       currency = "$";
     }
 
     temp = currency + temp;
 
-
-    return $( '<div>' )
-      .text( temp )
-      .wrap( '<div class="spreadsheet-cell">' ).parent()
-      .attr( 'title', cell.value )
-      .addClass( cell.className );
+    return $('<span>')
+      .text(temp)
+      .wrap('<div style="text-align:right;">').parent()
+      .attr('title', temp);
   };
 
-  $.extend( Renderer.prototype, {
+  $.extend(Renderer.prototype, {
 
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  var Renderer = iui.sheet.renderer.Date = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Date = function (cell) {
     cell = cell || {};
     var dateRenderer = "";
     var format = "yyyy-MM-dd";
     var dateTemp = "";
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    if ( options.regional === "en" ) {
+    if (options.regional === "en") {
       format = "dd/MM/yyyy";
     }
 
-    var currentDate = new Date( parseFloat( cell.value ) );
+    var currentDate = new Date(parseFloat(cell.value()));
 
-    dateTemp = format.replace( /(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ( rFormat ) {
-      switch ( rFormat ) {
+    dateTemp = format.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function (rFormat) {
+      switch (rFormat) {
       case "yyyy":
         return currentDate.getFullYear();
       case "MM":
-        return ( currentDate.getMonth() + 1 ) < 10 ? "0" + ( currentDate.getMonth() + 1 ) : ( currentDate.getMonth() + 1 );
+        return (currentDate.getMonth() + 1) < 10 ? "0" + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
       case "yy":
-        return ( currentDate.getFullYear() % 1000 );
+        return (currentDate.getFullYear() % 1000);
       case "dd":
-        return currentDate.getDate() < 10 ? "0" + ( currentDate.getDate() ) : ( currentDate.getDate() );
+        return currentDate.getDate() < 10 ? "0" + (currentDate.getDate()) : (currentDate.getDate());
       case "HH":
-        return currentDate.getHours() < 10 ? "0" + ( currentDate.getHours() ) : ( currentDate.getHours() );
+        return currentDate.getHours() < 10 ? "0" + (currentDate.getHours()) : (currentDate.getHours());
       case "hh":
-        return ( ( h = currentDate.getHours() % 12 ) ? h : 12 ) < 10 ? "0" + h : h;
+        return ((h = currentDate.getHours() % 12) ? h : 12) < 10 ? "0" + h : h;
       case "mm":
-        return currentDate.getMinutes() < 10 ? "0" + ( currentDate.getMinutes() ) : ( currentDate.getMinutes() );
+        return currentDate.getMinutes() < 10 ? "0" + (currentDate.getMinutes()) : (currentDate.getMinutes());
       case "ss":
-        return currentDate.getSeconds() < 10 ? "0" + ( currentDate.getSeconds() ) : ( currentDate.getSeconds() );
+        return currentDate.getSeconds() < 10 ? "0" + (currentDate.getSeconds()) : (currentDate.getSeconds());
         /*
-	   case "a/p": return cell.value.getHours() < 12 ? "오전" : "오후";
-	   case "E": return weekName[cell.value.getDay()];
+	   case "a/p": return cell.value().getHours() < 12 ? "오전" : "오후";
+	   case "E": return weekName[cell.value().getDay()];
 	   */
       default:
         return rFormat;
       }
-    } );
+    });
 
-    dateRenderer = $( '<div>' )
-      .text( dateTemp )
-      .wrap( '<div class="spreadsheet-cell">' ).parent()
-      .attr( 'title', cell.value )
-      .addClass( cell.className );
-
-    return dateRenderer;
+    return $('<span>').text(dateTemp)
+      .wrap('<div>').parent()
+      .attr('title', dateTemp);
   };
 
-  $.extend( Renderer.prototype, {
+  $.extend(Renderer.prototype, {
 
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.renderer.Email = function ( elements ) {
+  iui.sheet.renderer.Email = function (elements) {
 
   };
 
-  $.extend( iui.sheet.renderer.Email.prototype, {
+  $.extend(iui.sheet.renderer.Email.prototype, {
 
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-  ( function ( $, window, undefined ) {
-    $.extend( true, window, {
+  (function ($, window, undefined) {
+    $.extend(true, window, {
       "iui": {
         "sheet": {
           "renderer": {}
         }
       }
-    } );
+    });
 
 
-    var Renderer = iui.sheet.renderer.Icon = function ( cell ) {
+    var Renderer = iui.sheet.renderer.Icon = function (cell) {
       cell = cell || {};
 
-      if ( !( this instanceof Renderer ) ) {
-        return new Renderer( cell );
+      if (!(this instanceof Renderer)) {
+        return new Renderer(cell);
       }
+      var icon = cell.value();
 
+      return $('<i class="fa fa-fw">') // icon
+        .html(icon)
+        .css({
+          color: cell.color
+        })
 
-      var div = $( '<div>' )
-        .attr( 'title', cell.value );
+      // contents
+      .wrap('<span>').parent()
 
-      var icon = $( '<span>' )
-        .html( '&nbsp' )
-        .addClass( 'icon-' + cell.value )
-        .appendTo( div );
+      // label
+      .append('<span style="display:inline">').find('span').text(icon).end()
 
-
-      return div;
+      // container
+      .wrap('<div>').parent().attr('title', icon);
     };
 
-  }( jQuery, window ) );
+  }(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  var Renderer = iui.sheet.renderer.Image = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Image = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    //console.log( "++++++++++++++++++++++++++++++++++++++++" );
-    //console.log( this );
+    var div = $('<div>')
+      .attr('title', cell.value())
+      .addClass(cell.className);
 
-    var div = $( '<div class="spreadsheet-cell">' )
-      .attr( 'title', cell.value )
-      .addClass( cell.className );
-    if ( cell.value != null ) {
-      var img = $( '<img src="/src/img/' + cell.value + '.jpg" />' )
-        .attr( 'alt', cell.value )
-        .appendTo( div )
-        .on( 'load', function ( event ) {
-          //console.log( 'image loaded....' );
-          //console.log( this );
-          //console.log( cell );
-          cell.rows.get( 0 ).setHeight( this.height );
-          cell.columns.get( 0 ).setWidth( this.width );
-        } );
+    if (cell.value() != null) {
+      var img = $('<img style="margin:1px;">')
+        .attr('src', cell.value())
+        .attr('alt', cell.value())
+        .on('load', function (event) {
+          cell.rows[0].setHeight(this.height);
+          cell.columns[0].setWidth(this.width);
+        })
+        .appendTo(div);
     }
 
     return div;
   };
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
   // ------------------------------------
   // Private
-  // ------------------------------------    
+  // ------------------------------------
 
-  var Renderer = iui.sheet.renderer.Link = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Link = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
-    var div = $( '<div>' ).attr( 'title', cell.link );
-    var span = $( '<a>' ).text( cell.value )
-      .attr( 'title', cell.link )
-      .attr( 'href', cell.link )
-      .wrap( '<span>' ).parent()
-      .appendTo( div );
+
+    var div = $('<div>')
+      .attr('title', cell.link);
+
+    var span = $('<a>')
+      .text(cell.value())
+      .attr('title', cell.link)
+      .attr('href', cell.link)
+      .wrap('<span>').parent()
+      .appendTo(div);
 
     return div;
   };
 
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  iui.sheet.renderer.Number = function ( elements ) {
+  var Renderer = iui.sheet.renderer.Number = function (cell) {
 
+    cell = cell || {};
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
+    }
+
+    var label = '';
+    if (!isNaN(parseFloat(cell.value()))) {
+      label = cell.value().split(/(?=(?:\d{3})+(?:\.|$))/g)
+        .join(',');
+    }
+
+    return $('<span>')
+      .text(label)
+      .wrap('<div>')
+      .parent()
+      .attr('title', label);
   };
 
-  $.extend( iui.sheet.renderer.Number.prototype, {
 
-  } );
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  var Renderer = iui.sheet.renderer.RowHeader = function ( row ) {
-    var renderer = $( '<span>' ).text( row.label || row.index + 1 )
-      .wrap( '<div>' ).parent()
-      .css( {
+  var Renderer = iui.sheet.renderer.RowHeader = function (row) {
+    var renderer = $('<span>')
+      .text(row.label || row.index + 1)
+      .wrap('<div>')
+      .parent()
+      .css({
         border: '0px',
         margin: '0px',
         padding: '0px',
         width: '100%',
         height: '100%'
-      } )
-      .append( '<div class="indicator">' );
+      })
+      .append('<div class="indicator">');
     return renderer;
   };
 
-  $.extend( Renderer.prototype, {
+  $.extend(Renderer.prototype, {
 
-  } );
-}( jQuery, window ) );
+  });
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
   // ------------------------------------
   // Private
-  // ------------------------------------    
+  // ------------------------------------
 
-  var Renderer = iui.sheet.renderer.String = function ( cell ) {
+  var Renderer = iui.sheet.renderer.String = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    var div = $( '<div>' ).attr( 'title', cell.value );
-    var span = $( '<span>' ).text( cell.value ).appendTo( div );
+    //    var span = $('<span>')
+    //      .text(cell.value());
 
-    return div;
+    //    var div = $('<div>')
+    //      .attr('title', cell.value())
+    //      .append(span);
+
+    //    return div;
+
+    return $('<span>').text(cell.value())
+      .wrap('<div>').parent().attr('title', cell.value());
 
   };
 
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "renderer": {}
       }
     }
-  } );
+  });
 
-  var Renderer = iui.sheet.renderer.Title = function ( cell ) {
+  var Renderer = iui.sheet.renderer.Title = function (cell) {
     cell = cell || {};
 
-    if ( !( this instanceof Renderer ) ) {
-      return new Renderer( cell );
+    if (!(this instanceof Renderer)) {
+      return new Renderer(cell);
     }
 
-    return $( '<div style="text-align:center;color:red;font-weight:bolder">' )
-      .text( cell.value )
-      .wrap( '<div class="spreadsheet-cell">' ).parent()
-      .attr( 'title', cell.value )
-      .addClass( cell.className );
+    return $('<span style="text-align:center;font-weight:bolder">')
+      .text(cell.value())
+
+    .wrap('<div >').parent()
+      .attr('title', cell.value());
   };
 
-  $.extend( Renderer.prototype, {
+  $.extend(Renderer.prototype, {
 
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( $, window, undefined ) {
-  $.extend( true, window, {
+(function ($, window, undefined) {
+  $.extend(true, window, {
     "iui": {
       "sheet": {
         "plugin": {}
       }
     }
-  } );
+  });
 
   iui.sheet.plugin.Pagenation = function () {
 
   };
 
-  $.extend( iui.sheet.plugin.Pagenation.prototype, {
+  $.extend(iui.sheet.plugin.Pagenation.prototype, {
 
-  } );
+  });
 
-}( jQuery, window ) );
+}(jQuery, window));
 
-( function ( factory ) {
-  if ( typeof define === "function" && define.amd ) {
+(function (factory) {
+  if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module.
-    define( [
+    define([
       "jquery"
-    ], factory );
+    ], factory);
   } else {
     // Browser globals
-    factory( jQuery );
+    factory(jQuery);
   }
-}( function ( $ ) {
+}(function ($) {
   "use strict";
   // PRIVATE ----------------------------------------------------------------
   var nextId = 0;
@@ -1497,22 +1865,29 @@
   var laptime = iui.util.laptime;
 
 
-  // FF IE 등에서 '' 으로 측정되어 NaN이 된다. 
+  // FF IE 등에서 '' 으로 측정되어 NaN이 된다.
   // 기본 값으로 1을 주는 것은 현재 CSS가 그렇게 설정되어 있기 때문이다.
   // parseInt(NaN || 1) 의 결과 값은 1
-  function offsetRight( element ) {
-    return Math.round( element.offsetLeft + element.offsetWidth ) - parseInt( $( element ).css( "border-right-width" ) || 1 );
-  }
-
-  function offsetBottom( element ) {
-    return Math.round( element.offsetTop + element.offsetHeight ) - parseInt( $( element ).css( "border-bottom-width" ) || 1 );
+  function offsetRight(element) {
+    return Math.round(element.offsetLeft + element.offsetWidth) - parseInt($(element)
+      .css("border-right-width") || 1);
   }
 
 
 
-  laptime( "위젯 시작" );
 
-  return $.widget( "iui.january", {
+
+  function offsetBottom(element) {
+    return Math.round(element.offsetTop + element.offsetHeight) - parseInt($(element)
+      .css("border-bottom-width") || 1);
+  }
+
+
+
+
+
+  //  laptime("위젯 시작");
+  return $.widget("iui.january", {
     version: "0.3.929-SNAPSHOT",
     options: {
       height: "auto",
@@ -1522,7 +1897,7 @@
       minHeight: 150,
       minWidth: 150,
 
-      /* 
+      /*
        * 그리드 제목
        */
       title: "Innerwave January is jQuery plugin for datagrid.",
@@ -1557,7 +1932,7 @@
        */
       showRowHeaders: false,
 
-      /* 
+      /*
        * 기본 로우(행) 높이
        */
       defaultRowHeight: 24,
@@ -1583,7 +1958,7 @@
        */
       defaultGridLineColor: "#CCC",
 
-      /* 
+      /*
        * 셀 데이터 수정 창 보임 여부
        */
       showValueWindow: false,
@@ -1612,6 +1987,16 @@
       progressBar: null
     },
 
+
+
+
+
+    //    editors: {},
+
+
+
+
+
     // OVERRIDED ------------------------------------------------------------
     _create: function () {
       this.uid = this.options.id || "sheet" + nextId++;
@@ -1622,20 +2007,20 @@
       // XXX destroy시에 기존의 엘리먼트를 복구해 놓기 위해 백업해 둔다. ?
       this.original = {
         css: {
-          display: this.element[ 0 ].style.display,
-          width: this.element[ 0 ].style.width,
-          minWidth: this.element[ 0 ].style.minWidth,
-          maxWidth: this.element[ 0 ].style.maxWidth,
-          minHeight: this.element[ 0 ].style.minHeight,
-          maxHeight: this.element[ 0 ].style.maxHeight,
-          height: this.element[ 0 ].style.height
+          display: this.element[0].style.display,
+          width: this.element[0].style.width,
+          minWidth: this.element[0].style.minWidth,
+          maxWidth: this.element[0].style.maxWidth,
+          minHeight: this.element[0].style.minHeight,
+          maxHeight: this.element[0].style.maxHeight,
+          height: this.element[0].style.height
         },
-        contents: this.element[ 0 ].innerHTML
+        contents: this.element[0].innerHTML
       };
 
-      this.originalTitle = this.element.attr( "title" );
+      this.originalTitle = this.element.attr("title");
       this.options.title = this.options.title || this.originalTitle;
-      this.element.attr( "title", "" );
+      this.element.attr("title", "");
 
       this.boundary = {
         firstRow: 0, //
@@ -1648,7 +2033,7 @@
       this.cancleParseData = false;
 
       // 객체 생성에 new를 사용하지 않는 패턴을 사용한다.
-      // 그렇게 특별한 이유는 소스 압축시 조금이라도 더 줄이고자... 
+      // 그렇게 특별한 이유는 소스 압축시 조금이라도 더 줄이고자...
       // 그러니 대문자로 함수를 시작하는 것은 객체 생성이라는 생각을 가지자.
       this._columns = Collection();
       this._columnGroups = Collection();
@@ -1657,245 +2042,331 @@
       this._cells = Collection();
 
       // 기본 UI 생성을 위한 초기 데이터 파싱
-      this.addColumns( this.options.columns );
+      this.addColumns(this.options.columns);
       // FIXME 현재 옵션으로 제공되는 데이터는 모든 데이터를 파싱하고 렌더링을 한다.
       // 기본 렌더링 후 데이터를 파싱할 수 있도록 수정이 필요할까?
       // this.data(this.options.data);
 
       this._render();
 
-      laptime( " _create end" );
+      laptime(" _create end");
     },
+
+
+
+
+
     //    _delay: function () {},
     //    _destroy: function () {},
     //    _focusable: function () {},
     //    _getCreateEventData: function () {},
     //    _getCreateOptions:function () {},
     //    _hide:function () {},
-    //    _hoverable:function () {}, 
+    //    _hoverable:function () {},
     //    _init:function () {},
     //    _off:function () {},
     //    _on:function () {},
-    _setOption: function ( key, value ) {
-      if ( key === "columns" ) {
-        this.columns( value );
-      } else if ( key === "data" ) {
-        this.data( value );
+
+
+
+
+
+    _setOption: function (key, value) {
+      if (key === "columns") {
+        this.columns(value);
+      } else if (key === "data") {
+        this.data(value);
       }
-      this._super( key, value );
+      this._super(key, value);
       return this;
     },
+
+
+
+
+
     //    _setOptions: function (options) {},
     //    _show:function () {},
     //    _super:function () {},
     //    _superApply:function () {},
     //    _trigger:function () {},
+
+
+
+
+
     destroy: function () {
       this._super();
     },
+
+
+
+
+
     disable: function () {
       this._super();
     },
+
+
+
+
+
     enable: function () {
       this._super();
     },
+
+
+
+
+
     instance: function () {
       this._super();
     },
+
+
+
+
+
     //    option: function () {},
     //    widget: function () {},
 
+
+
+
+
     // OWN METHODS ----------------------------------------------------------
-    columns: function ( columns ) {
-      if ( columns === undefined ) {
+    columns: function (columns) {
+      if (columns === undefined) {
         return this._columns.toArray();
       }
       this._columns.empty();
-      this.addColumns( columns );
+      this.addColumns(columns);
     },
 
-    rows: function ( rows ) {
-      if ( rows === undefined ) {
+
+
+
+
+    rows: function (rows) {
+      if (rows === undefined) {
         return this._rows.toArray();
       }
       this._rows.empty();
-      this.addRows( rows );
+      this.addRows(rows);
     },
 
-    data: function ( data ) {
-      if ( data === undefined ) {
+
+
+
+
+    data: function (data) {
+      if (data === undefined) {
         return this.dataProvider.toArray();
       }
       //      laptime(this.uid + ".< set data into dataprovider");
       this.dataProvider.empty();
-      this.dataProvider.addAll( data );
+      this.dataProvider.addAll(data);
 
       this.cancleParseData = false;
 
       // 기본 렌더링이 되었으면 데이터 렌더링을 위한 트리거를 발생한다.
-      if ( this.initialized ) {
-        this._trigger( "dataChanged" );
+      if (this.initialized) {
+        this._trigger("dataChanged");
       }
-      laptime( " .set data into dataprovider >" );
+      laptime(" .set data into dataprovider >");
     },
 
 
-    addColumn: function ( info ) {
-      laptime( "addColumn start" );
-      var column = Column( info );
-      column.parent( this );
-      this._columns.add( column );
-      var group = this._columnGroups.getById( fnv32a( info.group || column.id ) );
-      if ( !group ) {
-        group = ColumnGroup( {
-          id: fnv32a( info.group || column.id ),
+
+
+
+    addColumn: function (info) {
+      laptime("addColumn start");
+      var column = Column(info);
+      column.parent(this);
+
+      // 컬럼에 지저된 에디터를 시트 수준에 저장해 둔다.
+      // 이미 저장되어 있는 것이 있다면 그것을 사용한다.
+      // 물론 싱글톤으로 작성되어 있는 것은 그대로 사용해도 하나만 생성될 것이다.
+      //      editorId = fnv32a(column.editor);
+      //      this.editors[editorId] = this.editors[editorId] || column.editor();
+
+      this._columns.add(column);
+      var group = this._columnGroups.getById(fnv32a(info.group || column.id));
+      if (!group) {
+        group = ColumnGroup({
+          id: fnv32a(info.group || column.id),
           label: info.group || ''
-        } );
-        group.parent( this );
-        this._columnGroups.add( group );
+        });
+        group.parent(this);
+        this._columnGroups.add(group);
       }
-      group.columns.add( column );
+      group.columns.add(column);
       return column;
     },
 
-    addColumns: function ( infos ) {
-      laptime( "addColumns start" );
+
+
+
+
+    addColumns: function (infos) {
+      laptime("addColumns start");
       var columns = [];
-      for ( var i = 0, l = infos.length; i < l; i++ ) {
-        infos[ i ].visualId = Column.getColumnLabel( i );
-        columns[ columns.length ] = this.addColumn( infos[ i ] );
+      for (var i = 0, l = infos.length; i < l; i++) {
+        infos[i].visualId = Column.getColumnLabel(i);
+        columns[columns.length] = this.addColumn(infos[i]);
       }
       return columns;
     },
 
-    addRow: function ( info ) {
-      laptime( "addRow start" );
-      var row = Row( info );
-      row.parent( this );
-      this._rows.add( row );
+
+
+
+
+    addRow: function (info) {
+      laptime("addRow start");
+      var row = Row(info);
+      row.parent(this);
+      this._rows.add(row);
       return row;
     },
 
-    addRows: function ( infos ) {
-      laptime( "addRows start" );
+
+
+
+
+    addRows: function (infos) {
+      laptime("addRows start");
       var rows = [];
-      for ( var i = 0, l = infos.length; i < l; i++ ) {
-        rows.push( this.addRow( infos[ i ] ) );
+      for (var i = 0, l = infos.length; i < l; i++) {
+        rows.push(this.addRow(infos[i]));
       }
       return rows;
     },
 
-    addCell: function ( info ) {
-      var cell = Cell( info );
-      cell.parent( this );
-      this._cells.add( cell );
+
+
+
+
+    addCell: function (info) {
+      var cell = Cell(info);
+      cell.parent(this);
+      this._cells.add(cell);
       return cell;
     },
 
-    addCells: function ( infos ) {
+
+
+
+
+    addCells: function (infos) {
       var cells = [];
-      for ( var i = 0, l = infos.length; i < l; i++ ) {
-        cells.push( this.addCell( infos[ i ] ) );
+      for (var i = 0, l = infos.length; i < l; i++) {
+        cells.push(this.addCell(infos[i]));
       }
       return cells;
     },
+
+
+
 
 
     _render: function () {
       var that = this;
 
       this.element.show();
-      if ( this.options.width === "auto" || this.options.width === "100%" ) {
-        this.element.width( Math.max( this.original.css.minWidth, this.original.css.width || this.element.attr( "width" ) ) );
+      if (this.options.width === "auto" || this.options.width === "100%") {
+        this.element.width(Math.max(this.original.css.minWidth, this.original.css.width || this.element.attr("width")));
       } else {
-        this.element.width( this.options.width );
+        this.element.width(this.options.width);
       }
-      if ( this.options.height === "auto" || this.options.height === "100%" ) {
-        this.element.height( Math.max( this.original.css.minHeight, this.original.css.height || this.element.attr( "height" ) ) );
+      if (this.options.height === "auto" || this.options.height === "100%") {
+        this.element.height(Math.max(this.original.css.minHeight, this.original.css.height || this.element.attr("height")));
       } else {
-        this.element.height( this.options.height );
+        this.element.height(this.options.height);
       }
 
-      this.element.addClass( "spreadsheet ui-widget ui-state-default" );
+      this.element.addClass("spreadsheet ui-widget ui-state-default");
       // 로더는 가장 먼저 생성하고 z-index로 최상위에 보인다.
       // 데이터 파싱 전에 약간의 시간을 두지만(setTimeout), 렌더링이 안되는 것이 있다.
       // 따라서 가능한 항상 보이기 위해서는 가장 먼저 생성한다.
       this._showProgressBar();
 
-      this.$uiContainer = $( "<div class='spreadsheet-container'>" )
-        .width( this.element.width() )
-        .height( this.element.height() )
-        .appendTo( this.element );
-      this.$uiHeader = $( "<div class='spreadsheet-header ui-state-default'>" ).appendTo( this.$uiContainer );
-      this.$uiViewport = $( "<div class='spreadsheet-viewport ui-widget-content'>" ).appendTo( this.$uiContainer );
-      this.$defaultGrid = $( "<canvas class='spreadsheet-gridlines'>" ).appendTo( this.$uiViewport );
-      this.$uiColumnViewport = $( "<div class='spreadsheet-viewport-column ui-state-default'>" ).appendTo( this.$uiContainer );
-      this.$uiColumns = $( "<ul class='spreadsheet-column-list'>" )
-        .sortable( {
+      this.$uiContainer = $("<div class='spreadsheet-container'>")
+        .width(this.element.width())
+        .height(this.element.height())
+        .appendTo(this.element);
+      this.$uiHeader = $("<div class='spreadsheet-header ui-state-default'>").appendTo(this.$uiContainer);
+      this.$uiViewport = $("<div class='spreadsheet-viewport ui-widget-content'>").appendTo(this.$uiContainer);
+      this.$defaultGrid = $("<canvas class='spreadsheet-gridlines'>").appendTo(this.$uiViewport);
+      this.$uiColumnViewport = $("<div class='spreadsheet-viewport-column ui-state-default'>").appendTo(this.$uiContainer);
+      this.$uiColumns = $("<ul class='spreadsheet-column-list'>")
+        .sortable({
           zIndex: 9999,
           placeholder: 'ui-state-highlight spreadsheet-placeholder-column',
-          start: function ( event, ui ) {
+          start: function (event, ui) {
             var $uiColumns = that.$uiColumns.children();
-            var uiIndex = $uiColumns.index( ui.item[ 0 ] );
-            $( ui.item[ 0 ] ).data( "originalIndex", uiIndex );
+            var uiIndex = $uiColumns.index(ui.item[0]);
+            $(ui.item[0])
+              .data("originalIndex", uiIndex);
           },
-          stop: function ( event, ui ) {
-            var originalIndex = $( ui.item[ 0 ] ).data( "originalIndex" );
+          stop: function (event, ui) {
+            var originalIndex = $(ui.item[0])
+              .data("originalIndex");
             var $uiColumns = that.$uiColumns.children();
-            var uiIndex = $uiColumns.index( ui.item[ 0 ] );
-            that._columns.move( ui.item[ 0 ].id, uiIndex - originalIndex );
-            that._trigger( "columnChanged" );
+            var uiIndex = $uiColumns.index(ui.item[0]);
+            that._columns.move(ui.item[0].id, uiIndex - originalIndex);
+            that._trigger("columnChanged");
           }
-        } )
+        })
         .disableSelection()
-        .appendTo( this.$uiColumnViewport );
-      this.$uiRowViewport = $( "<div class='spreadsheet-viewport-row ui-state-default'>" )
-        .appendTo( this.$uiContainer );
-      this.$uiRows = $( "<ul class='spreadsheet-row-list'>" )
-        .sortable( {
+        .appendTo(this.$uiColumnViewport);
+      this.$uiRowViewport = $("<div class='spreadsheet-viewport-row ui-state-default'>").appendTo(this.$uiContainer);
+      this.$uiRows = $("<ul class='spreadsheet-row-list'>")
+        .sortable({
           placeholder: 'ui-state-highlight spreadsheet-placeholder-row',
-          start: function ( event, ui ) {
+          start: function (event, ui) {
             var $uiRows = that.$uiRows.children();
-            var uiIndex = $uiRows.index( ui.item[ 0 ] );
-            $( ui.item[ 0 ] ).data( "originalIndex", uiIndex );
+            var uiIndex = $uiRows.index(ui.item[0]);
+            $(ui.item[0]).data("originalIndex", uiIndex);
           },
-          stop: function ( event, ui ) {
-            var originalIndex = $( ui.item[ 0 ] ).data( "originalIndex" );
+          stop: function (event, ui) {
+            var originalIndex = $(ui.item[0]).data("originalIndex");
             var $uiRows = that.$uiRows.children();
-            var uiIndex = $uiRows.index( ui.item[ 0 ] );
-            that._rows.move( ui.item[ 0 ].id, uiIndex - originalIndex );
-            that._trigger( "rowChanged" );
+            var uiIndex = $uiRows.index(ui.item[0]);
+            that._rows.move(ui.item[0].id, uiIndex - originalIndex);
+            that._trigger("rowChanged");
           }
-        } )
+        })
         .disableSelection()
-        .appendTo( this.$uiRowViewport );
+        .appendTo(this.$uiRowViewport);
 
-      this.$uiColumnViewport.css( "margin-left", this.$uiRowViewport.outerWidth() + "px" );
+      this.$uiColumnViewport.css("margin-left", this.$uiRowViewport.outerWidth() + "px");
 
       this._renderTitleBar();
       this._renderColumns();
       this._renderRows();
-      this._createValueWindow();
+      this._createUiValueWindow();
       this.$uiViewport
-        .width( this.$uiContainer.width() - this.$uiRowViewport.outerWidth() )
-        .height( this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight() );
+        .width(this.$uiContainer.width() - this.$uiRowViewport.outerWidth())
+        .height(this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight());
 
-      this.$uiFooter = $( "<div class='spreadsheet-footer ui-state-default'>" )
-        .appendTo( this.$uiContainer );
-      this.$uiVerticalScrollArea = $( "<div class='spreadsheet-scrollbar scroll-area-vertical'>" )
-        .appendTo( this.$uiContainer );
-      this.$uiHorizontalScrollArea = $( "<div class='spreadsheet-scrollbar scroll-area-horizontal'>" )
-        .appendTo( this.$uiFooter );
+      this.$uiFooter = $("<div class='spreadsheet-footer ui-state-default'>").appendTo(this.$uiContainer);
+      this.$uiVerticalScrollArea = $("<div class='spreadsheet-scrollbar scroll-area-vertical'>").appendTo(this.$uiContainer);
+      this.$uiHorizontalScrollArea = $("<div class='spreadsheet-scrollbar scroll-area-horizontal'>").appendTo(this.$uiFooter);
 
       // Regist some Event handlers..
       this._setupEvents();
 
       //      laptime(this.uid + ". _render >");
-      this._trigger( "initialized" );
+      this._trigger("initialized");
     },
 
 
-    _parseEachData: function ( data, row ) {
+
+
+
+    _parseEachData: function (data, row) {
       // TODO 조회한 셀정보 데이터를 되살린다.
       // 그래야 컬럼 및 로우 머지를 할 수 있다. cellspan, rowspan...
       var
@@ -1904,44 +2375,60 @@
         cellInfo = {},
         that = this,
         i, l, item;
-      $.each( data, function ( key ) {
-        if ( key === "id" || key === "uid" || key === "uid" || key === "height" || key === "width" ) {
+
+      $.each(data, function (key) {
+
+        if (key === "id" || key === "uid" || key === "uid" || key === "height" || key === "width") {
           row.key = this;
           return;
         }
-        if ( typeof this === "string" ) {
+
+        if (typeof this === "string") {
           cellInfo = {
             value: this
           };
         } else {
           cellInfo = this;
         }
-        cell = that.addCell( cellInfo );
-        row.cells.add( cell );
-        cell.rows.add( row );
-        if ( cellInfo.rows ) {
-          for ( i = 0, l = cellInfo.rows.length; i < l; i++ ) {
-            item = that._rows.getById( cellInfo.rows[ i ] );
-            if ( item && $.inArray( cell.rows.toArray(), item ) < 0 ) {
-              cell.rows.add( item );
+
+        cell = that.addCell(cellInfo);
+        row.cells.add(cell);
+        //        cell.rows.add(row);
+        cell.rows[cell.rows.length] = row;
+
+        if (cellInfo.rows) {
+          for (i = 0, l = cellInfo.rows.length; i < l; i++) {
+            item = that._rows.getById(cellInfo.rows[i]);
+            if (item && $.inArray(cell.rows, item) < 0) {
+              //            if (item && $.inArray(cell.rows.toArray(), item) < 0) {
+              //              cell.rows.add(item);
+              cell.rows[cell.rows.length] = item;
             }
           }
         }
 
-        column = that._columns.getById( key );
-        column.cells.add( cell );
-        if ( cellInfo.columns ) {
-          for ( i = 0, l = cellInfo.columns.length; i < l; i++ ) {
-            item = that._columns.getById( cellInfo.columns[ i ] );
-            if ( item && $.inArray( cell.columns.toArray(), item ) < 0 ) {
-              cell.columns.add( item );
+        column = that._columns.getById(key);
+        column.cells.add(cell);
+        cell.columns[cell.columns.lnegth] = cell;
+
+        if (cellInfo.columns) {
+          for (i = 0, l = cellInfo.columns.length; i < l; i++) {
+            item = that._columns.getById(cellInfo.columns[i]);
+            if (item && $.inArray(cell.columns.toArray(), item) < 0) {
+              //              cell.columns.add(item);
+              cell.columns[cell.columns.lnegth] = item;
             }
           }
         }
 
-        cell.columns.add( column );
-      } );
+        //        cell.columns.add(column);
+        cell.columns[cell.columns.length] = column;
+      });
     },
+
+
+
+
 
     //TODO HTML5 WebWorker를 사용하도록 기능을 추가하자
     // webworker를 지원하는 브라우저인지는 Modernizr 를 사용하자.
@@ -1952,10 +2439,12 @@
     // 암튼 현재 사용하고 있는 것은 반복 프로세스를 끊어서 프로그레스를 표시하는 방식이다.
     // IE 10 부터 webworker를 지원한다고 하니 작성하여 봄직하다.
     _parseData: function () {
-      if ( !this.initialized ) {
+
+      if (!this.initialized) {
         return;
       }
-      if ( this.cancleParseData ) {
+
+      if (this.cancleParseData) {
         return;
       }
 
@@ -1966,51 +2455,56 @@
 
       this._rows.empty();
       this._cells.empty();
+
       var dp = this.dataProvider.toArray(),
         chunks = [],
         size = this.options.dataParseUnit,
         progress = 0,
         noc = 0;
 
-      for ( i = 0, l = dp.length; i < l; i += size ) {
-        chunks.push( dp.slice( i, Math.min( i + size, l ) ) );
+      for (i = 0, l = dp.length; i < l; i += size) {
+        chunks.push(dp.slice(i, Math.min(i + size, l)));
       }
 
-      var parse = function ( chunk ) {
-        for ( i = 0, l = chunk.length; i < l; i++ ) {
-          data = chunk[ i ];
-          row = this.addRow( data );
+      var parse = function (chunk) {
+        for (i = 0, l = chunk.length; i < l; i++) {
+          data = chunk[i];
+          row = this.addRow(data);
           // TODO 기존의 셀 정보를 복구하기 위해서는 데이터(VALUE)뿐 아니라
           // 셀 포맷 정보까지도 복구 되어야 한다.
-          this._parseEachData( data, row );
+          this._parseEachData(data, row);
         }
         progress += i;
-        if ( this.$uiProgressBar.progressbar( "instance" ) !== undefined ) {
-          this.$uiProgressBar.progressbar( "value", parseInt( progress / dp.length * 100 ) );
+        if (this.$uiProgressBar.progressbar("instance") !== undefined) {
+          this.$uiProgressBar.progressbar("value", parseInt(progress / dp.length * 100));
         }
         // XXX 파싱 데이터 실시간 렌더링 파싱 자체에 결려 있는 타임아웃과 조율이 필요하다.
-        this._delay( function () {
-          this._trigger( "rowChanged" );
-        }, 10 );
+        this._delay(function () {
+          this._trigger("rowChanged");
+        }, 10);
 
-        if ( noc >= chunks.length - 1 ) {
+        if (noc >= chunks.length - 1) {
           //          laptime(this.uid + "._parseData >");
         } else {
-          if ( this.cancleParseData ) {
+          if (this.cancleParseData) {
             //            laptime(this.uid + "._parseData CANCELED >");
             return;
           }
           //          laptime(this.uid + '._parseData ...');
-          this._delay( function () {
-            parse.call( this, chunks[ ++noc ] );
-          }, 30 );
+          this._delay(function () {
+            parse.call(this, chunks[++noc]);
+          }, 30);
         }
       };
 
-      if ( chunks.length > 0 ) {
-        parse.call( this, chunks[ noc ] );
+      if (chunks.length > 0) {
+        parse.call(this, chunks[noc]);
       }
     },
+
+
+
+
 
     /**
      * @public stopParseData
@@ -2019,84 +2513,109 @@
      */
     stopParseData: function () {
       this.cancleParseData = true;
-      this._hideProgressBar( "slow" );
+      this._hideProgressBar("slow");
     },
 
 
 
 
-    _hideProgressBar: function ( speed ) {
-      if ( this.$uiProgressBar ) {
-        this.$uiProgressBar.hide( speed );
+
+    _hideProgressBar: function (speed) {
+      if (this.$uiProgressBar) {
+        this.$uiProgressBar.hide(speed);
       }
     },
+
+
+
+
 
     _showProgressBar: function () {
       var that = this;
-      if ( this.$uiProgressBar ) {
+      if (this.$uiProgressBar) {
         this.$uiProgressBar.show();
-      } else if ( this.options.progressBar ) { // plugin
-        this.$uiProgressBar = this.options.progressBar
-          .appendTo( this.element )
-          .show();
+      } else if (this.options.progressBar) { // plugin
+        this.$uiProgressBar = this.options.progressBar.appendTo(this.element).show();
       } else { //fallback
-        this.$uiProgressLabel = $( '<div class="spreadsheet-progress-label">' )
-          .text( 'Loading......' );
-        this.$uiProgressBar = $( '<div class="spreadsheet-progress">' )
-          .progressbar( {
+        this.$uiProgressLabel = $('<div class="spreadsheet-progress-label">').text('Loading......');
+        this.$uiProgressBar = $('<div class="spreadsheet-progress">')
+          .progressbar({
             value: false,
             change: function () {
-              that.$uiProgressLabel.text( that.$uiProgressBar.progressbar( "value" ) + "% " )
-                .css( 'left', ( that.$uiProgressBar.width() - that.$uiProgressLabel.outerWidth() ) / 2 + 'px' );
+              that.$uiProgressLabel
+                .text(that.$uiProgressBar.progressbar("value") + "% ")
+                .css('left', (that.$uiProgressBar.width() - that.$uiProgressLabel.outerWidth()) / 2 + 'px');
             },
             complete: function () {
-              that.$uiProgressLabel.text( "100%" );
-              that.$uiProgressLabel.css( 'left', ( that.$uiProgressBar.width() - that.$uiProgressLabel.outerWidth() ) / 2 + 'px' );
-              that.$uiProgressBar.hide( 'slow' );
+              that.$uiProgressLabel.text("100%");
+              that.$uiProgressLabel.css('left', (that.$uiProgressBar.width() - that.$uiProgressLabel.outerWidth()) / 2 + 'px');
+              that.$uiProgressBar.hide('slow');
             }
-          } )
-          .append( this.$uiProgressLabel )
-          .appendTo( this.element );
+          })
+          .append(this.$uiProgressLabel)
+          .appendTo(this.element);
       }
-      this.$uiProgressBar.attr( 'title', 'STOP! Click to stop the data is parsed.' )
-        .off( 'click' )
-        .click( function ( e ) {
-          console.log( that.uid + ' . $uiProgressBar.onClick()' );
+      this.$uiProgressBar.attr('title', 'STOP! Click to stop the data is parsed.')
+        .off('click')
+        .click(function (e) {
+          console.log(that.uid + ' . $uiProgressBar.onClick()');
           that.stopParseData();
-        } )
-        .css( {
-          top: ( this.element.height() - this.$uiProgressBar.outerHeight() ) / 2 + 'px',
-          left: ( this.element.width() - this.$uiProgressBar.outerWidth() ) / 2 + 'px'
-        } );
+        })
+        .css({
+          top: (this.element.height() - this.$uiProgressBar.outerHeight()) / 2 + 'px',
+          left: (this.element.width() - this.$uiProgressBar.outerWidth()) / 2 + 'px'
+        });
     },
 
+
+
+
+
     _renderTitleBar: function () {
-      if ( this.options.showTitle === true ) {
-        this.$uiTitle = $( '<span class="spreadsheet-title">' )
-          .text( this.options.title )
-          .appendTo( this.$uiHeader );
+      if (this.options.showTitle === true) {
+        this.$uiTitle = $('<span class="spreadsheet-title">')
+          .text(this.options.title)
+          .appendTo(this.$uiHeader);
       } else {
         this.$uiHeader.remove();
       }
     },
 
-    _createValueWindow: function () {
-      if ( this.options.showValueWindow === true ) {
+
+
+
+
+    _createUiValueWindow: function () {
+      if (this.options.showValueWindow === true) {
         // FIXME 위겟을 선언해야 할지 생각해 보자.
-        this.$uiValueWindow = $( '<div class="spreadsheet-value-window ui-widget">' )
-          .append( '<span class="value-editor-label">Value: </span>' )
-          .append( '<input type="text" class="ui-widget ui-widget-content"/>' )
-          .prependTo( this.$uiColumnViewport );
+        this.$uiValueWindow = $('<div class="spreadsheet-value-window ui-widget">')
+          .append('<span class="value-editor-label">Value: </span>')
+          .append('<input type="text" class="ui-widget ui-widget-content"/>')
+          .prependTo(this.$uiColumnViewport);
       }
     },
 
-    _createUiColumnGroup: function ( group ) {
+
+
+
+
+    _setValueToValueWindow: function ( /*iui.sheet.model.Cell*/ cell) {
+      if (this.options.showValueWindow === true) {
+        this.$uiValueWindow.find('input:text').val(cell.value());
+      }
+    },
+
+
+
+
+
+    _createUiColumnGroup: function ( /*iui.sheet.model.ColumnGroup*/ group) {
       var that = this;
 
-      var renderer = group.renderer( group );
+      var renderer = group.renderer(group);
 
-      return group.ui = $( '<li class="spreadsheet-column spreadsheet-column-group ui-state-default">' )
-        .append( renderer );
+      return group.ui = $('<li class="spreadsheet-column spreadsheet-column-group ui-state-default">')
+        .append(renderer);
       /*
         .button()
         .removeClass( 'ui-corner-all' )
@@ -2119,71 +2638,79 @@
           }
         } );
         */
-
     },
 
-    _createUiColumn: function ( column ) {
+
+
+
+
+    _createUiColumn: function (column) {
       var that = this;
 
-      var renderer = ( column.headerRenderer( column ) );
+      var renderer = (column.headerRenderer(column));
 
-      column.ui = $( '<li>' ).attr( 'id', column.uid )
-        .addClass( column.className )
-        .width( column.offset().width )
-        .button()
-        // 
-        .append( renderer );
+      column.ui = $('<li>')
+        .attr('id', column.uid)
+        .addClass(column.className)
+        .width(column.offset().width)
+        .append(renderer)
+        .button();
 
       // effects ...
-      if ( column.resizable ) {
-        column.ui.resizable( {
+      if (column.resizable) {
+        column.ui.resizable({
           handles: 'e',
           minWidth: 2,
-          start: function ( e, ui ) {},
-          stop: function ( e, ui ) {
+          start: function (e, ui) {},
+          stop: function (e, ui) {
             column.width = ui.size.width;
-            column.ui.width( column.width );
-            that._renderColumns( that.boundary.firstColumn );
+            column.ui.width(column.width);
+            that._renderColumns(that.boundary.firstColumn);
           }
-        } );
+        });
       }
-      column.ui.on( 'click', function ( event ) {
+      column.ui.on('click', function (event) {
           // XXX 별 효력이 없어ㅜㅜ;
           // 데이터 처리와 렌더링에는 차이가 있는 것 같다.ㅜㅜ;
           //          if (that.startColumnHighlighting === true) {return false;}
           //          laptime(this.uid + '.<column header click...' + this.outerText);
           //          that.startColumnHighlighting = true;
-          if ( event.ctrlKey === false ) {
-            that._cells.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._columns.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._rows.each( 'removeClass', [ 'ui-state-highlight' ] );
+          if (event.ctrlKey === false) {
+            that._cells.each('removeClass', ['ui-state-highlight']);
+            that._columns.each('removeClass', ['ui-state-highlight']);
+            that._rows.each('removeClass', ['ui-state-highlight']);
           }
-          column.addClass( 'ui-state-highlight' );
-          column.cells.each( 'addClass', [ 'ui-state-highlight' ] );
+          column.addClass('ui-state-highlight');
+          column.cells.each('addClass', ['ui-state-highlight']);
           //          laptime(this.uid + '.column header click...>');
           //          that.startColumnHighlighting = false;
-        } )
-        .mousedown( function ( event ) {
+        })
+        .mousedown(function (event) {
           var uis = [];
-          var column = that._columns.getById( this.id );
-          if ( column.group ) {
-            var group = that._columnGroups.getById( fnv32a( column.group ) );
-            uis = $.map( group.columns.toArray(), function ( column, index ) {
+          var column = that._columns.getById(this.id);
+          if (column.group) {
+            var group = that._columnGroups.getById(fnv32a(column.group));
+            uis = $.map(group.columns.toArray(), function (column, index) {
               return column.ui;
-            } );
+            });
           } else {
-            uis = that.$uiColumns.children().map( function () {
-              column = that._columns.getById( this.id );
-              return column.group ? null : this;
-            } );
+            uis = that.$uiColumns.children()
+              .map(function () {
+                column = that._columns.getById(this.id);
+                return column.group ? null : this;
+              });
           }
-          that.$uiColumns.sortable( 'option', 'items', uis );
-        } );
+          that.$uiColumns.sortable('option', 'items', uis);
+        });
 
       return column.ui;
     },
 
-    __renderColumns: function ( newFirstColumn ) {
+
+
+
+
+    __renderColumns: function (newFirstColumn) {
       //      laptime(this.uid + '.<__renderColumns');
 
       var
@@ -2197,138 +2724,161 @@
       function render() {
         var groupid;
         /*jshint validthis:true */
-        for ( ; i < l && columnsWidth < this.$uiViewport.width(); i++ ) {
-          column = this._columns.get( i );
-          column.removeClass( 'ui-state-hover' );
-          $uiColumn = ( column.ui || this._createUiColumn( column ) ).appendTo( this.$uiColumns );
-          $uiColumn.removeClass().addClass( column.className );
-          columnsWidth += column.offset().outerWidth;
+        for (; i < l && columnsWidth < this.$uiViewport.width(); i++) {
+          column = this._columns.get(i);
+          column.removeClass('ui-state-hover');
+          $uiColumn = (column.ui || this._createUiColumn(column))
+            .appendTo(this.$uiColumns);
+          $uiColumn.removeClass()
+            .addClass(column.className);
+          columnsWidth += column.offset()
+            .outerWidth;
 
-          if ( this.options.showColumnGroups ) {
-            groupid = fnv32a( column.group || column.id );
-            group = this._columnGroups.getById( groupid );
-            if ( !group ) {
-              group = new ColumnGroup( {
+          if (this.options.showColumnGroups) {
+            groupid = fnv32a(column.group || column.id);
+            group = this._columnGroups.getById(groupid);
+            if (!group) {
+              group = new ColumnGroup({
                 id: groupid,
                 label: column.group
-              } );
-              group.parent( this );
-              group.columns.add( column );
-              this._columnGroups.add( group );
+              });
+              group.parent(this);
+              group.columns.add(column);
+              this._columnGroups.add(group);
             }
-            groups.push( group );
+            groups.push(group);
           }
         }
       }
 
-      this.$uiColumns.children().detach();
+      this.$uiColumns.children()
+        .detach();
 
       // Fixed Columns
-      if ( this.options.numberOfFixedColumns > 0 ) {
+      if (this.options.numberOfFixedColumns > 0) {
         i = 0;
         l = this.options.numberOfFixedColumns;
-        render.call( this );
+        render.call(this);
       }
 
       // Floated Columns
-      newFirstColumn = Math.max( Math.min( Math.max( this.options.numberOfFixedColumns, newFirstColumn || 0 ), this._columns.length - 1 /* this.boundary.numberOfColumns*/ ), 0 );
+      newFirstColumn = Math.max(Math.min(Math.max(this.options.numberOfFixedColumns, newFirstColumn || 0), this._columns.length - 1 /* this.boundary.numberOfColumns*/ ), 0);
       this.boundary.firstColumn = newFirstColumn;
       i = newFirstColumn;
-      l = Math.min( newFirstColumn + this.boundary.numberOfColumns, this._columns.length );
-      render.call( this );
+      l = Math.min(newFirstColumn + this.boundary.numberOfColumns, this._columns.length);
+      render.call(this);
 
       //column group
-      if ( this.options.showColumnGroups === false ) {
-        if ( this.$uiColumnGroups ) {
+      if (this.options.showColumnGroups === false) {
+        if (this.$uiColumnGroups) {
           this.$uiColumnGroups.hide();
         }
       } else {
         this.$uiColumnGroups = this.$uiColumnGroups ||
-          $( '<ul class="spreadsheet-column-group-list">' )
+          $('<ul class="spreadsheet-column-group-list">')
           .disableSelection()
-          .insertBefore( this.$uiColumns );
-        this.$uiColumnGroups.children().each( function ( i ) {
-          $( this ).detach();
-        } );
-        for ( i = 0, l = groups.length; i < l; i++ ) {
-          group = groups[ i ];
-          this.$uiColumnGroups.append( ( group.ui || this._createUiColumnGroup( group ) ).width( group.width() ) );
+          .insertBefore(this.$uiColumns);
+        this.$uiColumnGroups.children()
+          .each(function (i) {
+            $(this)
+              .detach();
+          });
+        for (i = 0, l = groups.length; i < l; i++) {
+          group = groups[i];
+          this.$uiColumnGroups.append((group.ui || this._createUiColumnGroup(group))
+            .width(group.width()));
         }
       }
 
-      if ( this.options.showColumnHeaders === false ) {
-        if ( this.$uiColumnGroups ) {
+      if (this.options.showColumnHeaders === false) {
+        if (this.$uiColumnGroups) {
           this.$uiColumnGroups.hide();
         }
-        this.$uiColumns.addClass( 'hidden' );
+        this.$uiColumns.addClass('hidden');
       } else {
-        if ( this.$uiColumnGroups ) {
+        if (this.$uiColumnGroups) {
           this.$uiColumnGroups.show();
         }
-        this.$uiColumns.removeClass( 'hidden' );
+        this.$uiColumns.removeClass('hidden');
       }
 
       this.$uiViewport
-        .width( this.$uiContainer.width() - this.$uiRowViewport.outerWidth() )
-        .height( this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight() );
+        .width(this.$uiContainer.width() - this.$uiRowViewport.outerWidth())
+        .height(this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight());
 
       //      laptime(this.uid + '.__renderColumns>');
       this._renderData();
     },
 
-    _renderColumns: ( function () {
+
+
+
+
+    _renderColumns: (function () {
       var timeoutIds = {};
-      return function ( newFirstColumn ) {
+      return function (newFirstColumn) {
         //        laptime(this.uid + '.' + timeoutIds[this.uid] + '.<_renderColumns');
-        clearTimeout( timeoutIds[ this.uid ] );
-        timeoutIds[ this.uid ] = this._delay( function () {
-          this.__renderColumns( newFirstColumn );
-        }, 30 );
+        clearTimeout(timeoutIds[this.uid]);
+        timeoutIds[this.uid] = this._delay(function () {
+          this.__renderColumns(newFirstColumn);
+        }, 30);
         //        laptime(this.uid + '.' + timeoutIds[this.uid] + '._renderColumns>');
       };
-    } )(),
+    })(),
 
-    _onRowResize: function ( ui, row ) {
+
+
+
+
+    _onRowResize: function (ui, row) {
       row.height = ui.size.height;
-      row.ui.height( ui.size.height );
+      row.ui.height(ui.size.height);
       this._renderRows(
         this.boundary.firstRow
       );
     },
 
-    _createUiRow: function ( row ) {
+
+
+
+
+    _createUiRow: function (row) {
       var that = this;
-      row.ui = $( '<li>' )
-        .attr( 'id', row.uid )
-        .addClass( row.className )
-        .height( row.height )
-        .append( row.headerRenderer( row ) )
+      row.ui = $('<li>')
+        .attr('id', row.uid)
+        .addClass(row.className)
+        .height(row.height)
+        .append(row.headerRenderer(row))
         .button();
       //        .removeClass( 'ui-corner-all' );
-      if ( row.resizable ) {
-        row.ui.resizable( {
+      if (row.resizable) {
+        row.ui.resizable({
           handles: 's',
           minHeight: 2,
-          stop: function ( e, ui ) {
-            that._onRowResize( ui, row );
+          stop: function (e, ui) {
+            that._onRowResize(ui, row);
           }
-        } );
+        });
       }
 
-      row.ui.on( 'click', function ( event ) {
-        if ( event.ctrlKey === false ) {
-          that._cells.each( 'removeClass', [ 'ui-state-highlight' ] );
-          that._columns.each( 'removeClass', [ 'ui-state-highlight' ] );
-          that._rows.each( 'removeClass', [ 'ui-state-highlight' ] );
+      row.ui.on('click', function (event) {
+        if (event.ctrlKey === false) {
+          that._cells.each('removeClass', ['ui-state-highlight']);
+          that._columns.each('removeClass', ['ui-state-highlight']);
+          that._rows.each('removeClass', ['ui-state-highlight']);
         }
-        row.addClass( 'ui-state-highlight' );
-        row.cells.each( 'addClass', [ 'ui-state-highlight' ] );
-      } );
+        row.addClass('ui-state-highlight');
+        row.cells.each('addClass', ['ui-state-highlight']);
+      });
 
       return row.ui;
     },
 
-    __renderRows: function ( newFirstRow ) {
+
+
+
+
+    __renderRows: function (newFirstRow) {
       var
         that = this,
         i = 0,
@@ -2336,77 +2886,91 @@
         rowsHeight = 0,
         viewportHeight = this.$uiViewport.height();
 
-      function render( fixed ) {
+      function render(fixed) {
         var row, $uiRow;
         /*jshint validthis:true */
-        for ( ; i < l && rowsHeight < viewportHeight; i++ ) {
-          row = this._rows.get( i );
+        for (; i < l && rowsHeight < viewportHeight; i++) {
+          row = this._rows.get(i);
           row.fixed = !!fixed;
-          row.removeClass( 'ui-state-hover' );
-          $uiRow = ( row.ui || this._createUiRow( row ) ).appendTo( this.$uiRows );
-          $uiRow.removeClass().addClass( row.className );
-          rowsHeight += row.offset().outerHeight;
+          row.removeClass('ui-state-hover');
+          $uiRow = (row.ui || this._createUiRow(row))
+            .appendTo(this.$uiRows);
+          $uiRow.removeClass()
+            .addClass(row.className);
+          rowsHeight += row.offset()
+            .outerHeight;
         }
       }
 
-      this.$uiRows.children().detach();
+      this.$uiRows.children()
+        .detach();
 
       // Fixed Rows
-      if ( this.options.numberOfFixedRows > 0 ) {
+      if (this.options.numberOfFixedRows > 0) {
         i = 0;
         l = this.options.numberOfFixedRows;
-        render.call( this, true );
+        render.call(this, true);
       }
 
       // Floated Rows
-      newFirstRow = Math.max( Math.min( Math.max( this.options.numberOfFixedRows, newFirstRow || 0 ), this._rows.length - 1 /* this.boundary.numberOfRows*/ ), 0 );
+      newFirstRow = Math.max(Math.min(Math.max(this.options.numberOfFixedRows, newFirstRow || 0), this._rows.length - 1 /* this.boundary.numberOfRows*/ ), 0);
       this.boundary.firstRow = newFirstRow;
       i = newFirstRow;
-      l = Math.min( newFirstRow + this.boundary.numberOfRows, this._rows.length );
-      render.call( this, false );
+      l = Math.min(newFirstRow + this.boundary.numberOfRows, this._rows.length);
+      render.call(this, false);
 
-      if ( this.options.showRowHeaders === false ) {
-        this.$uiRowViewport.addClass( 'hidden' );
-        this.$uiColumnViewport.css( 'margin-left', this.$uiRowViewport.outerWidth() + 'px' );
+      if (this.options.showRowHeaders === false) {
+        this.$uiRowViewport.addClass('hidden');
+        this.$uiColumnViewport.css('margin-left', this.$uiRowViewport.outerWidth() + 'px');
       } else {
-        this.$uiRowViewport.removeClass( 'hidden' );
+        this.$uiRowViewport.removeClass('hidden');
       }
 
       this.$uiViewport
-        .width( this.$uiContainer.width() - this.$uiRowViewport.outerWidth() )
-        .height( this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight() );
+        .width(this.$uiContainer.width() - this.$uiRowViewport.outerWidth())
+        .height(this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight());
 
       this._renderData();
     },
 
-    _renderRows: ( function () {
-      var timeoutIds = {};
-      return function ( newFirstRow ) {
-        clearTimeout( timeoutIds[ this.uid ] );
-        timeoutIds[ this.uid ] = this._delay( function () {
-          this.__renderRows( newFirstRow );
-        }, 10 );
-      };
-    }() ),
 
-    _offsetOfCell: function ( cell ) {
+
+
+
+    _renderRows: (function () {
+      var timeoutIds = {};
+      return function (newFirstRow) {
+        clearTimeout(timeoutIds[this.uid]);
+        timeoutIds[this.uid] = this._delay(function () {
+          this.__renderRows(newFirstRow);
+        }, 10);
+      };
+    }()),
+
+
+
+
+
+    _offsetOfCell: function (cell) {
       var left = Number.MAX_VALUE,
         top = Number.MAX_VALUE,
         width = 0,
         height = 0,
         i, l, item, offset;
 
-      for ( i = 0, l = cell.columns.length; i < l; i++ ) {
-        item = cell.columns.get( i );
+      for (i = 0, l = cell.columns.length; i < l; i++) {
+        //        item = cell.columns.get(i);
+        item = cell.columns[i];
         offset = item.offset();
-        left = Math.min( left, offset.left );
+        left = Math.min(left, offset.left);
         width += offset.innerWidth;
       }
 
-      for ( i = 0, l = cell.rows.length; i < l; i++ ) {
-        item = cell.rows.get( i );
+      for (i = 0, l = cell.rows.length; i < l; i++) {
+        //        item = cell.rows.get(i);
+        item = cell.rows[i];
         offset = item.offset();
-        top = Math.min( top, offset.top );
+        top = Math.min(top, offset.top);
         height += offset.innerHeight;
       }
 
@@ -2418,291 +2982,420 @@
       };
     },
 
-    _createUiCell: function ( cell ) {
+
+
+
+
+    _createUiCell: function (cell) {
       // TODO cell에 지정된 formular가 있을 경우 이를 처리
       var that = this;
-      cell.ui = ( cell.getRenderer()( cell ) )
-        .hover( function () {
-          if ( that._scrolling ) {
-            return;
-          }
-          cell.ui.addClass( 'ui-state-hover' );
-          $.each( cell.columns.toArray(), function ( i ) {
-            this.addClass( 'ui-state-hover' );
-          } );
-          $.each( cell.rows.toArray(), function ( i ) {
-            this.addClass( 'ui-state-hover' );
-          } );
-        }, function () {
-          cell.ui.removeClass( 'ui-state-hover' );
-          $.each( cell.columns.toArray(), function ( i ) {
-            this.removeClass( 'ui-state-hover' );
-          } );
-          $.each( cell.rows.toArray(), function ( i ) {
-            this.removeClass( 'ui-state-hover' );
-          } );
-        } )
-        .on( 'click', function ( event ) {
-          this.currentCell = cell;
-          this.currentCells = this.currentCells || [];
-          if ( event.ctrlKey === false ) {
-            this.currentCells = [];
-            that._cells.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._columns.each( 'removeClass', [ 'ui-state-highlight' ] );
-            that._rows.each( 'removeClass', [ 'ui-state-highlight' ] );
-          }
-          this.currentCells.push( cell );
+      cell.ui = (cell.getRenderer()(cell))
+        // 마우스오버..
+        .hover(
+          /*rollIn*/
+          function () {
+            if (that._scrolling) {
+              return;
+            }
+            cell.ui.addClass('ui-state-hover');
+            //          $.each(cell.columns.toArray(), function (i) {
+            $.each(cell.columns, function (i) {
+              this.addClass('ui-state-hover');
+            });
+            //          $.each(cell.rows.toArray(), function (i) {
+            $.each(cell.rows, function (i) {
+              this.addClass('ui-state-hover');
+            });
+          },
+          /*rollOut*/
+          function () {
+            cell.ui.removeClass('ui-state-hover');
+            $.each(cell.columns, function (i) {
+              //          $.each(cell.columns.toArray(), function (i) {
+              this.removeClass('ui-state-hover');
+            });
+            $.each(cell.rows, function (i) {
+              //          $.each(cell.rows.toArray(), function (i) {
+              this.removeClass('ui-state-hover');
+            });
+          })
 
-          cell.addClass( 'ui-state-highlight' );
-          $.each( cell.columns.toArray(), function ( i ) {
-            this.addClass( 'ui-state-highlight' );
-          } );
-          $.each( cell.rows.toArray(), function ( i ) {
-            this.addClass( 'ui-state-highlight' );
-          } );
+      // 마우스 클릭시 컬럼을 선택표시(하일라이트)한다.
+      .click(function (event) {
+        this.currentCell = cell;
+        this.currentCells = this.currentCells || [];
+        if (event.ctrlKey === false) {
+          this.currentCells = [];
+          that._cells.each('removeClass', ['ui-state-highlight']);
+          that._columns.each('removeClass', ['ui-state-highlight']);
+          that._rows.each('removeClass', ['ui-state-highlight']);
+        }
+        this.currentCells.push(cell);
 
-          if ( that.options.showValueWindow === true ) {
-            that.$uiValueWindow.find( 'input:text' ).val( cell.value );
-          }
-        } )
-        .disableSelection();
+        cell.addClass('ui-state-highlight');
+        $.each(cell.columns, function (i) {
+          //          $.each(cell.columns.toArray(), function (i) {
+          this.addClass('ui-state-highlight');
+        });
+        $.each(cell.rows, function (i) {
+          //          $.each(cell.rows.toArray(), function (i) {
+          this.addClass('ui-state-highlight');
+        });
+
+        that._setValueToValueWindow(cell);
+      })
+
+      // 더블클릭시 아이템 에디터를 띄운다.
+      .dblclick(function (event) {
+        cell.edit();
+      })
+
+      // 마우스 드래그를 맊는다.
+      .disableSelection();
       return cell.ui;
     },
+
+
+
+
+    _renderCell: function (cell) {
+      (cell.ui || this._createUiCell(cell)).removeClass()
+        .addClass(cell.className)
+        .css(this._offsetOfCell(cell))
+        .appendTo(this.$uiViewport);
+    },
+
+
+
+
 
     // 데이터 렌더링
     // 딜레이를 주어 빈번한 렌더링에 따른 부하를 줄인다.
     // 메소드 만의 static private 변수 timeoutId를 사용하기 위한 방법으로 클로저를 사용하여 변수의 오염을 방지한다.
-    _renderData: ( function () {
+    _renderData: (function () {
       var timeoutIds = {};
+      var that = this;
+
       return function () {
 
-        clearTimeout( timeoutIds[ this.uid ] );
+        clearTimeout(timeoutIds[this.uid]);
         this._createScrollbars();
         this._drawDefaultGrid();
 
-        timeoutIds[ this.uid ] = this._delay( function () {
-          var
-            ci = this.boundary.firstColumn,
-            ri = this.boundary.firstRow,
-            noc = this.$uiColumns.children() /*.filter('li')*/ .length,
-            nor = this.$uiRows.children() /*.filter('li')*/ .length,
-            nofr = this.options.numberOfFixedRows,
-            nofc = this.options.numberOfFixedColumns,
-            _rows = this._rows.toArray(),
-            _columns = this._columns.toArray(),
-            rows = _rows.slice( ri, ri + nor - nofr ).concat( _rows.slice( 0, nofr ) ),
-            columns = _columns.slice( ci, ci + noc - nofc ).concat( _columns.slice( 0, nofc ) ),
-            // 새롭게 보일 셀 추출
-            cells = $.map( rows, function ( row ) {
-              return $.map( row.cells.toArray(), function ( cell ) {
-                return $.map( cell.columns.toArray(), function ( column ) {
-                  return $.inArray( column, columns ) >= 0 ? true : null;
-                } ).length > 0 ? cell : null;
-              } );
-            } ),
-            i, l, cell;
+        timeoutIds[this.uid] = this._delay(function () {
+          var i, l,
+            cells = this.getCellsInViewport();
+
           // 기존 셀 숨김
-          this.$uiViewport.find( 'div.spreadsheet-cell' ).detach();
+          this.$uiViewport.find('div.spreadsheet-cell').detach();
+
           // 새로운 셀 보임
-          for ( i = 0, l = cells.length; i < l; i++ ) {
-            cell = cells[ i ];
-            ( cell.ui || this._createUiCell( cell ) )
-            .removeClass()
-              .addClass( cell.className )
-              .css( this._offsetOfCell( cell ) )
-              .appendTo( this.$uiViewport );
+          for (i = 0, l = cells.length; i < l; i++) {
+            this._renderCell(cells[i]);
           }
-        }, 30 );
+        }, 30);
+
       };
-    }() ),
+    }()),
+
+
+
+
+
+    // 뷰포트 안의 셀 추출
+    getCellsInViewport: function () {
+      var ci = this.boundary.firstColumn,
+        ri = this.boundary.firstRow,
+        noc = this.$uiColumns.children() /*.filter('li')*/ .length,
+        nor = this.$uiRows.children() /*.filter('li')*/ .length,
+        nofr = this.options.numberOfFixedRows,
+        nofc = this.options.numberOfFixedColumns,
+        _rows = this._rows.toArray(),
+        _columns = this._columns.toArray(),
+        rows = _rows.slice(ri, ri + nor - nofr).concat(_rows.slice(0, nofr)),
+        columns = _columns.slice(ci, ci + noc - nofc).concat(_columns.slice(0, nofc));
+      // 새롭게 보일 셀 추출
+      return $.map(rows, function (row) {
+        return $.map(row.cells.toArray(), function (cell) {
+          // return $.map(cell.columns.toArray(), function (column) {
+          return $.map(cell.columns, function (column) {
+            return $.inArray(column, columns) >= 0 ? true : null;
+          }).length > 0 ? cell : null;
+        });
+      });
+    },
+
+
+
+
 
     _createScrollbars: function () {
       // TODO 필요할 때만 스크롤바를 노출 할 수 있도록 처리
       var that = this,
-        minRows = Math.max( this.options.numberOfFixedRows, 0 ),
+        minRows = Math.max(this.options.numberOfFixedRows, 0),
         maxRows = this._rows.length - 1,
-        minColumns = Math.max( this.options.numberOfFixedColumns, 0 ),
+        minColumns = Math.max(this.options.numberOfFixedColumns, 0),
         maxColumns = this._columns.length - 1;
 
       // 좀 간편하게 할 수 있는 방법이 없을까?
-      this.$uiVerticalScrollArea.height( this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight() - parseInt( this.$uiVerticalScrollArea.css( 'border-top' ) || 1 ) - parseInt( this.$uiVerticalScrollArea.css( 'bottom' ) || 0 ) );
-      this.$uiHorizontalScrollArea.width( this.$uiContainer.width() - this.$uiRowViewport.outerWidth() - parseInt( this.$uiHorizontalScrollArea.css( 'border-left' ) || 1 ) - parseInt( this.$uiHorizontalScrollArea.css( 'border-right' ) || 1 ) - parseInt( this.$uiHorizontalScrollArea.css( 'right' ) || 0 ) );
+      this.$uiVerticalScrollArea.height(this.$uiContainer.height() - this.$uiHeader.outerHeight() - this.$uiColumnViewport.outerHeight() - parseInt(this.$uiVerticalScrollArea.css('border-top') || 1) - parseInt(this.$uiVerticalScrollArea.css('bottom') || 0));
+      this.$uiHorizontalScrollArea.width(this.$uiContainer.width() - this.$uiRowViewport.outerWidth() - parseInt(this.$uiHorizontalScrollArea.css('border-left') || 1) - parseInt(this.$uiHorizontalScrollArea.css('border-right') || 1) - parseInt(this.$uiHorizontalScrollArea.css('right') || 0));
 
-      if ( !this.$uiVerticalScrollbar ) {
-        this.$uiVerticalScrollbar = $( '<div class="spreadsheet-scrollbar spreadsheet-scrollbar-vertical">' )
-          .scroller( {
+      if (!this.$uiVerticalScrollbar) {
+        this.$uiVerticalScrollbar = $('<div class="spreadsheet-scrollbar spreadsheet-scrollbar-vertical">')
+          .scroller({
             orientation: "vertical",
             value: minRows,
             min: minRows,
             max: maxRows,
             step: 1,
-            start: function ( event, ui ) {
+            start: function (event, ui) {
               that._scrolling = true;
             },
-            stop: function ( event, ui ) {
+            stop: function (event, ui) {
               that._scrolling = false;
             },
-            slide: function ( event, ui ) {
-              that._renderRows( ui.value );
+            slide: function (event, ui) {
+              that._renderRows(ui.value);
             }
-          } )
-          .appendTo( this.$uiVerticalScrollArea );
+          })
+          .appendTo(this.$uiVerticalScrollArea);
       } else {
         // XXX 데이터 파싱이 되는 대로 스크롤바의 최대 값을 조정한다.
         // 이렇게 할 때, 파싱되지 않고 남은 데이터의 처리 방안을 생각해 보자.
         this.$uiVerticalScrollbar
-          .scroller( 'option', 'min', minRows )
-          .scroller( 'option', 'max', maxRows );
+          .scroller('option', 'min', minRows)
+          .scroller('option', 'max', maxRows);
       }
 
-      if ( !this.$uiHorizontalScrollbar ) {
-        this.$uiHorizontalScrollbar = $( '<div class="spreadsheet-scrollbar spreadsheet-scrollbar-horizontal">' )
-          .scroller( {
+      if (!this.$uiHorizontalScrollbar) {
+        this.$uiHorizontalScrollbar = $('<div class="spreadsheet-scrollbar spreadsheet-scrollbar-horizontal">')
+          .scroller({
             value: minColumns,
             min: minColumns,
             max: maxColumns,
             step: 1,
-            start: function ( event, ui ) {
+            start: function (event, ui) {
               that._scrolling = true;
             },
-            stop: function ( event, ui ) {
+            stop: function (event, ui) {
               that._scrolling = false;
             },
-            slide: function ( event, ui ) {
-              that._renderColumns( ui.value );
+            slide: function (event, ui) {
+              that._renderColumns(ui.value);
             }
-          } )
-          .appendTo( this.$uiHorizontalScrollArea );
+          })
+          .appendTo(this.$uiHorizontalScrollArea);
       } else {
         this.$uiHorizontalScrollbar
-          .scroller( 'option', 'min', minColumns )
-          .scroller( 'option', 'max', maxColumns );
+          .scroller('option', 'min', minColumns)
+          .scroller('option', 'max', maxColumns);
       }
     },
 
+
+
+
+
     _drawDefaultGrid: function () {
-      this.$uiViewport.css( {
+      this.$uiViewport.css({
         top: this.$uiRows.offset().top - this.$uiContainer.offset().top,
         left: this.$uiColumns.offset().left - this.$uiContainer.offset().left,
-      } );
-      if ( Modernizr.canvas && this.options.showDefaultGrid ) {
+      });
+
+      // html5의 canvas를 지원할때,
+      if (Modernizr.canvas && this.options.showDefaultGrid) {
         var width = 0,
           height = 0;
 
         // 그리드 라인을 셀 영역에만 그린다.
-        this.$uiColumns.children().each( function ( i ) {
-          width += $( this ).outerWidth();
-        } );
+        this.$uiColumns.children()
+          .each(function (i) {
+            width += $(this).outerWidth();
+          });
 
-        this.$uiRows.children().each( function ( i ) {
-          height += $( this ).outerHeight();
-        } );
+        this.$uiRows.children()
+          .each(function (i) {
+            height += $(this).outerHeight();
+          });
 
-        this.$defaultGrid.attr( {
+        this.$defaultGrid.attr({
           width: width,
           height: height
-        } );
+        });
 
-        var ctx = this.$defaultGrid[ 0 ].getContext( '2d' );
+        var ctx = this.$defaultGrid[0].getContext('2d');
         ctx.fillStyle = this.options.defaultGridLineColor;
 
         //vertical lines per columns in viewport
-        this.$uiColumns.children().each( function ( i ) {
-          ctx.fillRect( offsetRight( this ), 0, 1, height );
-        } );
+        this.$uiColumns.children().each(function (i) {
+          ctx.fillRect(offsetRight(this), 0, 1, height);
+        });
 
         // horizontal lines per rows in viewport
-        this.$uiRows.children().each( function ( i ) {
-          ctx.fillRect( 0, offsetBottom( this ), width, 1 );
-        } );
+        this.$uiRows.children().each(function (i) {
+          ctx.fillRect(0, offsetBottom(this), width, 1);
+        });
       }
     },
 
 
+
+
+
+    refresh: function ( /*iui.sheet.model.**/ model) {
+      if (model instanceof /*iui.sheet.model.Row*/ Row) {
+
+      } else if (model instanceof /*iui.sheet.model.Column*/ Column) {
+
+      } else if (model instanceof /*iui.sheet.model.ColumnGroup*/ ColumnGroup) {
+
+      } else if (model instanceof /*iui.sheet.model.Cell*/ Cell) {
+        (model.getEditor())().hide();
+        // TODO 셀 렌더러를 바꾸어야 기존의 렌더러를 재사용가능하다. 이건 다음 버전에 하자.
+        // 기존의 렌더러를 떼어낸다.
+        model.ui.off().remove();
+        // 새로운 셀 렌더러 인스턴스를 생성한다.
+        this._createUiCell(model);
+        // 수정되는 셀이 현재 화면의 보이는 영역 안에 있다면 갱신한다.
+        if ($.inArray(model, this.getCellsInViewport(), 0) >= 0) {
+          this._renderCell(model);
+        }
+        // value window가 보이는 상황이라면 값을 업데이트 한다.
+        this._setValueToValueWindow(model);
+      }
+    },
+
+
+
+
     setPlugins: function () {},
 
+
+
+
+
     open: function () {},
+
+
+
+
+
     close: function () {},
+
+
+
 
 
     _setupEvents: function () {
       var that = this;
-      this._on( {
-        'januarycolumnchanged': function ( event ) {
-          laptime( "januarycolumnchanged ............... " );
-          if ( this.$uiHorizontalScrollbar ) {
-            this.$uiHorizontalScrollbar.scroller( 'option', 'max', this._columns.length );
-            this._renderColumns( this.$uiHorizontalScrollbar.scroller( 'value' ) );
+      this._on({
+
+        'januarycolumnchanged': function ( /*jQuery.Event*/ event) {
+          laptime("januarycolumnchanged ............... ");
+          if (this.$uiHorizontalScrollbar) {
+            this.$uiHorizontalScrollbar.scroller('option', 'max', this._columns.length);
+            this._renderColumns(this.$uiHorizontalScrollbar.scroller('value'));
           } else {
             this._renderColumns();
           }
         },
-        'januaryrowchanged': function ( event ) {
-          laptime( "januaryrowchanged ............... " );
-          if ( this.$uiVerticalScrollbar ) {
-            this.$uiVerticalScrollbar.scroller( 'option', 'max', this._rows.length );
-            this._renderRows( this.$uiVerticalScrollbar.scroller( 'value' ) );
+
+        'januaryrowchanged': function ( /*jQuery.Event*/ event) {
+          laptime("januaryrowchanged ............... ");
+          if (this.$uiVerticalScrollbar) {
+            this.$uiVerticalScrollbar.scroller('option', 'max', this._rows.length);
+            this._renderRows(this.$uiVerticalScrollbar.scroller('value'));
           } else {
             this._renderRows();
           }
         },
-        'januarydatachanged': function ( event ) {
-          laptime( "januarydatachanged ............... " );
+
+        'januarydatachanged': function ( /*jQuery.Event*/ event) {
+          laptime("januarydatachanged ............... ");
           this._parseData();
         },
-        'januaryinitialized': function ( event ) {
-          laptime( 'januaryinitialized ............... ' );
+
+        'januaryinitialized': function ( /*jQuery.Event*/ event) {
+          laptime('januaryinitialized ............... ');
           this.initialized = true;
-          if ( this.dataProvider.length > 0 ) {
+          if (this.dataProvider.length > 0) {
             // 파싱전에 화면에 시트 기본 UI를 디스플레이하기 위해 딜레이를 준다.
-            this._delay( this._parseData, 500 );
+            this._delay(this._parseData, 500);
           }
+        },
+
+        'januaryrowdatachanged': function ( /*jQuery.Event*/ event, /*iui.sheet.model.Row*/ row) {
+          laptime('january row data changed ............... ');
+          //
+        },
+
+        'januarycolumndatachanged': function ( /*jQuery.Event*/ event, /*iui.sheet.model.Column*/ column) {
+          laptime('january column data changed ............... ');
+          //
+        },
+
+        'januarycelldatachanged': function ( /*jQuery.Event*/ event, /*iui.sheet.model.Cell*/ cell) {
+          laptime('january cell data changed ............... ');
+          this.refresh(cell);
         }
-      } );
+      });
 
       // this._off(this.handles);
 
-      $.each( [
+      $.each([
           this.$uiColumnViewport,
           this.$uiHorizontalScrollArea
         ],
-        function ( i ) {
-          this.mousewheel( function ( event ) {
+        function (i) {
+          this.mousewheel(function (event) {
             event.preventDefault();
-            that._onHorizontalWheel.call( that, event.deltaY || event.deltaX );
-          } );
-        } );
+            that._onHorizontalWheel.call(that, event.deltaY || event.deltaX);
+          });
+        });
 
-      $.each( [
+      $.each([
           this.$uiRowViewport,
           this.$uiVerticalScrollArea
         ],
-        function ( i ) {
-          this.mousewheel( function ( event ) {
+        function (i) {
+          this.mousewheel(function (event) {
             event.preventDefault();
-            that._onVerticalWheel.call( that, event.deltaY || event.deltaX );
-          } );
-        } );
+            that._onVerticalWheel.call(that, event.deltaY || event.deltaX);
+          });
+        });
 
-      this.$uiViewport.mousewheel( function ( event ) {
+      this.$uiViewport.mousewheel(function (event) {
         event.preventDefault();
-        if ( event.shiftKey === true ) {
-          that._onHorizontalWheel.call( that, event.deltaX || event.deltaY );
+        if (event.shiftKey === true) {
+          that._onHorizontalWheel.call(that, event.deltaX || event.deltaY);
         } else {
-          that._onVerticalWheel.call( that, event.deltaY );
+          that._onVerticalWheel.call(that, event.deltaY);
         }
-      } );
+      });
     },
+
+
+
+
 
     //-------------------------------------------------------------------
     // EVENT Handler
-    _onVerticalWheel: function ( value ) {
-      this.verticalScrollBy( value );
+    _onVerticalWheel: function (value) {
+      this.verticalScrollBy(value);
     },
 
-    _onHorizontalWheel: function ( value ) {
-      this.horizontalScrollBy( value );
+
+
+
+
+    _onHorizontalWheel: function (value) {
+      this.horizontalScrollBy(value);
     },
+
+
+
+
 
     /**
      * @private
@@ -2710,27 +3403,35 @@
      * 스크롤할 값만 정수로 준다.
      * 기준값은 스크롤러의 값이다.
      */
-    verticalScrollBy: function ( value ) {
-      var newVal = this.$uiVerticalScrollbar.scroller( 'value' ) - value;
-      this._renderRows( newVal );
-      this.$uiVerticalScrollbar.scroller( 'value', newVal );
+    verticalScrollBy: function (value) {
+      var newVal = this.$uiVerticalScrollbar.scroller('value') - value;
+      this._renderRows(newVal);
+      this.$uiVerticalScrollbar.scroller('value', newVal);
     },
+
+
+
+
 
     /**
      * @private
      * 스크롤할 값만 정수로 준다.
      * 기준값은 스크롤러의 값이다.
      */
-    horizontalScrollBy: function ( value ) {
-      var newVal = this.$uiHorizontalScrollbar.scroller( 'value' ) - value;
-      this._renderColumns( newVal );
-      this.$uiHorizontalScrollbar.scroller( 'value', newVal );
+    horizontalScrollBy: function (value) {
+      var newVal = this.$uiHorizontalScrollbar.scroller('value') - value;
+      this._renderColumns(newVal);
+      this.$uiHorizontalScrollbar.scroller('value', newVal);
     },
 
-    _startKeyNavigation: function ( event, cursor ) {
+
+
+
+
+    _startKeyNavigation: function (event, cursor) {
       // 시작 가능여부를 반환
       // 시작시 필요한 것 처리..
-      switch ( event.keyCode ) {
+      switch (event.keyCode) {
       case $.ui.keyCode.HOME:
         cursor.column = 0;
         cursor.row = 0;
@@ -2749,16 +3450,20 @@
       return true;
     },
 
+
+
+
+
     _handleEvents: {
-      keydown: function ( event ) {
+      keydown: function (event) {
         var allowed, curVal, newVal, step,
           // 이동 할 셀 포인트( {columlIndex, rowIndex}
-          cursor = $( event.target ).data( "ui-sheet-cell-cursor" ) || {
+          cursor = $(event.target).data("ui-sheet-cell-cursor") || {
             column: 0,
             row: 0
           };
 
-        switch ( event.keyCode ) {
+        switch (event.keyCode) {
         case $.ui.keyCode.HOME:
         case $.ui.keyCode.END:
         case $.ui.keyCode.PAGE_UP:
@@ -2768,19 +3473,19 @@
         case $.ui.keyCode.DOWN:
         case $.ui.keyCode.LEFT:
           event.preventDefault();
-          if ( !this._keyNavigating ) {
+          if (!this._keyNavigating) {
             this._keyNavigating = true;
             // 커서 셀을 엑티브 상태로
-            cell.addClass( 'ui-state-active' );
-            allowed = this._startKeyNavigation( event, cursor );
-            if ( allowed === false ) {
+            cell.addClass('ui-state-active');
+            allowed = this._startKeyNavigation(event, cursor);
+            if (allowed === false) {
               return;
             }
           }
           break;
         }
 
-        switch ( event.keyCode ) {
+        switch (event.keyCode) {
         case $.ui.keyCode.HOME:
           newVal = this._valueMin();
           break;
@@ -2789,43 +3494,41 @@
           break;
         case $.ui.keyCode.PAGE_UP:
           newVal = this._trimAlignValue(
-            curVal + ( ( this._valueMax() - this._valueMin() ) / this.numPages )
+            curVal + ((this._valueMax() - this._valueMin()) / this.numPages)
           );
           break;
         case $.ui.keyCode.PAGE_DOWN:
           newVal = this._trimAlignValue(
-            curVal - ( ( this._valueMax() - this._valueMin() ) / this.numPages ) );
+            curVal - ((this._valueMax() - this._valueMin()) / this.numPages));
           break;
         case $.ui.keyCode.UP:
         case $.ui.keyCode.RIGHT:
-          if ( curVal === this._valueMax() ) {
+          if (curVal === this._valueMax()) {
             return;
           }
-          newVal = this._trimAlignValue( curVal + step );
+          newVal = this._trimAlignValue(curVal + step);
           break;
         case $.ui.keyCode.DOWN:
         case $.ui.keyCode.LEFT:
-          if ( curVal === this._valueMin() ) {
+          if (curVal === this._valueMin()) {
             return;
           }
-          newVal = this._trimAlignValue( curVal - step );
+          newVal = this._trimAlignValue(curVal - step);
           break;
         }
       },
-      keyup: function ( event ) {
-        var index = $( event.target ).data( "ui-slider-handle-index" );
 
-        if ( this._keySliding ) {
+      keyup: function (event) {
+        var index = $(event.target).data("ui-slider-handle-index");
+
+        if (this._keySliding) {
           this._keySliding = false;
-          this._stop( event, index );
-          this._change( event, index );
-          $( event.target ).removeClass( "ui-state-active" );
+          this._stop(event, index);
+          this._change(event, index);
+          $(event.target).removeClass("ui-state-active");
         }
       }
     }
+  });
 
-
-  } );
-
-
-} ) );
+}));

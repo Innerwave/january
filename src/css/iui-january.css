@@ -1,5 +1,5 @@
 /*!
- * Innerwave's jQuery Spreadsheet plugin v0.2.630-SNAPSHOT
+ * Innerwave's jQuery Spreadsheet plugin v0.2.617-SNAPSHOT
  * http://www.innerwave.co.kr
  *
  * Copyright 2014 Innerwave Co., Ltd.
@@ -84,13 +84,14 @@
     right: 0;
 }
 .spreadsheet-column-list.hidden,
-.spreadsheet-column-list.hidden>.spreadsheet-column,
+.spreadsheet-column-list.hidden .spreadsheet-column,
 .spreadsheet-column-list.hidden .ui-button-text {
     height: 5px;
     padding: 0;
     margin: 0;
+    line-height: 0;
 }
-.spreadsheet-column-list.hidden .ui-button-text>span {
+.spreadsheet-column-list.hidden .ui-button-text span {
     display: none;
 }
 .spreadsheet-row-list {
@@ -146,7 +147,7 @@
     padding: 0;
     margin: 0;
 }
-.spreadsheet-viewport-row.hidden .ui-button-text > span {
+.spreadsheet-viewport-row.hidden .ui-button-text span {
     display: none;
 }
 .spreadsheet-row.ui-state-hover .indicator,
