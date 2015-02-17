@@ -15,8 +15,8 @@
     }
 
     var label = '';
-    if (!isNaN(parseFloat(cell.value()))) {
-      label = cell.value().split(/(?=(?:\d{3})+(?:\.|$))/g)
+    if (!isNaN(parseFloat(cell.value))) {
+      label = cell.value.split(/(?=(?:\d{3})+(?:\.|$))/g)
         .join(',');
     }
 

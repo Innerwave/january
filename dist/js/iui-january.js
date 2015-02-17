@@ -1,4 +1,4 @@
-/*! Innerwave Spreadsheet - v0.2.617-SNAPSHOT - 2015-02-13
+/*! Innerwave Spreadsheet - v0.2.618-SNAPSHOT - 2015-02-13
 * Copyright (c) 2015 innerwave.co.kr; Licensed  */
 ( function ( $, window, undefined ) {
   $.extend( true, window, {
@@ -1570,7 +1570,7 @@
   laptime( "위젯 시작" );
 
   return $.widget( "iui.january", {
-    version: "0.3.929-SNAPSHOT",
+    version: "0.2.618-SNAPSHOT",
     options: {
       height: "auto",
       width: "auto",

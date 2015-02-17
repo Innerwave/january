@@ -22,7 +22,7 @@
       .attr('title', cell.link);
 
     var span = $('<a>')
-      .text(cell.value())
+      .text(cell.value)
       .attr('title', cell.link)
       .attr('href', cell.link)
       .wrap('<span>').parent()

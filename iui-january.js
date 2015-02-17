@@ -639,20 +639,20 @@
     }
 
     for (var key in info) {
-      if (key === 'value') {
-        this.value(info.value === undefined ? '' : info.value);
-      } else {
-        this[key] = info[key];
-      }
+      //      if (key === 'value') {
+      //        this.value(info.value === undefined ? '' : info.value);
+      //      } else {
+      this[key] = info[key];
+      //      }
     }
 
     this.index = nextId++;
     this.uid = info.id || "cell" + nextId;
     this.id = info.id || this.uid;
-    this.formula = info.formula;
     this.className = "spreadsheet-cell " + (info.classname || "");
-    this.renderer = info.renderer;
-    this.editor = info.editor;
+    //    this.formula = info.formula;
+    //    this.renderer = info.renderer;
+    //    this.editor = info.editor;
 
     // 성능상 배열을 사용하는 것이.... 파싱이 넘 느려...
     this.rows = info.rows || [];
@@ -675,13 +675,13 @@
      * 아규멘트가 주어지면 셀에 값을 세팅하고 그렇지 않으면 현재 갖고 있는 값을 반환한다.
      * 다시 별도의 함수를 구현하지 않고 프로퍼티로 설정하고 이벤트를 트리거하는 것이 좋겠다.
      */
-    value: function (value) {
-      if (value === undefined) {
-        return this._value;
-      }
-      this._value = value;
-      this.trigger.call(this, Cell.EVENT_CLL_DATA_CHANGED);
-    },
+    //    value: function (value) {
+    //      if (value === undefined) {
+    //        return this._value;
+    //      }
+    //      this._value = value;
+    //      this.trigger.call(this, Cell.EVENT_CLL_DATA_CHANGED);
+    //    },
 
 
 
@@ -1056,7 +1056,7 @@
       this.cell = cell;
 
       this.popup
-        .find('input[name=value]').val(cell.value()).focus().end()
+        .find('input[name=value]').val(cell.value).focus().end()
         .find('input[name=link]').val(cell.link).end()
         .dialog('open');
       return this;
@@ -1080,9 +1080,8 @@
      */
     submit: function () {
       this.cell.link = instance.popup.find('input[name=link]').val();
-      this.cell.value(instance.popup.find('input[name=value]').val());
-      this.cell.trigger('celldatachanged');
-      console.log('submit');
+      this.cell.value = instance.popup.find('input[name=value]').val();
+      this.cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
     }
 
   });
@@ -1174,7 +1173,7 @@
       //          left: parseInt(cell.ui.css('left')) - 2
       //        })
       //        .show();
-      this.editor.val(cell.value()).focus();
+      this.editor.val(cell.value).focus();
       return this;
     },
 
@@ -1195,7 +1194,8 @@
      * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
      */
     submit: function (value) {
-      this.cell.value(value);
+      this.cell.value = value;
+      this.cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
     }
 
   });
@@ -1267,7 +1267,7 @@
         .show()
         .appendTo(cell.ui.parent());
 
-      this.editor.val(cell.value()).focus();
+      this.editor.val(cell.value).focus();
       return this;
     },
 
@@ -1292,8 +1292,8 @@
      * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
      */
     submit: function (value) {
-      this.cell.value(value);
-      //      this.cell.parent().refresh(this.cell);
+      this.cell.value = value;
+      this.cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
     }
 
   });
@@ -1319,7 +1319,7 @@
 
     var renderer = $('<input type="button" style="height:100%;width:100%;color:blue;font-weight:bolder">')
       .attr('value', cell.bottonLabel)
-      .attr('title', cell.value())
+      .attr('title', cell.value)
       .button()
 
     .click(function (event) {
@@ -1356,11 +1356,12 @@
 
     return $('<input type="checkbox">')
       .attr('value', cell.bottonLabel)
-      .attr('title', cell.value())
-      .prop('checked', !!cell.value())
+      .attr('title', cell.value)
+      .prop('checked', !!cell.value)
       .change(function () {
-        cell.value(this.checked);
-        $(this).attr('title', cell.value());
+        $(this).attr('title', this.checked);
+        cell.value = this.checked;
+        cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
       })
       .wrap('<span>').parent()
       .wrap('<div>').parent();
@@ -1453,24 +1454,24 @@
       return new Renderer(cell);
     }
 
-    var currencyCnt = Math.floor(cell.value().length / 3);
+    var currencyCnt = Math.floor(cell.value.length / 3);
     var temp = "";
     var startIdx, endIdx = 0;
     var commaCnt = 3;
     var currency = "￦";
-    startIdx = cell.value().length - commaCnt;
-    endIdx = cell.value().length;
+    startIdx = cell.value.length - commaCnt;
+    endIdx = cell.value.length;
 
     for (var i = 0; i < currencyCnt; i++) {
-      temp = "," + cell.value().substring(startIdx, endIdx) + temp;
+      temp = "," + cell.value.substring(startIdx, endIdx) + temp;
       endIdx = startIdx;
       startIdx -= commaCnt;
     }
 
     if (startIdx + commaCnt >= 0) {
-      temp = cell.value().substring(0, endIdx) + temp;
+      temp = cell.value.substring(0, endIdx) + temp;
     } else if (currencyCnt === 0) {
-      temp = cell.value();
+      temp = cell.value;
     }
 
     if (temp.substring(0, 1) === ",") {
@@ -1518,7 +1519,7 @@
       format = "dd/MM/yyyy";
     }
 
-    var currentDate = new Date(parseFloat(cell.value()));
+    var currentDate = new Date(parseFloat(cell.value));
 
     dateTemp = format.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function (rFormat) {
       switch (rFormat) {
@@ -1539,8 +1540,8 @@
       case "ss":
         return currentDate.getSeconds() < 10 ? "0" + (currentDate.getSeconds()) : (currentDate.getSeconds());
         /*
-	   case "a/p": return cell.value().getHours() < 12 ? "오전" : "오후";
-	   case "E": return weekName[cell.value().getDay()];
+	   case "a/p": return cell.value.getHours() < 12 ? "오전" : "오후";
+	   case "E": return weekName[cell.value.getDay()];
 	   */
       default:
         return rFormat;
@@ -1592,7 +1593,7 @@
       if (!(this instanceof Renderer)) {
         return new Renderer(cell);
       }
-      var icon = cell.value();
+      var icon = cell.value;
 
       return $('<i class="fa fa-fw">') // icon
         .html(icon)
@@ -1629,13 +1630,13 @@
     }
 
     var div = $('<div>')
-      .attr('title', cell.value())
+      .attr('title', cell.value)
       .addClass(cell.className);
 
-    if (cell.value() != null) {
+    if (cell.value != null) {
       var img = $('<img style="margin:1px;">')
-        .attr('src', cell.value())
-        .attr('alt', cell.value())
+        .attr('src', cell.value)
+        .attr('alt', cell.value)
         .on('load', function (event) {
           cell.rows[0].setHeight(this.height);
           cell.columns[0].setWidth(this.width);
@@ -1672,7 +1673,7 @@
       .attr('title', cell.link);
 
     var span = $('<a>')
-      .text(cell.value())
+      .text(cell.value)
       .attr('title', cell.link)
       .attr('href', cell.link)
       .wrap('<span>').parent()
@@ -1701,8 +1702,8 @@
     }
 
     var label = '';
-    if (!isNaN(parseFloat(cell.value()))) {
-      label = cell.value().split(/(?=(?:\d{3})+(?:\.|$))/g)
+    if (!isNaN(parseFloat(cell.value))) {
+      label = cell.value.split(/(?=(?:\d{3})+(?:\.|$))/g)
         .join(',');
     }
 
@@ -1767,16 +1768,16 @@
     }
 
     //    var span = $('<span>')
-    //      .text(cell.value());
+    //      .text(cell.value);
 
     //    var div = $('<div>')
-    //      .attr('title', cell.value())
+    //      .attr('title', cell.value)
     //      .append(span);
 
     //    return div;
 
-    return $('<span>').text(cell.value())
-      .wrap('<div>').parent().attr('title', cell.value());
+    return $('<span>').text(cell.value)
+      .wrap('<div>').parent().attr('title', cell.value);
 
   };
 
@@ -1800,10 +1801,10 @@
     }
 
     return $('<span style="text-align:center;font-weight:bolder">')
-      .text(cell.value())
+      .text(cell.value)
 
     .wrap('<div >').parent()
-      .attr('title', cell.value());
+      .attr('title', cell.value);
   };
 
   $.extend(Renderer.prototype, {
@@ -2601,7 +2602,7 @@
 
     _setValueToValueWindow: function ( /*iui.sheet.model.Cell*/ cell) {
       if (this.options.showValueWindow === true) {
-        this.$uiValueWindow.find('input:text').val(cell.value());
+        this.$uiValueWindow.find('input:text').val(cell.value);
       }
     },
 

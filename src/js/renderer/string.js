@@ -19,16 +19,16 @@
     }
 
     //    var span = $('<span>')
-    //      .text(cell.value());
+    //      .text(cell.value);
 
     //    var div = $('<div>')
-    //      .attr('title', cell.value())
+    //      .attr('title', cell.value)
     //      .append(span);
 
     //    return div;
 
-    return $('<span>').text(cell.value())
-      .wrap('<div>').parent().attr('title', cell.value());
+    return $('<span>').text(cell.value)
+      .wrap('<div>').parent().attr('title', cell.value);
 
   };
 

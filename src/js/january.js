@@ -775,7 +775,7 @@
 
     _setValueToValueWindow: function ( /*iui.sheet.model.Cell*/ cell) {
       if (this.options.showValueWindow === true) {
-        this.$uiValueWindow.find('input:text').val(cell.value());
+        this.$uiValueWindow.find('input:text').val(cell.value);
       }
     },
 

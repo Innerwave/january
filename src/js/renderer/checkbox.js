@@ -16,11 +16,12 @@
 
     return $('<input type="checkbox">')
       .attr('value', cell.bottonLabel)
-      .attr('title', cell.value())
-      .prop('checked', !!cell.value())
+      .attr('title', cell.value)
+      .prop('checked', !!cell.value)
       .change(function () {
-        cell.value(this.checked);
-        $(this).attr('title', cell.value());
+        $(this).attr('title', this.checked);
+        cell.value = this.checked;
+        cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
       })
       .wrap('<span>').parent()
       .wrap('<div>').parent();

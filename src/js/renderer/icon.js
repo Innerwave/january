@@ -14,7 +14,7 @@
       if (!(this instanceof Renderer)) {
         return new Renderer(cell);
       }
-      var icon = cell.value();
+      var icon = cell.value;
 
       return $('<i class="fa fa-fw">') // icon
         .html(icon)

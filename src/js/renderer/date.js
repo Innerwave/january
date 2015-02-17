@@ -21,7 +21,7 @@
       format = "dd/MM/yyyy";
     }
 
-    var currentDate = new Date(parseFloat(cell.value()));
+    var currentDate = new Date(parseFloat(cell.value));
 
     dateTemp = format.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function (rFormat) {
       switch (rFormat) {
@@ -42,8 +42,8 @@
       case "ss":
         return currentDate.getSeconds() < 10 ? "0" + (currentDate.getSeconds()) : (currentDate.getSeconds());
         /*
-	   case "a/p": return cell.value().getHours() < 12 ? "오전" : "오후";
-	   case "E": return weekName[cell.value().getDay()];
+	   case "a/p": return cell.value.getHours() < 12 ? "오전" : "오후";
+	   case "E": return weekName[cell.value.getDay()];
 	   */
       default:
         return rFormat;

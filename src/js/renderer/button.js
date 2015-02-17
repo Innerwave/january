@@ -16,7 +16,7 @@
 
     var renderer = $('<input type="button" style="height:100%;width:100%;color:blue;font-weight:bolder">')
       .attr('value', cell.bottonLabel)
-      .attr('title', cell.value())
+      .attr('title', cell.value)
       .button()
 
     .click(function (event) {

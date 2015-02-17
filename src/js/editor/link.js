@@ -64,7 +64,7 @@
       this.cell = cell;
 
       this.popup
-        .find('input[name=value]').val(cell.value()).focus().end()
+        .find('input[name=value]').val(cell.value).focus().end()
         .find('input[name=link]').val(cell.link).end()
         .dialog('open');
       return this;
@@ -88,9 +88,8 @@
      */
     submit: function () {
       this.cell.link = instance.popup.find('input[name=link]').val();
-      this.cell.value(instance.popup.find('input[name=value]').val());
-      this.cell.trigger('celldatachanged');
-      console.log('submit');
+      this.cell.value = instance.popup.find('input[name=value]').val();
+      this.cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
     }
 
   });

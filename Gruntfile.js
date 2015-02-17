@@ -106,7 +106,7 @@ module.exports = function (grunt) {
       },
       lib_test: {
         files: ['<%= jshint.lib_test.src %>', 'src/css/**/*.css', 'test/**/*.html', '*.html'],
-        tasks: ['timestamp', 'jsbeautifier', 'jshint:lib_test', 'concat:bind'] //, 'qunit', 'shell:patch', 'shell:git-commit' ]
+        tasks: ['timestamp', 'jsbeautifier', 'jshint:lib_test', 'concat:bind', /*'qunit',*/ 'shell:patch', 'shell:git-commit']
       }
     },
 

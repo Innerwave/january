@@ -15,13 +15,13 @@
     }
 
     var div = $('<div>')
-      .attr('title', cell.value())
+      .attr('title', cell.value)
       .addClass(cell.className);
 
-    if (cell.value() != null) {
+    if (cell.value != null) {
       var img = $('<img style="margin:1px;">')
-        .attr('src', cell.value())
-        .attr('alt', cell.value())
+        .attr('src', cell.value)
+        .attr('alt', cell.value)
         .on('load', function (event) {
           cell.rows[0].setHeight(this.height);
           cell.columns[0].setWidth(this.width);

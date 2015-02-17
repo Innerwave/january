@@ -15,10 +15,10 @@
     }
 
     return $('<span style="text-align:center;font-weight:bolder">')
-      .text(cell.value())
+      .text(cell.value)
 
     .wrap('<div >').parent()
-      .attr('title', cell.value());
+      .attr('title', cell.value);
   };
 
   $.extend(Renderer.prototype, {

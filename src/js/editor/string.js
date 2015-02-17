@@ -63,7 +63,7 @@
         .show()
         .appendTo(cell.ui.parent());
 
-      this.editor.val(cell.value()).focus();
+      this.editor.val(cell.value).focus();
       return this;
     },
 
@@ -88,8 +88,8 @@
      * cell의 데이터 변경에 따른 이벤트를 위젯(january.js)에서 처리 후 에디터(팝업)을 닫는다.
      */
     submit: function (value) {
-      this.cell.value(value);
-      //      this.cell.parent().refresh(this.cell);
+      this.cell.value = value;
+      this.cell.trigger(iui.sheet.model.Cell.EVENT_CLL_DATA_CHANGED);
     }
 
   });

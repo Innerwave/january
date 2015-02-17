@@ -14,24 +14,24 @@
       return new Renderer(cell);
     }
 
-    var currencyCnt = Math.floor(cell.value().length / 3);
+    var currencyCnt = Math.floor(cell.value.length / 3);
     var temp = "";
     var startIdx, endIdx = 0;
     var commaCnt = 3;
     var currency = "￦";
-    startIdx = cell.value().length - commaCnt;
-    endIdx = cell.value().length;
+    startIdx = cell.value.length - commaCnt;
+    endIdx = cell.value.length;
 
     for (var i = 0; i < currencyCnt; i++) {
-      temp = "," + cell.value().substring(startIdx, endIdx) + temp;
+      temp = "," + cell.value.substring(startIdx, endIdx) + temp;
       endIdx = startIdx;
       startIdx -= commaCnt;
     }
 
     if (startIdx + commaCnt >= 0) {
-      temp = cell.value().substring(0, endIdx) + temp;
+      temp = cell.value.substring(0, endIdx) + temp;
     } else if (currencyCnt === 0) {
-      temp = cell.value();
+      temp = cell.value;
     }
 
     if (temp.substring(0, 1) === ",") {
