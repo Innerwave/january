@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>IW-Spreadsheet Examples - 0.2.479-SNAPSHOT</title>
+  <title>IW-Spreadsheet Examples - 0.2.617-SNAPSHOT</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,6 +17,15 @@
     height: 32px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAARCQAAEQkBwOWiGAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAG8SURBVFiF7de/axVBEAfwz2kgRNDCgIUY/JEqxSsELYSAAcFaEOyTQrCyFfv8A4r/gWgrAcEgiKCdqEW0ULDQyohBTBEjiY7F7XtsQt7dBV9yChkY7nbvOzvfm9md3S0iQpsylDeKouhgdId9LkXEQq8VEVIU5hG7pPM9v8l5Zxedd7UTEfalQOx02LeSUfQItCZ7BP5LAj8xgittERARq1hrjcAgZage0lheYg7fcBaTOFlnNKgI3I6IM7iHd7gREadwrdYyleIpzUvoarK5lNrrOIgL+J3hJpU/+L3POFN5Kf4bWccKlvE563+GXzjUxy4YTAqGMR0RL3BMmf+beF5jV5Q0tp+CH5tS0NVHmMHRbIu/qKwbfVNQR+Bh+jaX9X1JNjMVJF/hcsLdryJQl4KRiHiKB1lf9zQzlp5vMIHZDHMa19P7cqWHmgisKNfyMK7iDsaxH+8TZg3HlZPtVvr7JziHA/hQFYEmc+C1dHpJ2MO4uwnzVpmSExluAo8rxm1MoKuL+GjjWt9KP+Frg/HOR8S2SvGRhrixegjSMmx9M9oj8M8QWGrBd+mz7atZkd+O27icbiDQhvwBRpt2KPfzGu8AAAAASUVORK5CYII61aca5b15dc195f896e509d7d7121624');
   }
+  /*
+  @font-face {
+    font-family: 'FontAwesome';
+    src: url('lib/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0');
+    src: url('lib/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('lib/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('lib/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('lib/font-awesome/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+*/
   </style>
   <script>
   var urlParams = (location.href.split('?')[1] || '').split('&'),
@@ -52,6 +61,7 @@
   options.numberOfFixedColumns = Math.max(options.numberOfFixedColumns, 0);
   options.numberOfColumns = Math.max(options.numberOfColumns, 20);
   options.numberOfRows = Math.max(options.numberOfRows, 20);
+  options.regional = options.regional ? options.regional : 'ko';
 
   options.defaultGridLineColor = decodeURIComponent(options.defaultGridLineColor);
 
@@ -85,7 +95,7 @@
 
 <body>
   <h1> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <span class="image"></span> January, Innerwave UI Component - 0.2.479-SNAPSHOT</h1>
+    <span class="image"></span> January, Innerwave UI Component - 0.2.617-SNAPSHOT</h1>
 
   <form method="get">
     <div>
@@ -172,6 +182,12 @@
 
     <div>
       <input type="submit" value="Show" />
+    </div>
+    <div>
+      <select id="regional" name="regional" onchange="submit()">
+        <option value="ko">ko</option>
+        <option value="en">en</option>
+      </select>
     </div>
   </form>
 
@@ -340,12 +356,71 @@
   <script src="js/iui-scroller.min.js"></script>
 
   <script>
+  var links = [{
+    value: 'innerwave',
+    url: 'http://www.innerwave.co.kr'
+  }, {
+    value: 'google',
+    url: 'https://www.google.com'
+  }, {
+    value: 'naver',
+    url: 'http://www.naver.com'
+  }, {
+    value: 'daum',
+    url: 'http://www.daum.net'
+  }, {
+    value: 'trello',
+    url: 'https://trello.com'
+  }, {
+    value: 'github',
+    url: 'https://github.com'
+  }, {
+    value: 'pinterest',
+    url: 'https://www.pinterest.com'
+  }, {
+    value: 'facebook',
+    url: 'https://www.facebook.com'
+  }, {
+    value: 'tweeter',
+    url: 'https://twitter.com'
+  }];
+
+  var colors = [
+    'black',
+    'yellow',
+    'gray',
+    'green',
+    'orange',
+    'red',
+    'blue',
+  ];
+
+  var icons = [
+    '&#xf069;',
+    '&#xf1fa;',
+    '&#xf1b9;',
+    '&#xf04a;',
+    '&#xf05e;',
+    '&#xf19c;',
+    '&#xf080;',
+    '&#xf080;',
+    '&#xf02a;',
+    '&#xf0c9;',
+    '&#xf236;',
+    '&#xf0fc;',
+    '&#xf1b4;',
+    '&#xf1b5;',
+    '&#xf0f3;',
+    '&#xf0a2;',
+    '&#xf1f6;'
+  ];
+
   function mkColumn(size) {
     var columns = [];
     for (var i = 0; i < size; i++) {
       columns.push({
         id: 'col' + i,
-        label: undefined, //i < 5 ? 'Col ' + (i + 1) : undefined,
+        //label: i < 5 ? 'Col ' + (i + 1) : undefined,
         width: 80,
         className: 'sheet-column-text',
       });
@@ -356,24 +431,61 @@
   function mkData(columns, rows) {
     var data = [];
     var row;
+    var link;
+    var value;
+    var obj;
     for (var i = 0; i < rows; i++) {
       row = {};
       row.id = 'row' + i;
-      //      if (i % 2 !== 0) {
       for (var j = 0, l = columns; j < l; j += 1) {
         // TODO 컬럼 값에 데이터 뿐 아니라. 스패닝, 스타일(CSS) 등을 저장할 수 있도록 object 타입으로 수정할 필요가 있다.
         /**
          * var cell = {value: '', css: '', colspan:1, rowspan: 1, className:'spreadsheet-cell cell-format-text', formular:formular };
          */
-        row[ /*columnId*/ 'col' + j] = {
-          value: j + ', ' + i,
-          //            rows: ['row' + i, 'row' + (i + 1)]
-        };
+        if (j === 1) {
+          link = links[i > 0 ? i % links.length : 0];
+          row[ /*columnId*/ 'col' + j] = {
+            value: link.value,
+            link: link.url
+          };
+        } else if (j == 2) {
+          row[ /*columnId*/ 'col' + j] = {
+            value: new Date().getTime().toString()
+          };
+
+        } else if (j == 3) {
+          row[ /*columnId*/ 'col' + j] = {
+            value: "" + i * j * 1000
+          };
+
+        } else if (j == 4) {
+          row[ /*columnId*/ 'col' + j] = {
+            value: icons[i > 0 ? i % icons.length : 0],
+            color: colors[i > 0 ? i % colors.length : 0],
+            icon: icons[i > 0 ? i % icons.length : 0]
+          };
+        } else if (j == 6) {
+          row[ /*columnId*/ 'col' + j] = {
+            value: j + ', ' + i,
+            bottonLabel: "test button",
+            click: red
+          };
+
+        } else {
+          row[ /*columnId*/ 'col' + j] = {
+            value: j + ', ' + i
+          };
+        }
       }
       //      }
       data.push(row);
     }
     return data;
+  }
+
+  function red(str) {
+    alert(str);
+    //    alert(this.value);
   }
 
   function drawSheet() {
@@ -396,6 +508,8 @@
     $('input[name="showDefaultGrid"]').prop('checked', options.showDefaultGrid);
     $('input[name="defaultGridLineColor"]').val(options.defaultGridLineColor);
 
+    $('select[name=regional]').val(options.regional);
+
 
     var columns = mkColumn(options.numberOfColumns);
 
@@ -403,9 +517,7 @@
     // 컬럼 그룹핑은 그룹 명을 동일하게 지정합니다.
     // 그룹으로 묶을 컬럼은 붙어 있어야 합니다.
     columns[0].group = '그룹 0';
-    columns[0].renderer = iui.sheet.renderer.String;
     columns[1].group = '그룹 1';
-    columns[1].renderer = iui.sheet.renderer.Image;
     columns[2].group = '그룹 1';
     columns[3].group = '그룹 1';
     // columns[4].group = 'Group 2';
@@ -421,6 +533,28 @@
     columns[13].group = 'Group 5';
     columns[14].group = 'Group 5';
     columns[15].group = 'Group 5';
+
+    columns[0].renderer = iui.sheet.renderer.String;
+    columns[1].renderer = iui.sheet.renderer.Link;
+    columns[1].width = 150;
+
+    columns[2].renderer = iui.sheet.renderer.Date;
+    columns[2].resizable = true;
+
+    columns[3].renderer = iui.sheet.renderer.Currency;
+    columns[3].resizable = true;
+
+    columns[4].renderer = iui.sheet.renderer.Icon;
+    columns[4].resizable = true;
+
+    columns[5].renderer = iui.sheet.renderer.Image;
+
+    columns[6].renderer = iui.sheet.renderer.Button;
+    columns[6].width = 200;
+
+    columns[7].renderer = iui.sheet.renderer.Checkbox;
+    columns[7].width = 30;
+    columns[7].resizable = true;
 
     var data = mkData(columns.length, options.numberOfRows);
 
